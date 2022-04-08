@@ -19,7 +19,7 @@ Software design
 ![](.\use-case.jpg)
 ![Use-Case диаграмма](use-case.jpg)
 ## ER-диаграмма сущностей
-![ER-диаграмма](.\ER-diagPPO.jpg)
+![ER-диаграмма](ER-diagPPO.jpg)
 ## Архитектурные характеристики, важные для проекта.
 Desktop многопользовательское приложение.
 Технологический стек: C++, PostgreSQL.
