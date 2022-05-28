@@ -1,6 +1,6 @@
 #include "CanvasRepository.h"
 
-CanvasRepository::CanvasRepository() : m_dbhost("localhost"), m_dbport(5432), m_dbname("postgres"), m_dbuser("moderator"), m_dbpass("moderator"), m_dbschema("PPO")
+CanvasRepository::CanvasRepository() : m_dbhost("localhost"), m_dbport(5432), m_dbname("postgres"), m_dbuser("guest"), m_dbpass("guest"), m_dbschema("PPO")
 {
     /*m_dbhost = "localhost";
     m_dbport = 5432;
@@ -37,6 +37,8 @@ shared_ptr<CanvasBL> CanvasRepository::getCanvas(int id)
     string query = "SELECT * FROM " + m_dbschema + ".Canvas where id=" + to_string(id) + ";";
     PQsendQuery(m_connection.get(), query.c_str());
 
+    bool flag = false;
+    string error_msg = "";
     while (auto res = PQgetResult( m_connection.get()))
     {
         if (PQresultStatus(res) == PGRES_TUPLES_OK && PQntuples(res))
@@ -54,14 +56,19 @@ shared_ptr<CanvasBL> CanvasRepository::getCanvas(int id)
         }
         else //if (PQresultStatus(res) == PGRES_FATAL_ERROR)
         {
-            cout << PQresultErrorMessage(res) << endl;
+            error_msg += "\n";
+            error_msg += PQresultErrorMessage(res);
+            flag = true;
         }
 
         PQclear( res );
     }
 
     time_t t_time = time(NULL);
-    throw GetCanvasError("No such canvas", __FILE__, __LINE__, ctime(&t_time));
+    if (flag)
+        throw GetCanvasError(error_msg, __FILE__, __LINE__, ctime(&t_time));
+    else
+        throw GetCanvasError("Unexpected GetCanvasError error?", __FILE__, __LINE__, ctime(&t_time));
     //return NULL;
 }
 
@@ -113,17 +120,25 @@ void CanvasRepository::deleteCanvas(int id)
     string query = "delete from " + m_dbschema + ".Canvas where id=" + to_string(id) + ";";
     PQsendQuery(m_connection.get(), query.c_str());
 
-    bool flag = false;
+    int flag = 0;
+    string error_msg = "";
     while (auto res = PQgetResult( m_connection.get()))
     {
         if (PQcmdTuples(res)[0] == '0')
-            flag = true;
+            flag = 1;
+        else if (PQresultStatus(res) == PGRES_FATAL_ERROR)
+        {
+            error_msg += "\n";
+            error_msg += PQresultErrorMessage(res);
+            flag = 2;
+        }
     }
-    if (flag)
-    {
-        time_t t_time = time(NULL);
+
+    time_t t_time = time(NULL);
+    if (flag == 1)
         throw DeleteCanvasError("No such canvas", __FILE__, __LINE__, ctime(&t_time));
-    }
+    else if (flag == 2)
+        throw DeleteCanvasError(error_msg, __FILE__, __LINE__, ctime(&t_time));
 }
 
 void CanvasRepository::updateCanvas(CanvasBL &canvas_bl, int id)
@@ -139,17 +154,25 @@ void CanvasRepository::updateCanvas(CanvasBL &canvas_bl, int id)
     query += "' where id = " + to_string(id) + ";";
     PQsendQuery(m_connection.get(), query.c_str());
 
-    bool flag = false;
+    int flag = 0;
+    string error_msg = "";
     while (auto res = PQgetResult( m_connection.get()))
     {
         if (PQcmdTuples(res)[0] == '0')
-            flag = true;
+            flag = 1;
+        else if (PQresultStatus(res) == PGRES_FATAL_ERROR)
+        {
+            error_msg += "\n";
+            error_msg += PQresultErrorMessage(res);
+            flag = 2;
+        }
     }
-    if (flag)
-    {
-        time_t t_time = time(NULL);
+
+    time_t t_time = time(NULL);
+    if (flag == 1)
         throw UpdateCanvasError("No such canvas\nMaybe you should create it first", __FILE__, __LINE__, ctime(&t_time));
-    }
+    else if (flag == 2)
+        throw UpdateCanvasError(error_msg, __FILE__, __LINE__, ctime(&t_time));
 }
 
 void CanvasRepository::test(string &str)
@@ -175,6 +198,12 @@ void CanvasRepository::test(string &str)
 
         PQclear( res );
     }
+}
+
+void CanvasRepository::setRole(string login, string password)
+{
+    m_dbuser = login;
+    m_dbpass = password;
 }
 
 void CanvasRepository::connect()

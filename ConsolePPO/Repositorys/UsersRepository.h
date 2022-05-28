@@ -17,22 +17,24 @@ public:
     virtual ~UsersRepository() = default;
 
     virtual shared_ptr<UserBL> getUser(string login, string password) override;
-    virtual shared_ptr<UserBL> getCanvasUser(string name) override;
-    virtual vector<string> getFreeCanvasUsers() override;
-    virtual vector<string> getCanvasUsersByMid(int m_id) override;
+    shared_ptr<UserBL> getCanvasUser(string name);
+    vector<string> getFreeCanvasUsers();
+    vector<string> getCanvasUsersByMid(int m_id);
     virtual void addUser(UserBL& user) override;
     virtual void deleteUser(int id) override;
     virtual void updateUser(UserBL& user_bl, int id) override;
 
+    void setRole(string login, string password);
+
 protected:
     void connect();
 
-    string m_dbhost = "localhost";
-    int m_dbport = 5432;
-    string m_dbname = "postgres";
-    string m_dbuser = "postgres";
-    string m_dbpass = "postgres";
-    string m_dbschema = "PPO";
+    string m_dbhost ;
+    int m_dbport;
+    string m_dbname;
+    string m_dbuser;
+    string m_dbpass;
+    string m_dbschema;
 
     shared_ptr<PGconn> m_connection;
 };

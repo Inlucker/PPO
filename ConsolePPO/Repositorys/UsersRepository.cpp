@@ -1,6 +1,6 @@
 #include "UsersRepository.h"
 
-UsersRepository::UsersRepository() : m_dbhost("localhost"), m_dbport(5432), m_dbname("postgres"), m_dbuser("moderator"), m_dbpass("moderator"), m_dbschema("PPO")
+UsersRepository::UsersRepository() : m_dbhost("localhost"), m_dbport(5432), m_dbname("postgres"), m_dbuser("guest"), m_dbpass("guest"), m_dbschema("PPO")
 {
 
 }
@@ -265,6 +265,12 @@ void UsersRepository::updateUser(UserBL &user_bl, int id)
         throw UpdateUserError("No such user", __FILE__, __LINE__, ctime(&t_time));
     else if (flag == 2)
         throw UpdateUserError(error_msg, __FILE__, __LINE__, ctime(&t_time));
+}
+
+void UsersRepository::setRole(string login, string password)
+{
+    m_dbuser = login;
+    m_dbpass = password;
 }
 
 void UsersRepository::connect()

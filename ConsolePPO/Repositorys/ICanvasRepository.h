@@ -15,7 +15,7 @@ public:
     virtual void updateCanvas(CanvasBL& heights_map, int id) = 0;
     //virtual void updateTriPolArray(CanvasBL canvas, int id) = 0;
     //virtual void updateColor(int r, int g, int b, int id) = 0;
-    virtual void test(string &str) = 0;
+    //virtual void test(string &str) = 0;
 };
 
 #endif // ICANVAS_REPOSITORY_H
