@@ -3,6 +3,8 @@
 
 #include <memory>
 #include <libpq-fe.h>
+#include <vector>
+//#include <pair>
 
 #include "ICanvasRepository.h"
 #include "Errors/RepositoryErrors.h"
@@ -15,6 +17,7 @@ public:
     virtual ~CanvasRepository() = default;
 
     virtual shared_ptr<CanvasBL> getCanvas(int id) override;
+    vector<pair<int, string>> getCanvasesByUid(int u_id);
     virtual void addCanvas(CanvasBL& canvas) override;
     virtual void deleteCanvas(int id) override;
     virtual void updateCanvas(CanvasBL& canvas_bl, int id) override;

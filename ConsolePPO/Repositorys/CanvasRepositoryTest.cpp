@@ -186,7 +186,6 @@ void CanvasRepositoryTest::setupForTest()
             (\
                 id serial primary key,\
                 user_id int,\
-                FOREIGN KEY (user_id) REFERENCES PPO.Users (id),\
                 name text,\
                 HeightsMap text,\
                 TriPolArray text,\
