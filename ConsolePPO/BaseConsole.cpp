@@ -3,11 +3,14 @@
 BaseConsole::BaseConsole()
 {
     user_repository = make_shared<UsersRepository>();
-    canvas_user_console = make_unique<CanvasUserConsole>();
-    moderator_console = make_unique<ModeratorConsole>();
+    canvas_repository = make_shared<CanvasRepository>();
+    canvas_user_console = make_unique<CanvasUserConsole>(canvas_repository, user_repository);
+    moderator_console = make_unique<ModeratorConsole>(canvas_repository, user_repository);
 
     while (input != 0)
     {
+        canvas_repository->setRole("guest", "guest");
+        user_repository->setRole("guest", "guest");
         cout << endl;
         cout << "Commands:" << endl;
         cout << "1 - Login" << endl;

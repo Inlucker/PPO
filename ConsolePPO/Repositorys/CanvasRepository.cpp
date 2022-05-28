@@ -37,7 +37,7 @@ shared_ptr<CanvasBL> CanvasRepository::getCanvas(int id)
     string query = "SELECT * FROM " + m_dbschema + ".Canvas where id=" + to_string(id) + ";";
     PQsendQuery(m_connection.get(), query.c_str());
 
-    bool flag = false;
+    int flag = 0;
     string error_msg = "";
     while (auto res = PQgetResult( m_connection.get()))
     {
@@ -54,19 +54,23 @@ shared_ptr<CanvasBL> CanvasRepository::getCanvas(int id)
             return make_shared<CanvasBL>(u_id, name, hm, tpa, c);
             //cout<< ID<<endl;
         }
-        else //if (PQresultStatus(res) == PGRES_FATAL_ERROR)
+        else if (PQresultStatus(res) == PGRES_FATAL_ERROR)
         {
             error_msg += "\n";
             error_msg += PQresultErrorMessage(res);
-            flag = true;
+            flag = 2;
         }
+        else
+            flag = 1;
 
         PQclear( res );
     }
 
     time_t t_time = time(NULL);
-    if (flag)
+    if (flag == 2)
         throw GetCanvasError(error_msg, __FILE__, __LINE__, ctime(&t_time));
+    else if (flag == 1)
+        throw GetCanvasError("No such Canvas", __FILE__, __LINE__, ctime(&t_time));
     else
         throw GetCanvasError("Unexpected GetCanvasError error?", __FILE__, __LINE__, ctime(&t_time));
     //return NULL;

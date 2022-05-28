@@ -25,6 +25,7 @@ private:
     unique_ptr<CanvasUserConsole> canvas_user_console;
     unique_ptr<ModeratorConsole> moderator_console;
     shared_ptr<UsersRepository> user_repository;
+    shared_ptr<CanvasRepository> canvas_repository;
 };
 
 #endif // BASECONSOLE_H

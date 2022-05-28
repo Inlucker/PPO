@@ -14,13 +14,15 @@ using namespace std;
 class CanvasUserConsole
 {
 public:
-    CanvasUserConsole();
+    CanvasUserConsole(shared_ptr<CanvasRepository> canvas_rep, shared_ptr<UsersRepository> users_rep);
 
+    void login(shared_ptr<UserBL> user_bl);
+
+private:
+    int input = -1;
     unique_ptr<UserController> user_controller;
     shared_ptr<CanvasRepository> canvas_repository;
     shared_ptr<UsersRepository> users_repository;
-
-    void login(shared_ptr<UserBL> user_bl);
 };
 
 #endif // CANVASUSERCONSOLE_H
