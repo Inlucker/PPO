@@ -31,6 +31,7 @@ void CanvasUserConsole::login(shared_ptr<UserBL> user_bl)
         cout << "9 - Delete Canvas" << endl;
         cout << "10 - Delete this user" << endl;
         cout << "11 - Print HeightsMapPoints" << endl;
+        cout << "12 - Show my canvases" << endl;
         cout << "0 - Exit to BaseConsole\n" << endl;
 
         _flushall();
@@ -154,6 +155,14 @@ void CanvasUserConsole::login(shared_ptr<UserBL> user_bl)
             case 11:
             {
                 cout << "Print HeightsMapPoints:\n" << *user_controller->getHeightsMapPoints() << endl;
+                break;
+            }
+            case 12:
+            {
+                vector<pair<int, string>> vec = canvas_repository->getCanvasesByUid(user_controller->getUser()->getId());
+                cout << "My canvases:\n id | name\n";
+                for (auto &elem : vec)
+                    printf("%3d | %s\n", elem.first, elem.second.c_str());
                 break;
             }
             case 0:
