@@ -7,19 +7,27 @@
 #include "Essensities/UserBL.h"
 #include "Settings.h"
 
+//#include <iostream>
+
+//using namespace std;
+
 BaseWindow::BaseWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::BaseWindow)
 {
     ui->setupUi(this);
 
-    user_repository = make_shared<UsersRepository>();
-    canvas_repository = make_shared<CanvasRepository>();
+    //user_repository = make_shared<UsersRepository>();
+#ifdef MYSQL
+    setupMySQL();
+#endif
+    user_repository = make_shared<USER_REP>();
+    canvas_repository = make_shared<CANVAS_REP>();
 
-    main_window = make_unique<MainWindow>(canvas_repository, user_repository);
+    main_window = make_unique<MainWindow>();
     connect(main_window.get(), SIGNAL(exit()), this, SLOT(resetBaseWindow()));
 
-    moderator_window = make_unique<ModeratorWindow>(canvas_repository, user_repository);
+    moderator_window = make_unique<ModeratorWindow>();
     connect(moderator_window.get(), SIGNAL(exit()), this, SLOT(resetBaseWindow()));
 }
 
@@ -95,6 +103,59 @@ void BaseWindow::on_registrate_btn_clicked()
     catch (...)
     {
         QMessageBox::information(this, "Error", "Unexpected Error");
+    }
+}
+
+void BaseWindow::setupMySQL()
+{
+
+    /*qDebug() << "localhost";
+    qDebug() << "mysql";
+    qDebug() << "root";
+    qDebug() << "mysql";
+
+    QSqlDatabase db = QSqlDatabase::addDatabase("QMYSQL");
+    db.setHostName("localhost");
+    db.setDatabaseName("mysql");
+    db.setUserName("root");
+    db.setPassword("mysql");
+    if(db.open()){
+        qDebug() <<"Connected!";
+    }else{
+        qDebug() <<"Disconnected!";
+    }*/
+
+    db = make_unique<QSqlDatabase>(QSqlDatabase::addDatabase("QMYSQL"));
+
+    QString m_dbhost = Settings::get(Settings::DBHost, Settings::DataBase).toString();
+    int m_dbport = Settings::get(Settings::DBPort, Settings::DataBase).toInt();
+    QString m_dbname = Settings::get(Settings::DBName, Settings::DataBase).toString();
+    QString m_dbuser = Settings::get(Settings::DBUser, Settings::DataBase).toString();
+    QString m_dbpass = Settings::get(Settings::DBPass, Settings::DataBase).toString();
+
+    qDebug() << m_dbhost;
+    qDebug() << m_dbport;
+    qDebug() << m_dbname;
+    qDebug() << m_dbuser;
+    qDebug() << m_dbpass;
+
+    db->setHostName(m_dbhost);
+    db->setPort(m_dbport);
+    db->setDatabaseName(m_dbname);
+    db->setUserName(m_dbuser);
+    db->setPassword(m_dbpass);
+
+    if(db->open())
+    {
+        //qDebug() << "Connected!!";
+        QSqlQuery query;
+        query.exec("SELECT * FROM PPO.Users;");
+        while (query.next())
+            qDebug() << query.value(0) << query.value(1);
+    }
+    else
+    {
+        //qDebug() << "Disconnected!";
     }
 }
 

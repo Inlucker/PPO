@@ -4,15 +4,19 @@
 
 #include <QMessageBox>
 
-ModeratorWindow::ModeratorWindow(shared_ptr<CanvasRepository> canvas_rep, shared_ptr<UsersRepository> users_rep, QWidget *parent) :
+ModeratorWindow::ModeratorWindow(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::ModeratorWindow)
 {
     ui->setupUi(this);
 
     moderator_controller = make_unique<ModeratorController>();
-    users_repository = users_rep;
-    canvas_repository = canvas_rep;
+    users_repository = make_shared<USER_REP>();
+    canvas_repository = make_shared<CANVAS_REP>();
+    //users_repository = users_rep;
+    //canvas_repository = canvas_rep;
+    mod_can_win = make_unique<ModeratorCanvasWindow>();
+    connect(mod_can_win.get(), SIGNAL(exit()), this, SLOT(show()));
 }
 
 ModeratorWindow::~ModeratorWindow()
@@ -150,6 +154,35 @@ void ModeratorWindow::on_delete_user_btn_clicked()
         this->hide();
         moderator_controller->logout();
         emit exit();
+    }
+    catch (BaseError &er)
+    {
+        QMessageBox::information(this, "Error", er.what());
+    }
+    catch (...)
+    {
+        QMessageBox::information(this, "Error", "Unexpected Error");
+    }
+}
+
+
+void ModeratorWindow::on_add_btn_2_clicked()
+{
+    try
+    {
+        qInfo(logUserAction()) << "Pressed Watch User Canvases button";
+        QList list = ui->my_users_listWidget->selectedItems();
+        if (list.size() > 0)
+        {
+            shared_ptr<UserBL> user_bl = users_repository->getCanvasUser(list[0]->text().toStdString());
+            mod_can_win->setId(user_bl->getId());
+            this->hide();
+            mod_can_win->show();
+        }
+        else
+        {
+            QMessageBox::information(this, "Error", "This user has no canvases");
+        }
     }
     catch (BaseError &er)
     {

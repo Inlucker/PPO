@@ -71,28 +71,6 @@ LandscapeCanvas::~LandscapeCanvas()
 {
 }
 
-
-//Resolution parametres
-int img_width = 720;
-int img_height = 405;
-
-//generating parametres
-float range = 24.75;
-bool smoothing = false;
-
-//drawing parametres
-int mult = 1;
-int red = 20;
-int green = 150;
-int blue = 20;
-
-shared_ptr<HeightsMap> heights_map;
-shared_ptr<HeightsMapPoints> heights_map_points;
-
-shared_ptr<TriPolArray> tri_pol_mas;
-shared_ptr<ZBufferAlg> zbuffer_alg;
-shared_ptr<FrameBuffer> frame_buffer;
-
 bool LandscapeCanvas::operator ==(LandscapeCanvas &an_canvas)
 {
     bool res = true;

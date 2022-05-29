@@ -43,6 +43,7 @@ grant pg_read_all_data to canvas_user;
 grant select, insert, update, delete on ppo.canvas to canvas_user;
 grant update on ppo.canvas_id_seq to canvas_user;
 grant delete on ppo.users to canvas_user;
+grant select, insert, update, delete on ppo.params to canvas_user;
 
 --Создание moderator
 CREATE USER moderator password 'moderator';

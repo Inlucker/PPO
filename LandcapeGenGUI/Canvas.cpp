@@ -2,15 +2,16 @@
 
 #include <QMessageBox>
 
-#include "Repositorys/CanvasRepository.h"
-#include "Repositorys/UsersRepository.h"
 #include "Settings.h"
 
-Canvas::Canvas(shared_ptr<CanvasRepository> canvas_rep, shared_ptr<UsersRepository> users_rep, QWidget *parent) : QWidget(parent) //old constructor
+Canvas::Canvas(QWidget *parent) : QWidget(parent) //old constructor
 {
     user_controller = make_unique<UserController>();
-    users_repository = users_rep;
-    canvas_repository = canvas_rep;
+    users_repository = make_shared<USER_REP>();
+    canvas_repository = make_shared<CANVAS_REP>();
+    params_repository = make_shared<PARAMS_REP>();
+    //users_repository = users_rep;
+    //canvas_repository = canvas_rep;
 
     heights_map_points = user_controller->getHeightsMapPoints();
     tri_pol_mas =  user_controller->getTriPolArray();
@@ -41,14 +42,30 @@ Canvas::~Canvas()
         painter->end();*/
 }
 
-void Canvas::createCanvas()
+void Canvas::createCanvas(double range, bool smooth, string name)
 {
     int r, g, b, u_id;
     user_controller->getColor(r, g, b);
     u_id = user_controller->getUser()->getId();
-    string name = "CanvasName";
-    CanvasBL cbl = CanvasBL(u_id, name, *(user_controller->getHeightsMap()), *heights_map_points, r, g, b);
+    //string name = "CanvasName";
+    CanvasBL cbl = CanvasBL(0, u_id, name, *(user_controller->getHeightsMap()), *heights_map_points, r, g, b);
     canvas_repository->addCanvas(cbl);
+    updateCanvasesList();
+
+    shared_ptr<CanvasBL> cbl_new = canvas_repository->getCanvas(name);
+    //qDebug() << QString::fromStdString(name);
+    //qDebug() << cbl_new->getId();
+    //int r, g, b;
+    user_controller->getColor(r, g, b);
+    ParamsBL params_bl(cbl_new->getId(),
+                       user_controller->getImgWidth(),
+                       user_controller->getImgHeight(),
+                       range,
+                       smooth,
+                       user_controller->getMult(),
+                       r, g, b,
+                       user_controller->getHeightsMap()->getSize());
+    params_repository->addParams(params_bl);
 }
 
 void Canvas::deleteCanvas(int id)
@@ -56,7 +73,7 @@ void Canvas::deleteCanvas(int id)
     canvas_repository->deleteCanvas(id);
 }
 
-void Canvas::selectCanvas(int id)
+shared_ptr<ParamsBL> Canvas::selectCanvas(int id)
 {
     cleanQImage();
 
@@ -72,7 +89,19 @@ void Canvas::selectCanvas(int id)
     //zbuffer_alg = user_controller->getZBufferAlg();
     //frame_buffer = zbuffer_alg->getFrameBuffer();
 
+//#ifdef PARAMS
+    shared_ptr<ParamsBL> params_bl = params_repository->getParams(id);
+
+    user_controller->setWidth(params_bl->getWidth());
+    user_controller->setHeight(params_bl->getHeight());
+    user_controller->setRange(params_bl->getRange());
+    user_controller->setSmoothing(params_bl->getSmooth());
+    user_controller->setMult(params_bl->getMult());
+
+//#endif
+
     drawLandScape();
+    return params_bl;
 }
 
 void Canvas::updateCanvas(int id)
@@ -81,7 +110,7 @@ void Canvas::updateCanvas(int id)
     user_controller->getColor(r, g, b);
     u_id = user_controller->getUser()->getId();
     string name = "CanvasName";
-    CanvasBL canvas_bl = CanvasBL(u_id, name, *(user_controller->getHeightsMap()), *heights_map_points, r, g, b);
+    CanvasBL canvas_bl = CanvasBL(id, u_id, name, *(user_controller->getHeightsMap()), *heights_map_points, r, g, b);
     canvas_repository->updateCanvas(canvas_bl, id);
 }
 
@@ -263,10 +292,10 @@ void Canvas::login(shared_ptr<UserBL> user_bl)
     //canvas_repository->setRole(user_bl->getRole(), user_bl->getRole());
     //users_repository->setRole(user_bl->getRole(), user_bl->getRole());
     QVariant r(QString::fromStdString(user_bl->getRole()));
-    qDebug() << "before" << Settings::get(Settings::DBUser, Settings::DataBase).toString();
+    //qDebug() << "before" << Settings::get(Settings::DBUser, Settings::DataBase).toString();
     Settings::set(Settings::DBUser, Settings::DataBase) = r;
     Settings::set(Settings::DBPass, Settings::DataBase) = r;
-    qDebug() << "after" << Settings::get(Settings::DBUser, Settings::DataBase).toString();
+    //qDebug() << "after" << Settings::get(Settings::DBUser, Settings::DataBase).toString();
 }
 
 void Canvas::logout()

@@ -113,4 +113,48 @@ public:
     }
 };
 
+class GetParamsError : public BaseError
+{
+public:
+    GetParamsError(string info, string filename, int line, const char *time, string error = "Get params error")
+        : BaseError(info, filename, line, time, error) {};
+    virtual const char* what() const noexcept
+    {
+        return err_info.c_str();
+    }
+};
+
+class InsertParamsError : public BaseError
+{
+public:
+    InsertParamsError(string info, string filename, int line, const char *time, string error = "Insert params error")
+        : BaseError(info, filename, line, time, error) {};
+    virtual const char* what() const noexcept
+    {
+        return err_info.c_str();
+    }
+};
+
+class DeleteParamsError : public BaseError
+{
+public:
+    DeleteParamsError(string info, string filename, int line, const char *time, string error = "Delete params error")
+        : BaseError(info, filename, line, time, error) {};
+    virtual const char* what() const noexcept
+    {
+        return err_info.c_str();
+    }
+};
+
+class UpdateParamsError : public BaseError
+{
+public:
+    UpdateParamsError(string info, string filename, int line, const char *time, string error = "Update params error")
+        : BaseError(info, filename, line, time, error) {};
+    virtual const char* what() const noexcept
+    {
+        return err_info.c_str();
+    }
+};
+
 #endif // REPOSITORYERRORS_H

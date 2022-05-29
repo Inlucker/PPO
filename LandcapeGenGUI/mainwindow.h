@@ -21,7 +21,7 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 
 public:
-    MainWindow(shared_ptr<CanvasRepository> canvas_repository, shared_ptr<UsersRepository> users_repository, QWidget *parent = nullptr);
+    MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
     void login(shared_ptr<UserBL> user_bl);

@@ -47,7 +47,7 @@ int CanvasRepositoryTest::addGetCanvasTest()
     HeightsMap hm = HeightsMap(size);
     hm.diamondSquare();
     //shared_ptr<HeightsMapPoints> hmp = hm.createPoints();
-    CanvasBL canvas = CanvasBL(1, "CanvasName", hm, *hm.createPoints(), 20, 150, 20);
+    CanvasBL canvas = CanvasBL(1, 1, "CanvasName", hm, *hm.createPoints(), 20, 150, 20);
 
     shared_ptr<CanvasBL> same_canvas;
     try
@@ -88,7 +88,7 @@ int CanvasRepositoryTest::updateCanvasTest()
     int size = 33;
     HeightsMap hm = HeightsMap(size);
     hm.diamondSquare();
-    CanvasBL canvas = CanvasBL(1, "CanvasName", hm, *hm.createPoints(), 20, 150, 20);
+    CanvasBL canvas = CanvasBL(1, 1, "CanvasName", hm, *hm.createPoints(), 20, 150, 20);
 
     shared_ptr<CanvasBL> same_canvas;
     try

@@ -1,4 +1,4 @@
-QT       += core gui #core5compat
+QT       += core gui sql
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -14,8 +14,10 @@ SOURCES += \
     Canvas.cpp \
     Controllers/BaseController.cpp \
     Controllers/BaseControllerTest.cpp \
+    Controllers/ModeratorCanvasesController.cpp \
     Controllers/ModeratorController.cpp \
     Controllers/UserControllerTest.cpp \
+    Essensities/ParamsBL.cpp \
     Essensities/UserBL.cpp \
     Controllers/UserController.cpp \
     HeightsMap/HeightsMap.cpp \
@@ -26,12 +28,18 @@ SOURCES += \
     LoggingCategories.cpp \
     Matrix/AbstractMtrx.cpp \
     Essensities/CanvasBL.cpp \
+    ModeratorCanvasWindow.cpp \
     ModeratorWindow.cpp \
     Repositorys/CanvasRepository.cpp \
+    Repositorys/CanvasRepositoryMySQL.cpp \
     Repositorys/CanvasRepositoryTest.cpp \
     Repositorys/ICanvasRepository.cpp \
+    Repositorys/IParamsRepository.cpp \
     Repositorys/IUsersRepository.cpp \
+    Repositorys/ParamsRepository.cpp \
+    Repositorys/ParamsRepositoryMySQL.cpp \
     Repositorys/UsersRepository.cpp \
+    Repositorys/UsersRepositoryMySQL.cpp \
     Settings.cpp \
     Triangles/TriPolArray.cpp \
     Triangles/TriangularPolygon.cpp \
@@ -51,9 +59,11 @@ HEADERS += \
     Canvas.h \
     Controllers/BaseController.h \
     Controllers/BaseControllerTest.h \
+    Controllers/ModeratorCanvasesController.h \
     Controllers/ModeratorController.h \
     Controllers/UserControllerTest.h \
     Errors/RepositoryErrors.h \
+    Essensities/ParamsBL.h \
     Essensities/UserBL.h \
     Controllers/UserController.h \
     Errors/ArrayErrors.h \
@@ -79,12 +89,18 @@ HEADERS += \
     Matrix/BaseMtrx.h \
     Matrix/BaseMtrx.hpp \
     Essensities/CanvasBL.h \
+    ModeratorCanvasWindow.h \
     ModeratorWindow.h \
     Repositorys/CanvasRepository.h \
+    Repositorys/CanvasRepositoryMySQL.h \
     Repositorys/CanvasRepositoryTest.h \
     Repositorys/ICanvasRepository.h \
+    Repositorys/IParamsRepository.h \
     Repositorys/IUsersRepository.h \
+    Repositorys/ParamsRepository.h \
+    Repositorys/ParamsRepositoryMySQL.h \
     Repositorys/UsersRepository.h \
+    Repositorys/UsersRepositoryMySQL.h \
     Settings.h \
     Triangles/TriPolArray.h \
     Triangles/TriangularPolygon.h \
@@ -95,10 +111,12 @@ HEADERS += \
     ZBuffer/FrameBuffer.h \
     ZBuffer/ZBuffer.h \
     ZBuffer/ZBufferAlg.h \
+    defines.h \
     mainwindow.h
 
 FORMS += \
     BaseWindow.ui \
+    ModeratorCanvasWindow.ui \
     ModeratorWindow.ui \
     UnitTestsWindow.ui \
     mainwindow.ui

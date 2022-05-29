@@ -18,7 +18,7 @@ shared_ptr<CanvasBL> CanvasRepository::getCanvas(int id)
     {
         if (PQresultStatus(res) == PGRES_TUPLES_OK && PQntuples(res))
         {
-            //auto ID = PQgetvalue (res, 0, 0);
+            int ID = atoi(PQgetvalue (res, 0, 0));
             int u_id = atoi(PQgetvalue (res, 0, 1));
             string name = PQgetvalue (res, 0, 2);
             string hm = PQgetvalue (res, 0, 3);
@@ -26,7 +26,7 @@ shared_ptr<CanvasBL> CanvasRepository::getCanvas(int id)
             string c = PQgetvalue (res, 0, 5);
             //canvas = make_shared<CanvasBL>(hm, tpa, c);
             //return canvas;
-            return make_shared<CanvasBL>(u_id, name, hm, tpa, c);
+            return make_shared<CanvasBL>(ID, u_id, name, hm, tpa, c);
             //cout<< ID<<endl;
         }
         else if (PQresultStatus(res) == PGRES_FATAL_ERROR)
@@ -49,6 +49,50 @@ shared_ptr<CanvasBL> CanvasRepository::getCanvas(int id)
     else
         throw GetCanvasError("Unexpected GetCanvasError error?", __FILE__, __LINE__, ctime(&t_time));
     //return NULL;
+}
+
+shared_ptr<CanvasBL> CanvasRepository::getCanvas(string name)
+{
+    connect();
+    string query = "SELECT * FROM " + m_schema + ".Canvas where name='" + name + "';";
+    PQsendQuery(m_connection.get(), query.c_str());
+
+    int flag = 0;
+    string error_msg = "";
+    while (auto res = PQgetResult( m_connection.get()))
+    {
+        if (PQresultStatus(res) == PGRES_TUPLES_OK && PQntuples(res))
+        {
+            int ID = atoi(PQgetvalue (res, 0, 0));
+            int u_id = atoi(PQgetvalue (res, 0, 1));
+            string name = PQgetvalue (res, 0, 2);
+            string hm = PQgetvalue (res, 0, 3);
+            string tpa = PQgetvalue (res, 0, 4);
+            string c = PQgetvalue (res, 0, 5);
+            //canvas = make_shared<CanvasBL>(hm, tpa, c);
+            //return canvas;
+            return make_shared<CanvasBL>(ID, u_id, name, hm, tpa, c);
+            //cout<< ID<<endl;
+        }
+        else if (PQresultStatus(res) == PGRES_FATAL_ERROR)
+        {
+            error_msg += "\n";
+            error_msg += PQresultErrorMessage(res);
+            flag = 2;
+        }
+        else
+            flag = 1;
+
+        PQclear( res );
+    }
+
+    time_t t_time = time(NULL);
+    if (flag == 2)
+        throw GetCanvasError(error_msg, __FILE__, __LINE__, ctime(&t_time));
+    else if (flag == 1)
+        throw GetCanvasError("No such Canvas", __FILE__, __LINE__, ctime(&t_time));
+    else
+        throw GetCanvasError("Unexpected GetCanvasError error?", __FILE__, __LINE__, ctime(&t_time));
 }
 
 vector<pair<int, string> > CanvasRepository::getCanvasesByUid(int u_id)

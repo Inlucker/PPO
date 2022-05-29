@@ -51,3 +51,20 @@ execute procedure releaseRelatedUsers();
 
 --Тест триггера tr_releaseRelatedUsers
 --delete from PPO.users where id = 7;
+
+--Тригер для уделния canvas
+create or replace function deleteRelatedParams()
+returns trigger 
+as $$
+begin
+	delete from PPO.Params where canvas_id = old.id;
+	return OLD;
+end
+$$ language plpgsql;
+
+--Теперь триггер
+create or replace trigger tr_deleteRelatedParams
+before delete
+on PPO.canvas
+for each row
+execute procedure deleteRelatedParams();

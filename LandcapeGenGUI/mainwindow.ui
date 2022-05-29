@@ -1074,7 +1074,17 @@
       <x>1230</x>
       <y>10</y>
       <width>201</width>
-      <height>331</height>
+      <height>281</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="canvas_lineEdit">
+    <property name="geometry">
+     <rect>
+      <x>1230</x>
+      <y>300</y>
+      <width>201</width>
+      <height>41</height>
      </rect>
     </property>
    </widget>

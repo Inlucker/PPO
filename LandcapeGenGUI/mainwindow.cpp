@@ -4,7 +4,7 @@
 #include <QMessageBox>
 #include <QColorDialog>
 
-MainWindow::MainWindow(shared_ptr<CanvasRepository> canvas_repository, shared_ptr<UsersRepository> users_repository, QWidget *parent)
+MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
 {
@@ -13,7 +13,7 @@ MainWindow::MainWindow(shared_ptr<CanvasRepository> canvas_repository, shared_pt
     ui->size_value_label->setStyleSheet("border-style: solid; border-width: 1px; border-color: black; background-color: white");
     ui->color_label->setStyleSheet("background-color: rgb(20, 150, 20)");
 
-    canvas = make_unique<Canvas>(canvas_repository, users_repository);
+    canvas = make_unique<Canvas>();
 
     ui->scrollArea->setWidget(&(*canvas));
 
@@ -504,7 +504,31 @@ void MainWindow::on_load_canvas_btn_clicked()
         QList list = ui->my_canvases_listWidget->selectedItems();
         if (list.size()>0)
         {
-            canvas->selectCanvas(list[0]->statusTip().toInt());
+            shared_ptr<ParamsBL> params_bl = canvas->selectCanvas(list[0]->statusTip().toInt());
+
+            QString res_str = QString::number(params_bl->getWidth()) + "x" + QString::number(params_bl->getHeight());
+            if (ui->resolution_comboBox->findText(res_str) != -1)
+                ui->resolution_comboBox->setCurrentIndex(ui->resolution_comboBox->findText(res_str));
+            else
+            {
+                ui->resolution_comboBox->addItem(res_str);
+                ui->resolution_comboBox->setCurrentIndex(ui->resolution_comboBox->count()-1);
+            }
+
+            ui->range_doubleSpinBox->setValue(params_bl->getRange());
+
+            if (params_bl->getSmooth())
+                ui->checkBox->setCheckState(Qt::Checked);
+            else
+                ui->checkBox->setCheckState(Qt::Unchecked);
+
+            ui->mult_spinBox->setValue(params_bl->getMult());
+
+            QString color_str = QString("background-color: rgb(%1, %2, %3)").arg(params_bl->getRed()).arg(params_bl->getGreen()).arg(params_bl->getBlue());
+            ui->color_label->setStyleSheet(color_str);
+
+            ui->size_value_label->setText(QString::number(params_bl->getSize()));
+
         }
     }
     catch (BaseError &er)
@@ -527,7 +551,13 @@ void MainWindow::on_write_file_btn_2_clicked()
         //canvas->getHeightsMapPoints()->writeToFile("tpa.txt");
         //canvas->getLandscapeCanvas()->writeColorToFile("color.txt");
 
-        canvas->createCanvas();
+        double range = ui->range_doubleSpinBox->value();
+        bool smooth = false;
+        if (ui->checkBox->isChecked())
+            smooth = true;
+        string name = ui->canvas_lineEdit->text().toStdString();
+
+        canvas->createCanvas(range, smooth, name);
         updateCanvasesList();
     }
     catch (BaseError &er)

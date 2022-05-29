@@ -13,7 +13,7 @@
 }*/
 
 
-CanvasBL::CanvasBL(int u_id, string n, string &hm, string &tpa, string &c) : user_id(u_id), name(n)
+CanvasBL::CanvasBL(int _id, int u_id, string n, string &hm, string &tpa, string &c) : id(_id), user_id(u_id), name(n)
 {
     heights_map = HeightsMap(hm);
     heights_map_points = HeightsMapPoints(tpa);
@@ -45,7 +45,7 @@ CanvasBL::CanvasBL(int u_id, string n, string &hm, string &tpa, string &c) : use
     tmp = "";
 }
 
-CanvasBL::CanvasBL(int u_id, string n, HeightsMap &hm, HeightsMapPoints &hmp, int r, int g, int b) : user_id(u_id), name(n)
+CanvasBL::CanvasBL(int _id, int u_id, string n, HeightsMap &hm, HeightsMapPoints &hmp, int r, int g, int b) : id(_id), user_id(u_id), name(n)
 {
     heights_map = hm;
     heights_map_points = hmp;
@@ -73,6 +73,11 @@ bool CanvasBL::operator ==(CanvasBL &an_c)
 bool CanvasBL::operator !=(CanvasBL &an_c)
 {
     return !(*this == an_c);
+}
+
+int CanvasBL::getId()
+{
+    return id;
 }
 
 int CanvasBL::getUserId()
