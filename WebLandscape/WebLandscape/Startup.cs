@@ -37,6 +37,26 @@ namespace WebLandscape
         app.UseDeveloperExceptionPage();
         app.UseSwagger();
         app.UseSwaggerUI();
+
+        /*app.UseSwagger(c =>
+        {
+          c.RouteTemplate = "swagger/{documentname}/swagger.json";
+        });
+        app.UseSwaggerUI(c =>
+        {
+          c.SwaggerEndpoint("/swagger/v1/swagger.json", "My Cool API V1");
+          c.RoutePrefix = "swagger";
+        });*/
+
+        /*app.UseSwagger(c =>
+        {
+          c.RouteTemplate = "api/v1/{documentname}/swagger.json";
+        });
+        app.UseSwaggerUI(c =>
+        {
+          c.SwaggerEndpoint("/api/v1/v1/swagger.json", "WebLandscape v1");
+          c.RoutePrefix = "api/v1";
+        });*/
       }
 
       app.UseHttpsRedirection();
