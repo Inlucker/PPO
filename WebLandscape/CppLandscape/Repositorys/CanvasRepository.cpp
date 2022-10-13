@@ -1,9 +1,19 @@
 #include "CanvasRepository.h"
 #include "../Settings.h"
 
-CanvasRepository::CanvasRepository()
+/*CanvasRepository::CanvasRepository()
 {
 
+}*/
+
+CanvasRepository::CanvasRepository(string dbuser, string dbpass, string dbschema, string dbhost, int dbport, string dbname)
+{
+  m_dbhost = dbhost;
+  m_dbport = dbport;
+  m_dbname = dbname;
+  m_dbuser = dbuser;
+  m_dbpass = dbpass;
+  m_schema = dbschema;
 }
 
 shared_ptr<CanvasBL> CanvasRepository::getCanvas(int id)
@@ -263,7 +273,7 @@ void CanvasRepository::test(string &str)
 
 void CanvasRepository::connect()
 {
-    string m_dbhost;
+    /*string m_dbhost;
     int m_dbport;
     string m_dbname;
     string m_dbuser;
@@ -273,7 +283,7 @@ void CanvasRepository::connect()
     m_dbname = Settings::get(Settings::DBName, Settings::DataBase).toString().toStdString();
     m_dbuser = Settings::get(Settings::DBUser, Settings::DataBase).toString().toStdString();
     m_dbpass = Settings::get(Settings::DBPass, Settings::DataBase).toString().toStdString();
-    m_schema = Settings::get(Settings::Schema, Settings::DataBase).toString().toStdString();
+    m_schema = Settings::get(Settings::Schema, Settings::DataBase).toString().toStdString();*/
 
     m_connection.reset( PQsetdbLogin(m_dbhost.c_str(), to_string(m_dbport).c_str(), nullptr, nullptr, m_dbname.c_str(), m_dbuser.c_str(), m_dbpass.c_str()), &PQfinish );
 

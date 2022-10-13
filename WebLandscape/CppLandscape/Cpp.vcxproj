@@ -82,6 +82,7 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
+    <IncludePath>C:\Program Files\PostgreSQL\13\include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
@@ -106,8 +107,8 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(QtRoot)\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>Qt5Core.lib;Qt5Cored.lib;Qt5Gui.lib;Qt5Guid.lib;Qt5Widgets.lib;Qt5Xml.lib;Qt5WinExtras.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(QtRoot)\lib;C:\Program Files\PostgreSQL\13\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>Qt5Core.lib;Qt5Cored.lib;Qt5Gui.lib;Qt5Guid.lib;Qt5Widgets.lib;Qt5Xml.lib;Qt5WinExtras.lib;libpq.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -133,14 +134,14 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>.\Array;.\Controllers;.\Errors;.\Essensities;.\HeightsMap;.\Iterator;.\LandscapeCanvas;.\Matrix;.\MyColor;.\Repositorys;.\Triangles;.\Vector;.\ZBuffer;.;C:\Qt\5.15.1\msvc2019_64\include\;C:\Qt\5.15.1\msvc2019_64\include\QtCore;C:\Qt\5.15.1\msvc2019_64\include\QtGui;C:\Qt\5.15.1\msvc2019_64\include\QtWidgets;C:\Qt\5.15.1\msvc2019_64\include\QtWinExtras;C:\Qt\5.15.1\msvc2019_64\include\QtXml;C:\Qt\5.15.1\msvc2019_64\include\QtANGLE;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.;C:\Qt\5.15.1\msvc2019_64\include\;C:\Qt\5.15.1\msvc2019_64\include\QtCore;C:\Qt\5.15.1\msvc2019_64\include\QtGui;C:\Qt\5.15.1\msvc2019_64\include\QtWidgets;C:\Qt\5.15.1\msvc2019_64\include\QtWinExtras;C:\Qt\5.15.1\msvc2019_64\include\QtXml;C:\Qt\5.15.1\msvc2019_64\include\QtANGLE;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalOptions>/D "_CRT_SECURE_NO_WARNINGS" %(AdditionalOptions)</AdditionalOptions>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(QtRoot)\lib;C:\Program Files\PostgreSQL\13\lib;..\x64\Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(QtRoot)\lib;C:\Program Files\PostgreSQL\13\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>Qt5Core.lib;Qt5Cored.lib;Qt5Gui.lib;Qt5Guid.lib;Qt5Widgets.lib;Qt5Xml.lib;Qt5WinExtras.lib;libpq.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AssemblyDebug>true</AssemblyDebug>
     </Link>
@@ -154,14 +155,14 @@
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
-      <AdditionalIncludeDirectories>.\Array;.\Controllers;.\Errors;.\Essensities;.\HeightsMap;.\Iterator;.\LandscapeCanvas;.\Matrix;.\MyColor;.\Repositorys;.\Triangles;.\Vector;.\ZBuffer;.;C:\Qt\5.15.1\msvc2019_64\include\;C:\Qt\5.15.1\msvc2019_64\include\QtCore;C:\Qt\5.15.1\msvc2019_64\include\QtGui;C:\Qt\5.15.1\msvc2019_64\include\QtWidgets;C:\Qt\5.15.1\msvc2019_64\include\QtWinExtras;C:\Qt\5.15.1\msvc2019_64\include\QtXml;C:\Qt\5.15.1\msvc2019_64\include\QtANGLE;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.;C:\Qt\5.15.1\msvc2019_64\include\;C:\Qt\5.15.1\msvc2019_64\include\QtCore;C:\Qt\5.15.1\msvc2019_64\include\QtGui;C:\Qt\5.15.1\msvc2019_64\include\QtWidgets;C:\Qt\5.15.1\msvc2019_64\include\QtWinExtras;C:\Qt\5.15.1\msvc2019_64\include\QtXml;C:\Qt\5.15.1\msvc2019_64\include\QtANGLE;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(QtRoot)\lib;C:\Program Files\PostgreSQL\13\lib;..\x64\Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(QtRoot)\lib;C:\Program Files\PostgreSQL\13\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>Qt5Core.lib;Qt5Cored.lib;Qt5Gui.lib;Qt5Guid.lib;Qt5Widgets.lib;Qt5Xml.lib;Qt5WinExtras.lib;libpq.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
@@ -196,7 +197,11 @@
     <ClInclude Include="Matrix\BaseMtrx.h" />
     <ClInclude Include="Matrix\BaseMtrx.hpp" />
     <ClInclude Include="MyColor\MyColor.h" />
+    <ClInclude Include="Repositorys\CanvasRepository.h" />
+    <ClInclude Include="Repositorys\ICanvasRepository.h" />
+    <ClInclude Include="Repositorys\IParamsRepository.h" />
     <ClInclude Include="Repositorys\IUsersRepository.h" />
+    <ClInclude Include="Repositorys\ParamsRepository.h" />
     <ClInclude Include="Repositorys\UsersRepository.h" />
     <ClInclude Include="Triangles\TriangularPolygon.h" />
     <ClInclude Include="Triangles\TriPolArray.h" />
@@ -220,7 +225,11 @@
     <ClCompile Include="LandscapeCanvas\LandscapeCanvas.cpp" />
     <ClCompile Include="Matrix\AbstractMtrx.cpp" />
     <ClCompile Include="MyColor\MyColor.cpp" />
+    <ClCompile Include="Repositorys\CanvasRepository.cpp" />
+    <ClCompile Include="Repositorys\ICanvasRepository.cpp" />
+    <ClCompile Include="Repositorys\IParamsRepository.cpp" />
     <ClCompile Include="Repositorys\IUsersRepository.cpp" />
+    <ClCompile Include="Repositorys\ParamsRepository.cpp" />
     <ClCompile Include="Repositorys\UsersRepository.cpp" />
     <ClCompile Include="Triangles\TriangularPolygon.cpp" />
     <ClCompile Include="Triangles\TriPolArray.cpp" />

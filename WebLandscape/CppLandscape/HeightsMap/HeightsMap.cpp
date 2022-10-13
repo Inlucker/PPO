@@ -9,7 +9,7 @@
 #include "../Errors/HeightsMapErrors.h"
 #include "HeightsMapPoints.h"
 
-HeightsMap::HeightsMap()
+HeightsMap::HeightsMap() : BaseType()
 {
     max_height = 0;
 }

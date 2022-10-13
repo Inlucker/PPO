@@ -8,7 +8,7 @@
 
 #include <ctime>
 
-HeightsMapPoints::HeightsMapPoints()
+HeightsMapPoints::HeightsMapPoints() : BaseType()
 {
     map_points_center = Point();
 }

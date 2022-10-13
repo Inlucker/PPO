@@ -135,6 +135,18 @@
     <ClInclude Include="Repositorys\UsersRepository.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Repositorys\CanvasRepository.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Repositorys\ICanvasRepository.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Repositorys\IParamsRepository.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Repositorys\ParamsRepository.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="export.cpp">
@@ -196,6 +208,18 @@
     </ClCompile>
     <ClCompile Include="Repositorys\UsersRepository.cpp">
       <Filter>Header Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Repositorys\CanvasRepository.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Repositorys\ICanvasRepository.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Repositorys\IParamsRepository.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Repositorys\ParamsRepository.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

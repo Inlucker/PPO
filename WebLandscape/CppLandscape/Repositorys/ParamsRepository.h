@@ -9,7 +9,8 @@
 class ParamsRepository : public IParamsRepository
 {
 public:
-    ParamsRepository();
+    //ParamsRepository();
+    ParamsRepository(string dbuser = "guest", string dbpass = "guest", string dbschema = "PPO", string dbhost = "localhost", int dbport = 5432, string dbname = "postgres");
     virtual ~ParamsRepository() = default;
 
     virtual shared_ptr<ParamsBL> getParams(int id) override;
@@ -21,6 +22,11 @@ public:
 protected:
     void connect();
 
+    string m_dbhost;
+    int m_dbport;
+    string m_dbname;
+    string m_dbuser;
+    string m_dbpass;
     string m_schema;
 
     shared_ptr<PGconn> m_connection;

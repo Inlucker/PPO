@@ -1,9 +1,19 @@
 #include "UsersRepository.h"
 //#include "../Settings.h"
 
-UsersRepository::UsersRepository()
+/*UsersRepository::UsersRepository()
 {
 
+}*/
+
+UsersRepository::UsersRepository(string dbuser, string dbpass, string dbschema, string dbhost, int dbport, string dbname)
+{
+  m_dbhost = dbhost;
+  m_dbport = dbport;
+  m_dbname = dbname;
+  m_dbuser = dbuser;
+  m_dbpass = dbpass;
+  m_schema = dbschema;
 }
 
 shared_ptr<UserBL> UsersRepository::getUser(string login, string password)
@@ -264,25 +274,25 @@ void UsersRepository::updateUser(UserBL &user_bl, int id)
 
 void UsersRepository::connect()
 {
-    string m_dbhost;
+    /*string m_dbhost;
     int m_dbport;
     string m_dbname;
     string m_dbuser;
     string m_dbpass;
-    string m_dbschema;
+    string m_dbschema;*/
     /*m_dbhost = Settings::get(Settings::DBHost, Settings::DataBase).toString().toStdString();
     m_dbport = Settings::get(Settings::DBPort, Settings::DataBase).toInt();
     m_dbname = Settings::get(Settings::DBName, Settings::DataBase).toString().toStdString();
     m_dbuser = Settings::get(Settings::DBUser, Settings::DataBase).toString().toStdString();
     m_dbpass = Settings::get(Settings::DBPass, Settings::DataBase).toString().toStdString();
     m_schema = Settings::get(Settings::Schema, Settings::DataBase).toString().toStdString();*/
-    m_dbhost = "localhost";
+    /*m_dbhost = "localhost";
     m_dbport = 5432;
     m_dbname = "postgres";
     m_dbuser = "guest";
     m_dbpass = "guest";
     m_dbschema = "PPO";
-    m_schema = "PPO";
+    m_schema = "PPO";*/
 
 
     m_connection.reset( PQsetdbLogin(m_dbhost.c_str(), to_string(m_dbport).c_str(), nullptr, nullptr, m_dbname.c_str(), m_dbuser.c_str(), m_dbpass.c_str()), &PQfinish );

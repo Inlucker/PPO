@@ -7,6 +7,11 @@
 
 #define EXPORT _declspec(dllexport)
 
+#include "Essensities/UserBL.h"
+#include "Essensities/CanvasBl.h"
+#include "Repositorys/UsersRepository.h"
+#include "Repositorys/CanvasRepository.h"
+
 #include <iostream>
 #include <fstream>
 
@@ -33,4 +38,20 @@ extern "C"
 extern "C"
 {
   EXPORT int loginBaseController(char* login, char* password);
+
+  EXPORT void deleteChar(char* pChar);
+
+  //CanvasBL
+  EXPORT CanvasBL* getCanvasBL(int id);
+  EXPORT int getIdCanvasBL(CanvasBL* pCanvasBL);
+  EXPORT int getUserIdCanvasBL(CanvasBL* pCanvasBL);
+  //EXPORT void getNameCanvasBL(CanvasBL* pCanvasBL, char* pChar);
+  EXPORT char* getNameCanvasBL(CanvasBL* pCanvasBL);
+  //EXPORT void getHeightsMapCanvasBL(CanvasBL* pCanvasBL, char* str);
+  EXPORT char* getHeightsMapCanvasBL(CanvasBL* pCanvasBL);
+  EXPORT char* getHeightsMapPointsCanvasBL(CanvasBL* pCanvasBL);
+  EXPORT void getColorCanvasBL(CanvasBL* pCanvasBL, int& r, int& g, int& b);
+  EXPORT void deleteCanvasBL (CanvasBL* pCanvasBL);
+
+
 }
