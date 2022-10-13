@@ -28,6 +28,7 @@ namespace WebLandscape.Controllers
     [HttpGet("WeatherForecast")]
     public IEnumerable<WeatherForecast> Get()
     {
+      Console.WriteLine("Called GetWeatherForecast");
       var rng = new Random();
       return Enumerable.Range(1, 5).Select(index => new WeatherForecast
       {

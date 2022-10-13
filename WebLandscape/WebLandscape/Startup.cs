@@ -29,26 +29,39 @@ namespace WebLandscape
       services.AddSwaggerGen();
     }
 
+    private readonly string swaggerBasePath = "api";
+
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
     {
       if (env.IsDevelopment())
       {
         app.UseDeveloperExceptionPage();
-        app.UseSwagger();
-        app.UseSwaggerUI();
+        //app.UseSwagger();
+        //app.UseSwaggerUI();
 
         /*app.UseSwagger(c =>
         {
-          c.RouteTemplate = "swagger/{documentname}/swagger.json";
+          c.RouteTemplate = swaggerBasePath + "/swagger/{documentName}/swagger.json";
         });
+
         app.UseSwaggerUI(c =>
         {
-          c.SwaggerEndpoint("/swagger/v1/swagger.json", "My Cool API V1");
-          c.RoutePrefix = "swagger";
+          c.SwaggerEndpoint($"/{swaggerBasePath}/swagger/v1/swagger.json", "APP API - v1");
+          c.RoutePrefix = $"{swaggerBasePath}/swagger";
         });*/
 
         /*app.UseSwagger(c =>
+        {
+          c.RouteTemplate = "AnyWord/WordAny1/{documentname}/swagger.json";
+        });
+        app.UseSwaggerUI(c =>
+        {
+          c.SwaggerEndpoint("/AnyWord/WordAny1/v1/swagger.json", "My Cool API V1");
+          c.RoutePrefix = "AnyWord/WordAny1";
+        });*/
+
+        app.UseSwagger(c =>
         {
           c.RouteTemplate = "api/v1/{documentname}/swagger.json";
         });
@@ -56,6 +69,16 @@ namespace WebLandscape
         {
           c.SwaggerEndpoint("/api/v1/v1/swagger.json", "WebLandscape v1");
           c.RoutePrefix = "api/v1";
+        });
+
+        /*app.UseSwagger(c =>
+        {
+          c.RouteTemplate = "api/swagger/{documentname}/swagger.json";
+        });
+        app.UseSwaggerUI(c =>
+        {
+          c.SwaggerEndpoint("/api/swagger/v1/swagger.json", "v1");
+          c.RoutePrefix = "api/swagger";
         });*/
       }
 
