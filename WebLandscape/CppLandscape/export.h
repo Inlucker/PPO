@@ -37,7 +37,7 @@ extern "C"
 
 extern "C"
 {
-  EXPORT int loginBaseController(char* login, char* password);
+  EXPORT int getUserId(char* login, char* password);
 
   EXPORT void deleteChar(char* pChar);
 

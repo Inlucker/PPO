@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace WebLandscape
 {
-  public class CanvasBL
+  public class Landscape
   {
     public int id { get; set; }
     public int user_id { get; set; }

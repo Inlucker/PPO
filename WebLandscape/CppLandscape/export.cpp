@@ -67,7 +67,7 @@ extern "C"
 
 extern "C"
 {
-  int loginBaseController(char* login, char* password)
+  int getUserId(char* login, char* password)
   {
     try
     {
@@ -82,15 +82,15 @@ extern "C"
       if (user_bl->getRole() == "canvas_user" || user_bl->getRole() == "moderator")
         return user_bl->getId();
       else
-        return -1; //No such role
+        return -3; //No such role
     }
     catch (BaseError& er)
     {
-      return -2; //Error
+      return -1; //Error
     }
     catch (...)
     {
-      return -3; //Unexpected Error
+      return -2; //Unexpected Error
     }
   }
 
@@ -196,10 +196,26 @@ extern "C"
   //List<CanvasBL>
   EXPORT int getLandscapesNumberByUserId(int user_id)
   {
-    shared_ptr<CANVAS_REP> canvas_repository = make_shared<CANVAS_REP>("canvas_user", "canvas_user");
-    vector<pair<int, string>> vec = canvas_repository->getCanvasesByUid(user_id);
 
-    return vec.size();
+    try
+    {
+      shared_ptr<CANVAS_REP> canvas_repository = make_shared<CANVAS_REP>("canvas_user", "canvas_user");
+      vector<pair<int, string>> vec = canvas_repository->getCanvasesByUid(user_id);
+
+      return vec.size();
+    }
+    catch (BaseError& er)
+    {
+      string msg = er.what();
+      //cout << msg << endl;
+      return -1; //Error
+    }
+    catch (...)
+    {
+      string msg = "Unexpected Error";
+      //cout << msg << endl;
+      return -2; //Unexpected Error
+    }
   }
 
   EXPORT void getLandscapesByUserId(int user_id, int idArray[], int strArray[][256])

@@ -20,12 +20,7 @@
     "WebLandscape": {
       "commandName": "Project",
       "launchBrowser": true,
-      //"launchUrl": "swagger",
-      //"launchUrl": "api/swagger",
-      //"launchUrl": "AnyWord/WordAny1",
-      //"launchUrl": "swagger/s3",
       "launchUrl": "api/v1",
-      //"launchUrl": "api/swagger",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
