@@ -434,5 +434,36 @@ extern "C"
       return -2; //Unexpected Error
     }
   }
+  int updateLandscape(int id, char* name, char* heights_map, char* heights_map_points, int r, int g, int b)
+  {
+    try
+    {
+      string _name = "";
+      string _heights_map = "";
+      string _heights_map_points = "";
+      if (name != NULL)
+        _name = name;
+      if (heights_map != NULL)
+        _heights_map = heights_map;
+      if (heights_map_points != NULL)
+        _heights_map_points = heights_map_points;
+
+      //shared_ptr<USER_REP> user_repository = make_shared<USER_REP>();
+      //shared_ptr<UserBL> user_bl = user_repository->getUser(user_id);
+      //shared_ptr<CANVAS_REP> canvas_repository = make_shared<CANVAS_REP>(user_bl->getRole(), user_bl->getRole());
+      shared_ptr<CANVAS_REP> canvas_repository = make_shared<CANVAS_REP>("canvas_user", "canvas_user");
+      CanvasBL canvasBL = CanvasBL(id, -1, _name, _heights_map, _heights_map_points, r, g, b);
+      canvas_repository->updateCanvas(canvasBL, id);
+      return 0;
+    }
+    catch (BaseError& er)
+    {
+      return -1; //Error
+    }
+    catch (...)
+    {
+      return -2; //Unexpected Error
+    }
+  }
 }
 

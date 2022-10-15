@@ -86,6 +86,9 @@ namespace WebLandscape
     [DllImport(CppFunctionsDLL, CallingConvention = CallingConvention.Cdecl)]
     static extern int sendLandscape(int user_id, String name, String heights_map, String heights_map_points, int r, int g, int b);
 
+    [DllImport(CppFunctionsDLL, CallingConvention = CallingConvention.Cdecl)]
+    static extern int updateLandscape(int id, String name, String heights_map, String heights_map_points, int r, int g, int b);
+
 
     public static String GenHeightsMap(GenHeightsMapModel model)
     {
@@ -272,6 +275,14 @@ namespace WebLandscape
     {
       int res = 0;
       res = sendLandscape(landscape.user_id, landscape.name, landscape.heights_map, landscape.heights_map_points, landscape.red, landscape.green, landscape.blue);
+
+      return res;
+    }
+
+    public static int UpdateLandscape(Landscape landscape)
+    {
+      int res = 0;
+      res = updateLandscape(landscape.id, landscape.name, landscape.heights_map, landscape.heights_map_points, landscape.red, landscape.green, landscape.blue);
 
       return res;
     }

@@ -112,14 +112,26 @@ namespace WebLandscape.Controllers
     }*/
 
     [HttpPost("Landscapes")]
-    public async Task<IActionResult> SendLandscape(Landscape model)
+    public async Task<IActionResult> SendLandscape(Landscape model) //landscape id лишний
     {
       int ret = LandscapeService.SendLandscape(model);
 
       if (ret == 0)
-        return Ok(new Status(0, "Ok", "You sent Landscape to the DataBase", Ok().StatusCode));
+        return Ok(new Status(0, "Ok", "You created Landscape in DataBase", Ok().StatusCode));
       else
-        return BadRequest(new Status(0, "BadRequest", "You couldn't sent Landscape to the DataBase", BadRequest().StatusCode));
+        return BadRequest(new Status(0, "BadRequest", "You couldn't created Landscape in DataBase", BadRequest().StatusCode));
+    }
+
+
+    [HttpPut("Landscapes")]
+    public async Task<IActionResult> UpdateLandscape(Landscape model)  //user id лишний
+    {
+      int ret = LandscapeService.UpdateLandscape(model);
+
+      if (ret == 0)
+        return Ok(new Status(0, "Ok", "You updated Landscape in DataBase", Ok().StatusCode));
+      else
+        return BadRequest(new Status(0, "BadRequest", "You couldn't updated Landscape in DataBase", BadRequest().StatusCode));
     }
   }
 }

@@ -72,4 +72,5 @@ extern "C"
 
   //Landscape
   EXPORT int sendLandscape(int user_id, char* name, char* heights_map, char* heights_map_points, int r, int g, int b);
+  EXPORT int updateLandscape(int id, char* name, char* heights_map, char* heights_map_points, int r, int g, int b);
 }
