@@ -105,6 +105,7 @@ extern "C"
   {
     try
     {
+      ret_code = 0;
       string _login = "";
       string _password = "";
       string _role = "";
@@ -132,6 +133,35 @@ extern "C"
       return NULL; //Unexpected Error
     }
   }
+
+  int deleteUser(char* login, char* password)
+  {
+    try
+    {
+      string _login = "";
+      string _password = "";
+      if (login != NULL)
+        _login = login;
+      if (password != NULL)
+        _password = password;
+
+      shared_ptr<USER_REP> user_repository = make_shared<USER_REP>();
+      shared_ptr<UserBL> user_bl = user_repository->getUser(_login, _password);
+      user_repository->voidupdateConfig(user_bl->getRole(), user_bl->getRole());
+      user_repository->deleteUser(user_bl->getId());
+
+      return 0;
+    }
+    catch (BaseError& er)
+    {
+      return -1; //Error
+    }
+    catch (...)
+    {
+      return -2; //Unexpected Error
+    }
+  }
+
 
   int getUserId(UserBL* pUserBL)
   {
@@ -275,7 +305,7 @@ extern "C"
   }
 
   //List<CanvasBL>
-  EXPORT int getLandscapesNumberByUserId(int user_id)
+  int getLandscapesNumberByUserId(int user_id)
   {
     try
     {
@@ -298,20 +328,32 @@ extern "C"
     }
   }
 
-  EXPORT void getLandscapesByUserId(int user_id, int idArray[], int strArray[][256])
+  int getLandscapesByUserId(int user_id, int idArray[], int strArray[][256])
   {
-    shared_ptr<CANVAS_REP> canvas_repository = make_shared<CANVAS_REP>("canvas_user", "canvas_user");
-    vector<pair<int, string>> vec = canvas_repository->getCanvasesByUid(user_id);
-
-    for (int i = 0; i < vec.size(); i++)
+    try
     {
-      idArray[i] = vec[i].first;
-      string str = vec[i].second;
-      for (int j = 0; j < str.length(); j++)
+      shared_ptr<CANVAS_REP> canvas_repository = make_shared<CANVAS_REP>("canvas_user", "canvas_user");
+      vector<pair<int, string>> vec = canvas_repository->getCanvasesByUid(user_id);
+
+      for (int i = 0; i < vec.size(); i++)
       {
-        strArray[i][j] = str[j];
+        idArray[i] = vec[i].first;
+        string str = vec[i].second;
+        for (int j = 0; j < str.length(); j++)
+        {
+          strArray[i][j] = str[j];
+        }
       }
     }
+    catch (BaseError& er)
+    {
+      return -1; //Error
+    }
+    catch (...)
+    {
+      return -2; //Unexpected Error
+    }
+
   }
 }
 

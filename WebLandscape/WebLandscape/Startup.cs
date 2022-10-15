@@ -29,17 +29,14 @@ namespace WebLandscape
       services.AddControllers();
       services.AddSwaggerGen();
 
-      /*services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-        .AddCookie(options => //CookieAuthenticationOptions
-        {
-          options.LoginPath = new Microsoft.AspNetCore.Http.PathString("/Account/Login");
-        });*/
       services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
         .AddCookie(options =>
         {
           options.ExpireTimeSpan = TimeSpan.FromMinutes(20);
           options.SlidingExpiration = true;
           options.AccessDeniedPath = "/Forbidden/";
+          //options.LoginPath = "/api/v1/login";
+          //options.LogoutPath = "/api/v1/logout";
         });
     }
     

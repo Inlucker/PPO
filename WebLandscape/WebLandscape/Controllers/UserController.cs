@@ -9,6 +9,7 @@ using WebLandscape.ViewModels; // пространство имен моделе
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
 
 namespace WebLandscape.Controllers
 {
@@ -25,13 +26,18 @@ namespace WebLandscape.Controllers
       {
         await Authenticate(user);
 
+        return Ok(new Status(0, "Ok", "You logged in", Ok().StatusCode));
         //return user;
-        return NoContent();
+        //return CreatedAtAction("Login", new { id = model.Login }, model);
+        //return NoContent();
         //return RedirectToAction("AddNumbers");
       }
       ModelState.AddModelError("", "Некорректные логин и(или) пароль");
+      return BadRequest(new Status(1, "BadRequest", "You couldn't log in", BadRequest().StatusCode));
       //return user;
-      return NoContent();
+      //return NoContent();
+      //return BadRequest();
+      //return CreatedAtAction("Login", new { id = model.Login }, model);
     }
 
     [HttpPost("register")]
@@ -42,10 +48,10 @@ namespace WebLandscape.Controllers
       {
         await Authenticate(user);
 
-        return NoContent();
+        return Ok(new Status(0, "Ok", "You registered", Ok().StatusCode));
       }
       ModelState.AddModelError("", "Некорректные логин и(или) пароль");
-      return NoContent();
+      return BadRequest(new Status(2, "BadRequest", "You couldn't register", BadRequest().StatusCode));
     }
     private async Task Authenticate(User user)
     {
@@ -87,11 +93,26 @@ namespace WebLandscape.Controllers
           authProperties);
     }
 
+    [Authorize]
     [HttpPost("logout")]
     public async Task<IActionResult> Logout()
     {
       await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-      return NoContent();
+      return Ok(new Status(0, "Ok", "You logged out", Ok().StatusCode));
+      //return NoContent();
+      //return RedirectToAction("Login", "Account");
+    }
+
+    [Authorize]
+    [HttpPost("delete")]
+    public async Task<IActionResult> Delete(LoginModel model)
+    {
+      int ret = LandscapeService.delete(model.Login, model.Password);
+      if (ret != 0)
+        return BadRequest(new Status(0, "BadRequest", "You couldn't delete account", Ok().StatusCode));
+      await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+      return Ok(new Status(0, "Ok", "You deleted account and logged out", Ok().StatusCode));
+      //return NoContent();
       //return RedirectToAction("Login", "Account");
     }
   }

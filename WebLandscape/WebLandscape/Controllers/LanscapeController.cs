@@ -14,7 +14,7 @@ namespace WebLandscape.Controllers
 {
   [ApiController]
   [Route("api/v1")]
-  [Authorize]
+  [Authorize(Roles = "canvas_user")]
   public class LanscapeController : ControllerBase
   {
     private static readonly string[] Summaries = new[]
@@ -45,11 +45,11 @@ namespace WebLandscape.Controllers
     }
 
     [HttpPost("AddNumbers")]
-    public int Login(int a, int b)
+    public async Task<IActionResult> Add(int a, int b)
     {
       try
       {
-        return Program.AddNumbers(a, b); ;
+        return Ok(Program.AddNumbers(a, b));
       }
       catch (DllNotFoundException e)
       {
@@ -59,7 +59,7 @@ namespace WebLandscape.Controllers
         Console.WriteLine(e.TargetSite);
         Console.WriteLine(e.TypeName);
       }
-      return -1;
+      return BadRequest();
     }
 
     [HttpGet("GenLandscape")]
@@ -69,19 +69,25 @@ namespace WebLandscape.Controllers
     }
 
     [HttpGet("Landscapes/{id}")]
-    public Landscape GetLandscape(int id)
+    public async Task<IActionResult> GetLandscape(int id)
     {
-      Landscape landscape = LandscapeService.getLandscape(id);
+      Landscape landscape = LandscapeService.getLandscape(id, out int ret);
 
-      return landscape;
+      if (ret == 0)
+        return Ok(landscape);
+      else
+        return BadRequest(landscape);
     }
 
     [HttpGet("Landscapes/")]
-    public List<CanvasIdName> GetLandscapesByUserId(int user_id = -1)
+    //public List<CanvasIdName> GetLandscapesByUserId(int user_id = -1)
+    public async Task<IActionResult> GetLandscapesByUserId(int user_id = -1)
     {
-      List<CanvasIdName> lst = LandscapeService.GetLandscapesByUserId(user_id);
-
-      return lst;
+      List<CanvasIdName> lst = LandscapeService.GetLandscapesByUserId(user_id, out int ret);
+      if (ret == 0)
+        return Ok(lst);
+      else
+        return BadRequest(lst);
     }
   }
 }

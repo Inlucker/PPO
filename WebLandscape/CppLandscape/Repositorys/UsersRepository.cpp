@@ -16,6 +16,16 @@ UsersRepository::UsersRepository(string dbuser, string dbpass, string dbschema, 
   m_schema = dbschema;
 }
 
+void UsersRepository::voidupdateConfig(string dbuser, string dbpass, string dbschema, string dbhost, int dbport, string dbname)
+{
+  m_dbhost = dbhost;
+  m_dbport = dbport;
+  m_dbname = dbname;
+  m_dbuser = dbuser;
+  m_dbpass = dbpass;
+  m_schema = dbschema;
+}
+
 shared_ptr<UserBL> UsersRepository::getUser(string login, string password)
 {
     connect();

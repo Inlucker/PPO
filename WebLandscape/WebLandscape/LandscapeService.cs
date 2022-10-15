@@ -32,6 +32,8 @@ namespace WebLandscape
     [DllImport(CppFunctionsDLL, CallingConvention = CallingConvention.Cdecl)]
     static extern IntPtr registerUser(String login, String password, String role, ref int returnCode);
     [DllImport(CppFunctionsDLL, CallingConvention = CallingConvention.Cdecl)]
+    static extern int deleteUser(String login, String password);
+    [DllImport(CppFunctionsDLL, CallingConvention = CallingConvention.Cdecl)]
     static extern int getUserId(IntPtr pUserBL);
     [DllImport(CppFunctionsDLL, CallingConvention = CallingConvention.Cdecl)]
     static extern IntPtr getUserLogin(IntPtr pUserBL);
@@ -65,11 +67,13 @@ namespace WebLandscape
     [DllImport(CppFunctionsDLL, CallingConvention = CallingConvention.Cdecl)]
     static extern void deleteCanvasBL(IntPtr pCanvasBL);
 
+
     //List<CanvasBL>
     [DllImport(CppFunctionsDLL, CallingConvention = CallingConvention.Cdecl)]
     static extern int getLandscapesNumberByUserId(int user_id);
     [DllImport(CppFunctionsDLL, CallingConvention = CallingConvention.Cdecl)]
-    static extern void getLandscapesByUserId(int user_id, int[] idArray, int[,] strArray);
+    static extern int getLandscapesByUserId(int user_id, int[] idArray, int[,] strArray);
+
 
     public static void genLandscape()
     {
@@ -84,69 +88,86 @@ namespace WebLandscape
       pLandscapeCanvas = IntPtr.Zero;
     }
 
-    public static Landscape getLandscape(int id )
+    public static Landscape getLandscape(int id, out int ret_code)
     {
+      ret_code = 0;
       Landscape canvasBL = new Landscape();
 
       //create canvasBL
-      IntPtr pCanvasBl = LandscapeService.getCanvasBL(id);
+      IntPtr pCanvasBl = getCanvasBL(id);
 
       //canvas id
-      int canvasId = LandscapeService.getIdCanvasBL(pCanvasBl);
+      int canvasId = getIdCanvasBL(pCanvasBl);
       if (canvasId == -1)
       {
+        ret_code = -1;
         return null; //Вернуть ошибку
       }
       canvasBL.id = canvasId;
 
       //canvas user_id
-      canvasBL.user_id = LandscapeService.getUserIdCanvasBL(pCanvasBl);
+      canvasBL.user_id = getUserIdCanvasBL(pCanvasBl);
 
       //canvas name
-      IntPtr pChar = LandscapeService.getNameCanvasBL(pCanvasBl);
+      IntPtr pChar = getNameCanvasBL(pCanvasBl);
       String canvasName = Marshal.PtrToStringAnsi(pChar);
       canvasBL.name = canvasName;
-      LandscapeService.deleteChar(pChar);
+      deleteChar(pChar);
       pChar = IntPtr.Zero;
 
       //canvas heights_map
-      IntPtr pHeightsMapChar = LandscapeService.getHeightsMapCanvasBL(pCanvasBl);
+      IntPtr pHeightsMapChar = getHeightsMapCanvasBL(pCanvasBl);
       String heightsMapStr = Marshal.PtrToStringAnsi(pHeightsMapChar);
       canvasBL.heights_map = heightsMapStr;
-      LandscapeService.deleteChar(pHeightsMapChar);
+      deleteChar(pHeightsMapChar);
       pHeightsMapChar = IntPtr.Zero;
 
       //canvas heights_map_points
-      IntPtr pHeightsMapPointsChar = LandscapeService.getHeightsMapPointsCanvasBL(pCanvasBl);
+      IntPtr pHeightsMapPointsChar = getHeightsMapPointsCanvasBL(pCanvasBl);
       canvasBL.heights_map_points = Marshal.PtrToStringAnsi(pHeightsMapPointsChar);
-      LandscapeService.deleteChar(pHeightsMapChar);
+      deleteChar(pHeightsMapChar);
       pHeightsMapChar = IntPtr.Zero;
 
       //canvas color
       int r = 0, g = 0, b = 0;
-      LandscapeService.getColorCanvasBL(pCanvasBl, ref r, ref g, ref b);
+      getColorCanvasBL(pCanvasBl, ref r, ref g, ref b);
       canvasBL.red = r;
       canvasBL.green = g;
       canvasBL.blue = b;
 
       //delete canvasBL
-      LandscapeService.deleteCanvasBL(pCanvasBl);
+      deleteCanvasBL(pCanvasBl);
       pCanvasBl = IntPtr.Zero;
 
       return canvasBL;
     }
 
-    public static List<CanvasIdName> GetLandscapesByUserId(int user_id)
+    public static List<CanvasIdName> GetLandscapesByUserId(int user_id, out int ret_code)
     {
+      ret_code = 0;
       List<CanvasIdName> lst = new List<CanvasIdName>();
       if (user_id < 0)
+      {
+        ret_code = -1;
         return lst;
+      }
 
-      int size = LandscapeService.getLandscapesNumberByUserId((int)user_id);
+      int size = getLandscapesNumberByUserId((int)user_id);
+      if (size < 0)
+      {
+        ret_code = -2;
+        return lst;
+      }
 
       int[] idArray = new int[size];
       int[,] nameArray = new int[size, 256];
-      LandscapeService.getLandscapesByUserId((int)user_id, idArray, nameArray);
+      int ret = getLandscapesByUserId((int)user_id, idArray, nameArray);
+      if (ret != 0)
+      {
+        ret_code = -3;
+        return lst;
+      }
+
       char[,] nameArray2 = new char[size, 256];
       for (int i = 0; i < size; i++)
         for (int j = 0; j < 256; j++)
@@ -177,36 +198,36 @@ namespace WebLandscape
 
       //create userBL
       int ret = -1;
-      IntPtr pUserBl = LandscapeService.getUserBL(login, password, ref ret);
+      IntPtr pUserBl = getUserBL(login, password, ref ret);
       if (ret != 0)
         return null;
 
       //ID
-      userBL.Id = LandscapeService.getUserId(pUserBl);
+      userBL.Id = getUserId(pUserBl);
 
       //Login
-      IntPtr pChar = LandscapeService.getUserLogin(pUserBl);
+      IntPtr pChar = getUserLogin(pUserBl);
       userBL.Login = Marshal.PtrToStringAnsi(pChar);
-      LandscapeService.deleteChar(pChar);
+      deleteChar(pChar);
       pChar = IntPtr.Zero;
 
       //Password
-      pChar = LandscapeService.getUserPassword(pUserBl);
+      pChar = getUserPassword(pUserBl);
       userBL.Password = Marshal.PtrToStringAnsi(pChar);
-      LandscapeService.deleteChar(pChar);
+      deleteChar(pChar);
       pChar = IntPtr.Zero;
 
       //Role
-      pChar = LandscapeService.getUserRole(pUserBl);
+      pChar = getUserRole(pUserBl);
       userBL.Role = Marshal.PtrToStringAnsi(pChar);
-      LandscapeService.deleteChar(pChar);
+      deleteChar(pChar);
       pChar = IntPtr.Zero;
 
       //Modeartor ID
-      userBL.ModeratorId = LandscapeService.getUserModeratorId(pUserBl);
+      userBL.ModeratorId = getUserModeratorId(pUserBl);
 
       //delete userBL
-      LandscapeService.deleteUserBL(pUserBl);
+      deleteUserBL(pUserBl);
       pUserBl = IntPtr.Zero;
 
       return userBL;
@@ -214,43 +235,53 @@ namespace WebLandscape
 
     public static User register(String login, String password, String role)
     {
+      //return_code = 0;
       User userBL = new User();
 
       //create userBL
       int ret = -1;
-      IntPtr pUserBl = LandscapeService.registerUser(login, password, role, ref ret);
+      IntPtr pUserBl = registerUser(login, password, role, ref ret);
       if (ret != 0)
+      {
+        //return_code = -1;
         return null;
+      }
 
       //ID
-      userBL.Id = LandscapeService.getUserId(pUserBl);
+      userBL.Id = getUserId(pUserBl);
 
       //Login
-      IntPtr pChar = LandscapeService.getUserLogin(pUserBl);
+      IntPtr pChar = getUserLogin(pUserBl);
       userBL.Login = Marshal.PtrToStringAnsi(pChar);
-      LandscapeService.deleteChar(pChar);
+      deleteChar(pChar);
       pChar = IntPtr.Zero;
 
       //Password
-      pChar = LandscapeService.getUserPassword(pUserBl);
+      pChar = getUserPassword(pUserBl);
       userBL.Password = Marshal.PtrToStringAnsi(pChar);
-      LandscapeService.deleteChar(pChar);
+      deleteChar(pChar);
       pChar = IntPtr.Zero;
 
       //Role
-      pChar = LandscapeService.getUserRole(pUserBl);
+      pChar = getUserRole(pUserBl);
       userBL.Role = Marshal.PtrToStringAnsi(pChar);
-      LandscapeService.deleteChar(pChar);
+      deleteChar(pChar);
       pChar = IntPtr.Zero;
 
       //Modeartor ID
-      userBL.ModeratorId = LandscapeService.getUserModeratorId(pUserBl);
+      userBL.ModeratorId = getUserModeratorId(pUserBl);
 
       //delete userBL
-      LandscapeService.deleteUserBL(pUserBl);
+      deleteUserBL(pUserBl);
       pUserBl = IntPtr.Zero;
 
       return userBL;
+    }
+
+    public static int delete(String login, String password)
+    {
+      int res = deleteUser(login, password);
+      return res;
     }
   }
 }
