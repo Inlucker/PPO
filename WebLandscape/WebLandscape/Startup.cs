@@ -10,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 namespace WebLandscape
 {
@@ -27,40 +28,27 @@ namespace WebLandscape
     {
       services.AddControllers();
       services.AddSwaggerGen();
+
+      /*services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+        .AddCookie(options => //CookieAuthenticationOptions
+        {
+          options.LoginPath = new Microsoft.AspNetCore.Http.PathString("/Account/Login");
+        });*/
+      services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+        .AddCookie(options =>
+        {
+          options.ExpireTimeSpan = TimeSpan.FromMinutes(20);
+          options.SlidingExpiration = true;
+          options.AccessDeniedPath = "/Forbidden/";
+        });
     }
-
-    private readonly string swaggerBasePath = "api";
-
+    
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
     {
       if (env.IsDevelopment())
       {
         app.UseDeveloperExceptionPage();
-        //app.UseSwagger();
-        //app.UseSwaggerUI();
-
-        /*app.UseSwagger(c =>
-        {
-          c.RouteTemplate = swaggerBasePath + "/swagger/{documentName}/swagger.json";
-        });
-
-        app.UseSwaggerUI(c =>
-        {
-          c.SwaggerEndpoint($"/{swaggerBasePath}/swagger/v1/swagger.json", "APP API - v1");
-          c.RoutePrefix = $"{swaggerBasePath}/swagger";
-        });*/
-
-        /*app.UseSwagger(c =>
-        {
-          c.RouteTemplate = "AnyWord/WordAny1/{documentname}/swagger.json";
-        });
-        app.UseSwaggerUI(c =>
-        {
-          c.SwaggerEndpoint("/AnyWord/WordAny1/v1/swagger.json", "My Cool API V1");
-          c.RoutePrefix = "AnyWord/WordAny1";
-        });*/
-
         app.UseSwagger(c =>
         {
           c.RouteTemplate = "api/v1/{documentname}/swagger.json";
@@ -70,23 +58,19 @@ namespace WebLandscape
           c.SwaggerEndpoint("/api/v1/v1/swagger.json", "WebLandscape v1");
           c.RoutePrefix = "api/v1";
         });
-
-        /*app.UseSwagger(c =>
-        {
-          c.RouteTemplate = "api/swagger/{documentname}/swagger.json";
-        });
-        app.UseSwaggerUI(c =>
-        {
-          c.SwaggerEndpoint("/api/swagger/v1/swagger.json", "v1");
-          c.RoutePrefix = "api/swagger";
-        });*/
       }
 
       app.UseHttpsRedirection();
 
       app.UseRouting();
 
+      app.UseAuthentication();
       app.UseAuthorization();
+
+      //app.MapRazorPages();
+      //app.MapDefaultControllerRoute();
+
+      //app.UseAuthorization();
 
       app.UseEndpoints(endpoints =>
       {

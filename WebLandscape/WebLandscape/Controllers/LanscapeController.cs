@@ -6,17 +6,21 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Runtime.InteropServices; //for Marshall
 using System.Text; //for StringBuilder
+using WebLandscape.ViewModels;
+using WebLandscape.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace WebLandscape.Controllers
 {
   [ApiController]
   [Route("api/v1")]
+  [Authorize]
   public class LanscapeController : ControllerBase
   {
     private static readonly string[] Summaries = new[]
     {
-            "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-        };
+      "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
+    };
 
     private readonly ILogger<LanscapeController> _logger;
 
@@ -25,6 +29,7 @@ namespace WebLandscape.Controllers
       _logger = logger;
     }
 
+    [AllowAnonymous]
     [HttpGet("WeatherForecast")]
     public IEnumerable<WeatherForecast> Get()
     {
@@ -77,12 +82,6 @@ namespace WebLandscape.Controllers
       List<CanvasIdName> lst = LandscapeService.GetLandscapesByUserId(user_id);
 
       return lst;
-    }
-
-    [HttpPost("Login")]
-    public int Login(String login, String password)
-    {
-      return LandscapeService.login(login, password);
     }
   }
 }

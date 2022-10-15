@@ -4,6 +4,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Runtime.InteropServices;
 using System.Text;
+using WebLandscape.Models;
+using WebLandscape.ViewModels;
 
 namespace WebLandscape
 {
@@ -23,8 +25,24 @@ namespace WebLandscape
     [DllImport(CppFunctionsDLL, CallingConvention = CallingConvention.Cdecl)]
     static extern IntPtr writeToFileHeightsMap(IntPtr pHeightsMap, String file_name);
 
+
+    //UserBL
     [DllImport(CppFunctionsDLL, CallingConvention = CallingConvention.Cdecl)]
-    static extern int getUserId(String login, String password);
+    static extern IntPtr getUserBL(String login, String password, ref int returnCode);
+    [DllImport(CppFunctionsDLL, CallingConvention = CallingConvention.Cdecl)]
+    static extern IntPtr registerUser(String login, String password, String role, ref int returnCode);
+    [DllImport(CppFunctionsDLL, CallingConvention = CallingConvention.Cdecl)]
+    static extern int getUserId(IntPtr pUserBL);
+    [DllImport(CppFunctionsDLL, CallingConvention = CallingConvention.Cdecl)]
+    static extern IntPtr getUserLogin(IntPtr pUserBL);
+    [DllImport(CppFunctionsDLL, CallingConvention = CallingConvention.Cdecl)]
+    static extern IntPtr getUserPassword(IntPtr pUserBL);
+    [DllImport(CppFunctionsDLL, CallingConvention = CallingConvention.Cdecl)]
+    static extern IntPtr getUserRole(IntPtr pUserBL);
+    [DllImport(CppFunctionsDLL, CallingConvention = CallingConvention.Cdecl)]
+    static extern int getUserModeratorId(IntPtr pUserBL);
+    [DllImport(CppFunctionsDLL, CallingConvention = CallingConvention.Cdecl)]
+    static extern void deleteUserBL(IntPtr pCanvasBL);
 
 
     //CanvasBl
@@ -153,24 +171,86 @@ namespace WebLandscape
       return lst;
     }
 
-    public static int login(String login, String password)
+    public static User login(String login, String password)
     {
-      return getUserId(login, password);
-      /*try
-      {
-        return LandscapeService.loginBaseController(login, password);
-      }
-      catch (System.Runtime.InteropServices.SEHException e)
-      {
-        Console.WriteLine(e.Data);
-        Console.WriteLine(e.ErrorCode);
-        Console.WriteLine(e.HelpLink);
-        Console.WriteLine(e.HResult);
-        Console.WriteLine(e.Message);
-        Console.WriteLine(e.Source);
-        Console.WriteLine(e.StackTrace);
-        Console.WriteLine(e.TargetSite);
-      }*/
+      User userBL = new User();
+
+      //create userBL
+      int ret = -1;
+      IntPtr pUserBl = LandscapeService.getUserBL(login, password, ref ret);
+      if (ret != 0)
+        return null;
+
+      //ID
+      userBL.Id = LandscapeService.getUserId(pUserBl);
+
+      //Login
+      IntPtr pChar = LandscapeService.getUserLogin(pUserBl);
+      userBL.Login = Marshal.PtrToStringAnsi(pChar);
+      LandscapeService.deleteChar(pChar);
+      pChar = IntPtr.Zero;
+
+      //Password
+      pChar = LandscapeService.getUserPassword(pUserBl);
+      userBL.Password = Marshal.PtrToStringAnsi(pChar);
+      LandscapeService.deleteChar(pChar);
+      pChar = IntPtr.Zero;
+
+      //Role
+      pChar = LandscapeService.getUserRole(pUserBl);
+      userBL.Role = Marshal.PtrToStringAnsi(pChar);
+      LandscapeService.deleteChar(pChar);
+      pChar = IntPtr.Zero;
+
+      //Modeartor ID
+      userBL.ModeratorId = LandscapeService.getUserModeratorId(pUserBl);
+
+      //delete userBL
+      LandscapeService.deleteUserBL(pUserBl);
+      pUserBl = IntPtr.Zero;
+
+      return userBL;
+    }
+
+    public static User register(String login, String password, String role)
+    {
+      User userBL = new User();
+
+      //create userBL
+      int ret = -1;
+      IntPtr pUserBl = LandscapeService.registerUser(login, password, role, ref ret);
+      if (ret != 0)
+        return null;
+
+      //ID
+      userBL.Id = LandscapeService.getUserId(pUserBl);
+
+      //Login
+      IntPtr pChar = LandscapeService.getUserLogin(pUserBl);
+      userBL.Login = Marshal.PtrToStringAnsi(pChar);
+      LandscapeService.deleteChar(pChar);
+      pChar = IntPtr.Zero;
+
+      //Password
+      pChar = LandscapeService.getUserPassword(pUserBl);
+      userBL.Password = Marshal.PtrToStringAnsi(pChar);
+      LandscapeService.deleteChar(pChar);
+      pChar = IntPtr.Zero;
+
+      //Role
+      pChar = LandscapeService.getUserRole(pUserBl);
+      userBL.Role = Marshal.PtrToStringAnsi(pChar);
+      LandscapeService.deleteChar(pChar);
+      pChar = IntPtr.Zero;
+
+      //Modeartor ID
+      userBL.ModeratorId = LandscapeService.getUserModeratorId(pUserBl);
+
+      //delete userBL
+      LandscapeService.deleteUserBL(pUserBl);
+      pUserBl = IntPtr.Zero;
+
+      return userBL;
     }
   }
 }

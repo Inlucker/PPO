@@ -67,10 +67,11 @@ extern "C"
 
 extern "C"
 {
-  int getUserId(char* login, char* password)
+  UserBL* getUserBL(char* login, char* password, int& ret_code)
   {
     try
     {
+      ret_code = 0;
       string _login = "";
       string _password = "";
       if (login != NULL)
@@ -79,19 +80,99 @@ extern "C"
         _password = password;
       shared_ptr<USER_REP> user_repository = make_shared<USER_REP>();
       shared_ptr<UserBL> user_bl = user_repository->getUser(_login, _password);
-      if (user_bl->getRole() == "canvas_user" || user_bl->getRole() == "moderator")
-        return user_bl->getId();
+      UserBL* res = new UserBL(*(user_bl.get()));
+      if (res->getRole() == "canvas_user" || user_bl->getRole() == "moderator")
+        return res;
       else
-        return -3; //No such role
+      {
+        ret_code = -3;
+        return NULL; //No such role
+      }
     }
     catch (BaseError& er)
     {
-      return -1; //Error
+      ret_code = -1;
+      return NULL; //Error
     }
     catch (...)
     {
-      return -2; //Unexpected Error
+      ret_code = -2;
+      return NULL; //Unexpected Error
     }
+  }
+
+  UserBL* registerUser(char* login, char* password, char* role, int& ret_code)
+  {
+    try
+    {
+      string _login = "";
+      string _password = "";
+      string _role = "";
+      if (login != NULL)
+        _login = login;
+      if (password != NULL)
+        _password = password;
+      if (role != NULL)
+        _role = role;
+
+      shared_ptr<USER_REP> user_repository = make_shared<USER_REP>();
+      UserBL* new_user = new UserBL(-1, login, password, role, -1);
+      user_repository->addUser(*new_user);
+
+      return new_user;
+    }
+    catch (BaseError& er)
+    {
+      ret_code = -1;
+      return NULL; //Error
+    }
+    catch (...)
+    {
+      ret_code = -2;
+      return NULL; //Unexpected Error
+    }
+  }
+
+  int getUserId(UserBL* pUserBL)
+  {
+    return pUserBL->getId();
+  }
+
+  char* getUserLogin(UserBL* pUserBL)
+  {
+    string res = pUserBL->getLogin();
+    char* cstr = new char[res.length() + 1];
+    strcpy_s(cstr, res.length() + 1, res.c_str());
+
+    return cstr;
+  }
+
+  char* getUserPassword(UserBL* pUserBL)
+  {
+    string res = pUserBL->getPassword();
+    char* cstr = new char[res.length() + 1];
+    strcpy_s(cstr, res.length() + 1, res.c_str());
+
+    return cstr;
+  }
+
+  char* getUserRole(UserBL* pUserBL)
+  {
+    string res = pUserBL->getRole();
+    char* cstr = new char[res.length() + 1];
+    strcpy_s(cstr, res.length() + 1, res.c_str());
+
+    return cstr;
+  }
+
+  int getUserModeratorId(UserBL* pUserBL)
+  {
+    return pUserBL->getModeratorId();
+  }
+
+  void deleteUserBL(UserBL* pUserBL)
+  {
+    delete pUserBL;
   }
 
   void deleteChar(char* pChar)
@@ -196,7 +277,6 @@ extern "C"
   //List<CanvasBL>
   EXPORT int getLandscapesNumberByUserId(int user_id)
   {
-
     try
     {
       shared_ptr<CANVAS_REP> canvas_repository = make_shared<CANVAS_REP>("canvas_user", "canvas_user");

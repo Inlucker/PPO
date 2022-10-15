@@ -37,7 +37,15 @@ extern "C"
 
 extern "C"
 {
-  EXPORT int getUserId(char* login, char* password);
+  //UserBL
+  EXPORT UserBL* getUserBL(char* login, char* password, int& ret_code);
+  EXPORT UserBL* registerUser(char* login, char* password, char* role, int& ret_code);
+  EXPORT int getUserId(UserBL* pUserBL);
+  EXPORT char* getUserLogin(UserBL* pUserBL);
+  EXPORT char* getUserPassword(UserBL* pUserBL);
+  EXPORT char* getUserRole(UserBL* pUserBL);
+  EXPORT int getUserModeratorId(UserBL* pUserBL);
+  EXPORT void deleteUserBL(UserBL* pUserBL);
 
   EXPORT void deleteChar(char* pChar);
 

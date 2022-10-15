@@ -1,6 +1,6 @@
 using System;
 
-namespace WebLandscape
+namespace WebLandscape.ViewModels
 {
   public class WeatherForecast
   {
