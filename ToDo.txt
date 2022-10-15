@@ -2,4 +2,5 @@ ToDo list:
 1) Убрать глаголы (изменить endPoints) (Done)
 2) ab сделать .md файл
 3) Сделать прослойку между контролерами и C++ (Done)
-4 )Поправить swagger по api/v1 (Done)
+4) Поправить swagger по api/v1 (Done)
+5) Доделать API 

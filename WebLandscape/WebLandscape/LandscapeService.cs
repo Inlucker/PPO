@@ -13,7 +13,7 @@ namespace WebLandscape
   {
     public const string CppFunctionsDLL = @"..\x64\Debug\CppLandscape.dll";
 
-    //Landscape funcs
+    //Landscape funcs (tests)
     [DllImport(CppFunctionsDLL, CallingConvention = CallingConvention.Cdecl)]
     static extern IntPtr createLandscapeCanvas();
     [DllImport(CppFunctionsDLL, CallingConvention = CallingConvention.Cdecl)]
@@ -75,20 +75,96 @@ namespace WebLandscape
     static extern int getLandscapesByUserId(int user_id, int[] idArray, int[,] strArray);
 
 
-    public static void genLandscape()
+    //HeightsMap
+    [DllImport(CppFunctionsDLL, CallingConvention = CallingConvention.Cdecl)]
+    static extern IntPtr genHeightsMap(int size, bool smooth);
+    [DllImport(CppFunctionsDLL, CallingConvention = CallingConvention.Cdecl)]
+    static extern IntPtr genCanvasBL(int size, bool smooth, ref int returnCode); //returns canvasBL pointer
+
+
+    //Landscape
+    [DllImport(CppFunctionsDLL, CallingConvention = CallingConvention.Cdecl)]
+    static extern int sendLandscape(int user_id, String name, String heights_map, String heights_map_points, int r, int g, int b);
+
+
+    public static String GenHeightsMap(GenHeightsMapModel model)
     {
-      IntPtr pLandscapeCanvas = createLandscapeCanvas();
-      generateLandscapeLandscapeCanvas(pLandscapeCanvas, 33);
+      IntPtr pChar = genHeightsMap(model.Size, model.Smoothing);
+      if (pChar == null)
+        return null;
+      String heightsMap = Marshal.PtrToStringAnsi(pChar);
+      heightsMap = heightsMap.Remove(0, 1);
+      deleteChar(pChar);
+      pChar = IntPtr.Zero;
 
-      IntPtr pHeightMap = getHeightsMapPtr(pLandscapeCanvas);
-      writeToFileHeightsMap(pHeightMap, "HeightsMapGen322.txt");
-      pHeightMap = IntPtr.Zero;
+      return heightsMap;
+    }
+    public static Landscape GenLandscape(int size, bool smoothing, String name, int? red, int? green, int? blue)
+    {
+      Landscape canvasBL = new Landscape();
 
-      Program.DeleteTest(pLandscapeCanvas);
-      pLandscapeCanvas = IntPtr.Zero;
+      //create canvasBL
+      int ret = -1;
+      IntPtr pCanvasBl = genCanvasBL(size, smoothing, ref ret);
+      if (ret != 0)
+        return null;
+
+      //canvas id
+      int canvasId = getIdCanvasBL(pCanvasBl);
+      canvasBL.id = canvasId;
+
+      //canvas user_id
+      canvasBL.user_id = getUserIdCanvasBL(pCanvasBl);
+
+      //canvas name
+      if (name != null)
+        canvasBL.name = name;
+      else
+      {
+        IntPtr pChar = getNameCanvasBL(pCanvasBl);
+        String canvasName = Marshal.PtrToStringAnsi(pChar);
+        canvasBL.name = canvasName;
+        deleteChar(pChar);
+        pChar = IntPtr.Zero;
+      }
+
+      //canvas heights_map
+      IntPtr pHeightsMapChar = getHeightsMapCanvasBL(pCanvasBl);
+      String heightsMapStr = Marshal.PtrToStringAnsi(pHeightsMapChar);
+      canvasBL.heights_map = heightsMapStr;
+      deleteChar(pHeightsMapChar);
+      pHeightsMapChar = IntPtr.Zero;
+
+      //canvas heights_map_points
+      IntPtr pHeightsMapPointsChar = getHeightsMapPointsCanvasBL(pCanvasBl);
+      canvasBL.heights_map_points = Marshal.PtrToStringAnsi(pHeightsMapPointsChar);
+      deleteChar(pHeightsMapChar);
+      pHeightsMapChar = IntPtr.Zero;
+
+      //canvas color
+      int r = 0, g = 0, b = 0;
+      getColorCanvasBL(pCanvasBl, ref r, ref g, ref b);
+      if (red.HasValue)
+        canvasBL.red = (int)red;
+      else
+        canvasBL.red = r;
+      if (red.HasValue)
+        canvasBL.green = (int)green;
+      else
+        canvasBL.green = g;
+      if (red.HasValue)
+        canvasBL.blue = (int)blue;
+      else
+        canvasBL.blue = b;
+
+      //delete canvasBL
+      deleteCanvasBL(pCanvasBl);
+      pCanvasBl = IntPtr.Zero;
+
+      return canvasBL;
     }
 
-    public static Landscape getLandscape(int id, out int ret_code)
+    public static Landscape GetLandscape(int id, out int ret_code)
     {
       ret_code = 0;
       Landscape canvasBL = new Landscape();
@@ -192,7 +268,15 @@ namespace WebLandscape
       return lst;
     }
 
-    public static User login(String login, String password)
+    public static int SendLandscape(Landscape landscape)
+    {
+      int res = 0;
+      res = sendLandscape(landscape.user_id, landscape.name, landscape.heights_map, landscape.heights_map_points, landscape.red, landscape.green, landscape.blue);
+
+      return res;
+    }
+
+    public static User Login(String login, String password)
     {
       User userBL = new User();
 
@@ -233,7 +317,7 @@ namespace WebLandscape
       return userBL;
     }
 
-    public static User register(String login, String password, String role)
+    public static User Register(String login, String password, String role)
     {
       //return_code = 0;
       User userBL = new User();
@@ -278,7 +362,7 @@ namespace WebLandscape
       return userBL;
     }
 
-    public static int delete(String login, String password)
+    public static int Delete(String login, String password)
     {
       int res = deleteUser(login, password);
       return res;

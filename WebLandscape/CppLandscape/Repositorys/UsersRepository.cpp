@@ -16,7 +16,7 @@ UsersRepository::UsersRepository(string dbuser, string dbpass, string dbschema, 
   m_schema = dbschema;
 }
 
-void UsersRepository::voidupdateConfig(string dbuser, string dbpass, string dbschema, string dbhost, int dbport, string dbname)
+void UsersRepository::updateConfig(string dbuser, string dbpass, string dbschema, string dbhost, int dbport, string dbname)
 {
   m_dbhost = dbhost;
   m_dbport = dbport;
@@ -62,6 +62,43 @@ shared_ptr<UserBL> UsersRepository::getUser(string login, string password)
     else
         throw LoginError("login or password", __FILE__, __LINE__, ctime(&t_time));
     //return NULL;
+}
+
+shared_ptr<UserBL> UsersRepository::getUser(int id)
+{
+  connect();
+  string query = "SELECT * FROM " + m_schema + ".Users where id=" + to_string(id) + ";";
+  PQsendQuery(m_connection.get(), query.c_str());
+
+  bool flag = false;
+  string error_msg = "";
+  while (auto res = PQgetResult(m_connection.get()))
+  {
+    if (PQresultStatus(res) == PGRES_TUPLES_OK && PQntuples(res))
+    {
+      int ID = atoi(PQgetvalue(res, 0, 0));
+      string login = PQgetvalue(res, 0, 1);
+      string password = PQgetvalue(res, 0, 2);
+      string role = PQgetvalue(res, 0, 3);
+      int moderator_id = atoi(PQgetvalue(res, 0, 4));
+
+      return make_shared<UserBL>(ID, login, password, role, moderator_id);
+    }
+    else if (PQresultStatus(res) == PGRES_FATAL_ERROR)
+    {
+      error_msg += "\n";
+      error_msg += PQresultErrorMessage(res);
+      flag = true;
+    }
+
+    PQclear(res);
+  }
+
+  time_t t_time = time(NULL);
+  if (flag)
+    throw GetUsersError(error_msg, __FILE__, __LINE__, ctime(&t_time));
+  else
+    throw GetUsersError("id", __FILE__, __LINE__, ctime(&t_time));
 }
 
 shared_ptr<UserBL> UsersRepository::getCanvasUser(string name)

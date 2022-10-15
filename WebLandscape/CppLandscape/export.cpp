@@ -147,7 +147,7 @@ extern "C"
 
       shared_ptr<USER_REP> user_repository = make_shared<USER_REP>();
       shared_ptr<UserBL> user_bl = user_repository->getUser(_login, _password);
-      user_repository->voidupdateConfig(user_bl->getRole(), user_bl->getRole());
+      user_repository->updateConfig(user_bl->getRole(), user_bl->getRole());
       user_repository->deleteUser(user_bl->getId());
 
       return 0;
@@ -207,7 +207,7 @@ extern "C"
 
   void deleteChar(char* pChar)
   {
-    delete pChar;
+    delete[] pChar;
   }
 
   //CanvasBL
@@ -309,7 +309,9 @@ extern "C"
   {
     try
     {
-      shared_ptr<CANVAS_REP> canvas_repository = make_shared<CANVAS_REP>("canvas_user", "canvas_user");
+      shared_ptr<USER_REP> user_repository = make_shared<USER_REP>();
+      shared_ptr<UserBL> user_bl = user_repository->getUser(user_id);
+      shared_ptr<CANVAS_REP> canvas_repository = make_shared<CANVAS_REP>(user_bl->getRole(), user_bl->getRole());
       vector<pair<int, string>> vec = canvas_repository->getCanvasesByUid(user_id);
 
       return vec.size();
@@ -332,7 +334,9 @@ extern "C"
   {
     try
     {
-      shared_ptr<CANVAS_REP> canvas_repository = make_shared<CANVAS_REP>("canvas_user", "canvas_user");
+      shared_ptr<USER_REP> user_repository = make_shared<USER_REP>();
+      shared_ptr<UserBL> user_bl = user_repository->getUser(user_id);
+      shared_ptr<CANVAS_REP> canvas_repository = make_shared<CANVAS_REP>(user_bl->getRole(), user_bl->getRole());
       vector<pair<int, string>> vec = canvas_repository->getCanvasesByUid(user_id);
 
       for (int i = 0; i < vec.size(); i++)
@@ -344,6 +348,7 @@ extern "C"
           strArray[i][j] = str[j];
         }
       }
+      return 0;
     }
     catch (BaseError& er)
     {
@@ -353,7 +358,81 @@ extern "C"
     {
       return -2; //Unexpected Error
     }
+  }
 
+  //Generation
+  char* genHeightsMap(int size, bool smooth, int& ret_code)
+  {
+    ret_code = 0;
+    try
+    {
+      HeightsMap hm = HeightsMap(size);
+      hm.diamondSquare(size, smooth);
+
+      string res = "";
+      hm.toStr(res);
+      char* cstr = new char[res.length() + 2];
+      strcpy_s(cstr+1, res.length() + 1, res.c_str());
+
+      return cstr;
+    }
+    catch (...)
+    {
+      ret_code = -2;
+      return NULL; //Unexpected Error
+    }
+  }
+
+  CanvasBL* genCanvasBL(int size, bool smooth, int& ret_code)
+  {
+    ret_code = 0;
+    try
+    {
+      HeightsMap hm = HeightsMap(size);
+      hm.diamondSquare(size, smooth);
+      shared_ptr<HeightsMapPoints> hmp_pointer = hm.createPoints();
+      HeightsMapPoints& hmp = *(hmp_pointer.get());
+      CanvasBL* canvasBL = new CanvasBL(-1, -1, "Name", hm, hmp, 20, 150, 20);
+
+      return canvasBL;
+    }
+    catch (...)
+    {
+      ret_code = -2;
+      return NULL; //Unexpected Error
+    }
+  }
+
+  //Landscape
+  int sendLandscape(int user_id, char* name, char* heights_map, char* heights_map_points, int r, int g, int b)
+  {
+    try
+    {
+      string _name = "";
+      string _heights_map = "";
+      string _heights_map_points = "";
+      if (name != NULL)
+        _name = name;
+      if (heights_map != NULL)
+        _heights_map = heights_map;
+      if (heights_map_points != NULL)
+        _heights_map_points = heights_map_points;
+
+      shared_ptr<USER_REP> user_repository = make_shared<USER_REP>();
+      shared_ptr<UserBL> user_bl = user_repository->getUser(user_id);
+      shared_ptr<CANVAS_REP> canvas_repository = make_shared<CANVAS_REP>(user_bl->getRole(), user_bl->getRole());
+      CanvasBL canvasBL = CanvasBL(-1, user_id, _name, _heights_map, _heights_map_points, r, g, b);
+      canvas_repository->addCanvas(canvasBL);
+      return 0;
+    }
+    catch (BaseError& er)
+    {
+      return -1; //Error
+    }
+    catch (...)
+    {
+      return -2; //Unexpected Error
+    }
   }
 }
 

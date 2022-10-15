@@ -21,7 +21,7 @@ namespace WebLandscape.Controllers
     public async Task<IActionResult> Login(LoginModel model)
     //public User Login(LoginModel model)
     {
-      User user = LandscapeService.login(model.Login, model.Password);
+      User user = LandscapeService.Login(model.Login, model.Password);
       if (user != null)
       {
         await Authenticate(user);
@@ -43,7 +43,7 @@ namespace WebLandscape.Controllers
     [HttpPost("register")]
     public async Task<IActionResult> Register(RegisterModel model)
     {
-      User user = LandscapeService.register(model.Login, model.Password, model.Role);
+      User user = LandscapeService.Register(model.Login, model.Password, model.Role);
       if (user != null)
       {
         await Authenticate(user);
@@ -107,9 +107,9 @@ namespace WebLandscape.Controllers
     [HttpPost("delete")]
     public async Task<IActionResult> Delete(LoginModel model)
     {
-      int ret = LandscapeService.delete(model.Login, model.Password);
+      int ret = LandscapeService.Delete(model.Login, model.Password);
       if (ret != 0)
-        return BadRequest(new Status(0, "BadRequest", "You couldn't delete account", Ok().StatusCode));
+        return BadRequest(new Status(0, "BadRequest", "You couldn't delete account", BadRequest().StatusCode));
       await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
       return Ok(new Status(0, "Ok", "You deleted account and logged out", Ok().StatusCode));
       //return NoContent();

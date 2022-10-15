@@ -45,6 +45,17 @@ CanvasBL::CanvasBL(int _id, int u_id, string n, string &hm, string &tpa, string 
     tmp = "";
 }
 
+CanvasBL::CanvasBL(int _id, int u_id, string n, string& hm, string& tpa, int r, int g, int b) : id(_id), user_id(u_id), name(n)
+{
+  heights_map = HeightsMap(hm);
+  heights_map_points = HeightsMapPoints(tpa);
+
+  int i = 0;
+  red = r;
+  green = g;
+  blue = b;
+}
+
 CanvasBL::CanvasBL(int _id, int u_id, string n, HeightsMap &hm, HeightsMapPoints &hmp, int r, int g, int b) : id(_id), user_id(u_id), name(n)
 {
     heights_map = hm;

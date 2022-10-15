@@ -14,6 +14,7 @@ public:
     CanvasBL() = delete;
     //CanvasBL(string fn1, string fn2, string fn3);
     CanvasBL(int _id, int u_id, string n, string& hm, string& tpa, string& c);
+    CanvasBL(int _id, int u_id, string n, string& hm, string& tpa, int r, int g, int b);
     CanvasBL(int _id, int u_id, string n, HeightsMap& hm, HeightsMapPoints& hmp, int r, int g, int b);
 
     bool operator ==(CanvasBL& an_c);

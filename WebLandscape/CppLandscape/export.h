@@ -65,4 +65,11 @@ extern "C"
   //List<CanvasBL>
   EXPORT int getLandscapesNumberByUserId(int user_id);
   EXPORT int getLandscapesByUserId(int user_id, int idArray[], int strArray[][256]);
+
+  //Generation
+  EXPORT char* genHeightsMap(int size, bool smooth, int& ret_code);
+  EXPORT CanvasBL* genCanvasBL(int size, bool smooth, int& ret_code);
+
+  //Landscape
+  EXPORT int sendLandscape(int user_id, char* name, char* heights_map, char* heights_map_points, int r, int g, int b);
 }

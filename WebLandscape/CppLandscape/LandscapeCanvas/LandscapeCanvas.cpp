@@ -298,7 +298,7 @@ extern "C"
 {
   EXPORT LandscapeCanvas* CreateLandscapeCanvas() { return new LandscapeCanvas(); }
   EXPORT void generateLandscapeLandscapeCanvas(LandscapeCanvas* pLandscapeCanvas, int size) { return pLandscapeCanvas->generateNewLandscape(size); }
-  EXPORT void DeleteLandscapeCanvas(LandscapeCanvas* pLandscapeCanvas) { delete pLandscapeCanvas; }
+  EXPORT void deleteLandscapeCanvas(LandscapeCanvas* pLandscapeCanvas) { delete pLandscapeCanvas; }
 
   EXPORT HeightsMap* getHeightsMapPtr(LandscapeCanvas* pLandscapeCanvas) { return pLandscapeCanvas->getHeightsMapPtr(); }
   EXPORT void writeToFileHeightsMap(HeightsMap* pHeightsMap, char* file_name) { return pHeightsMap->writeToFile(file_name); }
