@@ -14,7 +14,7 @@ using Microsoft.AspNetCore.Authorization;
 namespace WebLandscape.Controllers
 {
   [ApiController]
-  [Route("api/v1")]
+  [Route("api/v1/Landscapes")]
   [Authorize(Roles = "canvas_user")]
   public class LandscapeController : ControllerBase
   {
@@ -30,7 +30,7 @@ namespace WebLandscape.Controllers
       _logger = logger;
     }
 
-    [AllowAnonymous]
+    /*[AllowAnonymous]
     [HttpGet("WeatherForecast")]
     public IEnumerable<WeatherForecast> Get()
     {
@@ -61,10 +61,10 @@ namespace WebLandscape.Controllers
         Console.WriteLine(e.TypeName);
       }
       return BadRequest();
-    }
+    }*/
 
     [Authorize(Roles = "canvas_user,moderator")]
-    [HttpGet("Landscapes/{id}")]
+    [HttpGet("{id}")]
     public async Task<ActionResult<Landscape>> GetLandscape(int id)
     {
       Landscape landscape = LandscapeService.GetLandscape(id, out int ret);
@@ -76,12 +76,10 @@ namespace WebLandscape.Controllers
     }
 
     [Authorize(Roles = "canvas_user,moderator")]
-    [HttpGet("Landscapes")]
-    //public List<CanvasIdName> GetLandscapesByUserId(int user_id = -1)
-    public async Task<IActionResult> GetLandscapesByUserId(int? user_id, int? size, bool? smoothing, String name = "Name", int? red = 20, int? green = 150, int? blue = 20)
+    [HttpGet("")]
+    public async Task<IActionResult> GetLandscapesByUserId(int user_id)
     {
-      //Get Landscapes list by user_id
-      if (user_id.HasValue && user_id >= 0)
+      if (user_id >= 0)
       {
         List<CanvasIdName> lst = LandscapeService.GetLandscapesByUserId((int)user_id, out int ret);
         if (ret == 0)
@@ -89,10 +87,15 @@ namespace WebLandscape.Controllers
         else
           return BadRequest(lst);
       }
-      //Generate HeightsMap
-      else if (size.HasValue && smoothing.HasValue && size > 0)
+      return BadRequest();
+    }
+
+    [AllowAnonymous]
+    [HttpGet("generate")]
+    public async Task<IActionResult> GenLandscape(int size, bool smoothing, String name = "Name", int? red = 20, int? green = 150, int? blue = 20)
+    {
+      if (size > 0)
       {
-        //String heightMap = LandscapeService.GenHeightsMap(new GenHeightsMapModel { Size = (int)size, Smoothing = (bool)smoothing });
         Landscape landscape = LandscapeService.GenLandscape((int)size, (bool)smoothing, name, red, green, blue);
 
         if (landscape != null)
@@ -103,18 +106,7 @@ namespace WebLandscape.Controllers
       return BadRequest();
     }
 
-    /*[HttpPost("GenLandscape")]
-    public async Task<IActionResult> GenHeightsMap(GenHeightsMapModel model)
-    {
-      String heightMap = LandscapeService.GenHeightsMap(model);
-
-      if (heightMap != null)
-        return Ok(heightMap);
-      else
-        return BadRequest(heightMap);
-    }*/
-
-    [HttpPost("Landscapes")]
+    [HttpPost("")]
     public async Task<IActionResult> SendLandscape(CreateLandscapeSchema schema)
     {
       int ret = LandscapeService.SendLandscape(schema);
@@ -125,7 +117,7 @@ namespace WebLandscape.Controllers
         return BadRequest(new Status(0, "BadRequest", "You couldn't created Landscape in DataBase", BadRequest().StatusCode));
     }
 
-    [HttpPut("Landscapes")]
+    [HttpPut("")]
     public async Task<IActionResult> UpdateLandscape(UpdateLandscapeSchema schema)
     {
       int ret = LandscapeService.UpdateLandscape(schema);
@@ -136,7 +128,7 @@ namespace WebLandscape.Controllers
         return BadRequest(new Status(0, "BadRequest", "You couldn't updated Landscape in DataBase", BadRequest().StatusCode));
     }
 
-    [HttpDelete("Landscapes/{id}")]
+    [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteLandscape(int id)
     {
       int ret = LandscapeService.DeleteLandscape(id);
@@ -146,5 +138,6 @@ namespace WebLandscape.Controllers
       else
         return BadRequest(new Status(0, "BadRequest", "You couldn't delete Landscape in DataBase", BadRequest().StatusCode));
     }
+
   }
 }

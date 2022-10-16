@@ -147,7 +147,7 @@ namespace WebLandscape.Controllers
     }
 
     [Authorize]
-    [HttpPost("delete")]
+    [HttpDelete("delete")]
     public async Task<IActionResult> Delete(LoginSchema schema)
     {
       int ret = LandscapeService.DeleteUser(schema.Login, schema.Password);
