@@ -7,7 +7,7 @@
       "sslPort": 44325
     }
   },
-  "$schema": "http://json.schemastore.org/launchsettings.json",
+  "$schema": "http://json.RequestSchemastore.org/launchsettings.json",
   "profiles": {
     "IIS Express": {
       "commandName": "IISExpress",

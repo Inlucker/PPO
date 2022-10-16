@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace WebLandscape.ViewModels
+namespace WebLandscape.RequestSchemas
 {
-  public class RegisterModel
+  public class RegisterSchema
   {
     [Required(ErrorMessage = "Не указан Login")]
     public string Login { get; set; }

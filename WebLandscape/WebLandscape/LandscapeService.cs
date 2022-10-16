@@ -6,6 +6,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using WebLandscape.Models;
 using WebLandscape.ViewModels;
+using WebLandscape.RequestSchemas;
 
 namespace WebLandscape
 {
@@ -90,7 +91,7 @@ namespace WebLandscape
     static extern int updateLandscape(int id, String name, String heights_map, String heights_map_points, int r, int g, int b);
 
 
-    public static String GenHeightsMap(GenHeightsMapModel model)
+    public static String GenHeightsMap(GenHeightsMapSchema model)
     {
       IntPtr pChar = genHeightsMap(model.Size, model.Smoothing);
       if (pChar == null)
@@ -271,18 +272,18 @@ namespace WebLandscape
       return lst;
     }
 
-    public static int SendLandscape(Landscape landscape)
+    public static int SendLandscape(CreateLandscapeSchema schema)
     {
       int res = 0;
-      res = sendLandscape(landscape.user_id, landscape.name, landscape.heights_map, landscape.heights_map_points, landscape.red, landscape.green, landscape.blue);
+      res = sendLandscape(schema.user_id, schema.name, schema.heights_map, schema.heights_map_points, schema.red, schema.green, schema.blue);
 
       return res;
     }
 
-    public static int UpdateLandscape(Landscape landscape)
+    public static int UpdateLandscape(UpdateLandscapeSchema schema)
     {
       int res = 0;
-      res = updateLandscape(landscape.id, landscape.name, landscape.heights_map, landscape.heights_map_points, landscape.red, landscape.green, landscape.blue);
+      res = updateLandscape(schema.id, schema.name, schema.heights_map, schema.heights_map_points, schema.red, schema.green, schema.blue);
 
       return res;
     }

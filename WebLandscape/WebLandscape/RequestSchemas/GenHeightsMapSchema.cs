@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace WebLandscape.ViewModels
+namespace WebLandscape.RequestSchemas
 {
-  public class GenHeightsMapModel
+  public class GenHeightsMapSchema
   {
     [Required(ErrorMessage = "Не указан Size")]
     public int Size { get; set; }

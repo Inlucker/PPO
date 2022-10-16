@@ -8,6 +8,7 @@ using System.Runtime.InteropServices; //for Marshall
 using System.Text; //for StringBuilder
 using WebLandscape.ViewModels;
 using WebLandscape.Models;
+using WebLandscape.RequestSchemas;
 using Microsoft.AspNetCore.Authorization;
 
 namespace WebLandscape.Controllers
@@ -63,7 +64,7 @@ namespace WebLandscape.Controllers
     }
 
     [HttpGet("Landscapes/{id}")]
-    public async Task<IActionResult> GetLandscape(int id)
+    public async Task<ActionResult<Landscape>> GetLandscape(int id)
     {
       Landscape landscape = LandscapeService.GetLandscape(id, out int ret);
 
@@ -112,9 +113,9 @@ namespace WebLandscape.Controllers
     }*/
 
     [HttpPost("Landscapes")]
-    public async Task<IActionResult> SendLandscape(Landscape model) //landscape id лишний
+    public async Task<IActionResult> SendLandscape(CreateLandscapeSchema schema) //landscape id лишний
     {
-      int ret = LandscapeService.SendLandscape(model);
+      int ret = LandscapeService.SendLandscape(schema);
 
       if (ret == 0)
         return Ok(new Status(0, "Ok", "You created Landscape in DataBase", Ok().StatusCode));
@@ -124,9 +125,9 @@ namespace WebLandscape.Controllers
 
 
     [HttpPut("Landscapes")]
-    public async Task<IActionResult> UpdateLandscape(Landscape model)  //user id лишний
+    public async Task<IActionResult> UpdateLandscape(UpdateLandscapeSchema schema)  //user id лишний
     {
-      int ret = LandscapeService.UpdateLandscape(model);
+      int ret = LandscapeService.UpdateLandscape(schema);
 
       if (ret == 0)
         return Ok(new Status(0, "Ok", "You updated Landscape in DataBase", Ok().StatusCode));

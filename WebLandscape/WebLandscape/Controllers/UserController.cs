@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using WebLandscape.Models;// пространство имен класса User
 using WebLandscape.ViewModels; // пространство имен моделей RegisterModel и LoginModel
+using WebLandscape.RequestSchemas;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -18,10 +19,10 @@ namespace WebLandscape.Controllers
   public class UserController : ControllerBase
   {
     [HttpPost("login")]
-    public async Task<IActionResult> Login(LoginModel model)
+    public async Task<IActionResult> Login(LoginSchema schema)
     //public User Login(LoginModel model)
     {
-      User user = LandscapeService.Login(model.Login, model.Password);
+      User user = LandscapeService.Login(schema.Login, schema.Password);
       if (user != null)
       {
         await Authenticate(user);
@@ -41,9 +42,9 @@ namespace WebLandscape.Controllers
     }
 
     [HttpPost("register")]
-    public async Task<IActionResult> Register(RegisterModel model)
+    public async Task<IActionResult> Register(RegisterSchema schema)
     {
-      User user = LandscapeService.Register(model.Login, model.Password, model.Role);
+      User user = LandscapeService.Register(schema.Login, schema.Password, schema.Role);
       if (user != null)
       {
         await Authenticate(user);
@@ -105,9 +106,9 @@ namespace WebLandscape.Controllers
 
     [Authorize]
     [HttpPost("delete")]
-    public async Task<IActionResult> Delete(LoginModel model)
+    public async Task<IActionResult> Delete(LoginSchema schema)
     {
-      int ret = LandscapeService.Delete(model.Login, model.Password);
+      int ret = LandscapeService.Delete(schema.Login, schema.Password);
       if (ret != 0)
         return BadRequest(new Status(0, "BadRequest", "You couldn't delete account", BadRequest().StatusCode));
       await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
