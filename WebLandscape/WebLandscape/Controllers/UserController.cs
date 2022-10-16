@@ -108,13 +108,33 @@ namespace WebLandscape.Controllers
     [HttpPost("delete")]
     public async Task<IActionResult> Delete(LoginSchema schema)
     {
-      int ret = LandscapeService.Delete(schema.Login, schema.Password);
+      int ret = LandscapeService.DeleteUser(schema.Login, schema.Password);
       if (ret != 0)
         return BadRequest(new Status(0, "BadRequest", "You couldn't delete account", BadRequest().StatusCode));
       await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
       return Ok(new Status(0, "Ok", "You deleted account and logged out", Ok().StatusCode));
       //return NoContent();
       //return RedirectToAction("Login", "Account");
+    }
+
+    [Authorize(Roles = "moderator")]
+    [HttpPatch("users/add")]
+    public async Task<IActionResult> AddUser(AddUserSchema schema)
+    {
+      int ret = LandscapeService.AddUser(schema.user_id, schema.moderator_id);
+      if (ret != 0)
+        return BadRequest(new Status(0, "BadRequest", "You couldn't add user", BadRequest().StatusCode));
+      return Ok(new Status(0, "Ok", "You added user ", Ok().StatusCode));
+    }
+
+    [Authorize(Roles = "moderator")]
+    [HttpPatch("users/remove/{user_id}")]
+    public async Task<IActionResult> RemoveUser(int user_id)
+    {
+      int ret = LandscapeService.RemoveUser(user_id);
+      if (ret != 0)
+        return BadRequest(new Status(0, "BadRequest", "You couldn't remove user", BadRequest().StatusCode));
+      return Ok(new Status(0, "Ok", "You removed user ", Ok().StatusCode));
     }
   }
 }

@@ -63,6 +63,7 @@ namespace WebLandscape.Controllers
       return BadRequest();
     }
 
+    [Authorize(Roles = "canvas_user,moderator")]
     [HttpGet("Landscapes/{id}")]
     public async Task<ActionResult<Landscape>> GetLandscape(int id)
     {
@@ -74,6 +75,7 @@ namespace WebLandscape.Controllers
         return BadRequest(landscape);
     }
 
+    [Authorize(Roles = "canvas_user,moderator")]
     [HttpGet("Landscapes")]
     //public List<CanvasIdName> GetLandscapesByUserId(int user_id = -1)
     public async Task<IActionResult> GetLandscapesByUserId(int? user_id, int? size, bool? smoothing, String name = "Name", int? red = 20, int? green = 150, int? blue = 20)

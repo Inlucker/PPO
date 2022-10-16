@@ -86,12 +86,16 @@ namespace WebLandscape
     //Landscape
     [DllImport(CppFunctionsDLL, CallingConvention = CallingConvention.Cdecl)]
     static extern int sendLandscape(int user_id, String name, String heights_map, String heights_map_points, int r, int g, int b);
-
     [DllImport(CppFunctionsDLL, CallingConvention = CallingConvention.Cdecl)]
     static extern int updateLandscape(int id, String name, String heights_map, String heights_map_points, int r, int g, int b);
     [DllImport(CppFunctionsDLL, CallingConvention = CallingConvention.Cdecl)]
     static extern int deleteLandscape(int id);
 
+    //Moderator Actions
+    [DllImport(CppFunctionsDLL, CallingConvention = CallingConvention.Cdecl)]
+    static extern int addUser(int user_id, int moderator_id);
+    [DllImport(CppFunctionsDLL, CallingConvention = CallingConvention.Cdecl)]
+    static extern int removeUser(int user_id);
 
     public static String GenHeightsMap(GenHeightsMapSchema model)
     {
@@ -383,9 +387,20 @@ namespace WebLandscape
       return userBL;
     }
 
-    public static int Delete(String login, String password)
+    public static int DeleteUser(String login, String password)
     {
       int res = deleteUser(login, password);
+      return res;
+    }
+
+    public static int AddUser(int user_id, int moderator_id)
+    {
+      int res = addUser(user_id, moderator_id);
+      return res;
+    }
+    public static int RemoveUser(int user_id)
+    {
+      int res = removeUser(user_id);
       return res;
     }
   }

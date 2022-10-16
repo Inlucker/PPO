@@ -483,5 +483,60 @@ extern "C"
       return -2; //Unexpected Error
     }
   }
+
+  //Moderator Actions
+  int addUser(int user_id, int moderator_id)
+  {
+    try
+    {
+      shared_ptr<USER_REP> user_repository = make_shared<USER_REP>("moderator", "moderator");
+      shared_ptr<UserBL> userBL = user_repository->getUser(user_id);
+
+      if (userBL->getRole() != "canvas_user")
+        return -3; //user is not canvas_user
+      if (userBL->getModeratorId() > 0)
+        return -4; //user already has moderator
+
+      shared_ptr<UserBL> moderatorBL = user_repository->getUser(moderator_id);
+      if (moderatorBL->getRole() != "moderator")
+        return -5; //moderator_id user is not moderator
+
+      UserBL newUserBl = UserBL(userBL->getId(), userBL->getLogin(), userBL->getPassword(), userBL->getRole(), moderator_id);
+      user_repository->updateUser(newUserBl, user_id);
+      return 0;
+    }
+    catch (BaseError& er)
+    {
+      return -1; //Error
+    }
+    catch (...)
+    {
+      return -2; //Unexpected Error
+    }
+  }
+
+  int removeUser(int user_id)
+  {
+    try
+    {
+      shared_ptr<USER_REP> user_repository = make_shared<USER_REP>("moderator", "moderator");
+      shared_ptr<UserBL> userBL = user_repository->getUser(user_id);
+      if (userBL->getRole() != "canvas_user")
+        return -3; //user is not canvas_user
+      if (userBL->getModeratorId() <= 0)
+        return -4; //user has no moderator
+      UserBL newUserBl = UserBL(userBL->getId(), userBL->getLogin(), userBL->getPassword(), userBL->getRole(), -1);
+      user_repository->updateUser(newUserBl, user_id);
+      return 0;
+    }
+    catch (BaseError& er)
+    {
+      return -1; //Error
+    }
+    catch (...)
+    {
+      return -2; //Unexpected Error
+    }
+  }
 }
 
