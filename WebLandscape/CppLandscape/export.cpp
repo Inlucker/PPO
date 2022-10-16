@@ -465,5 +465,23 @@ extern "C"
       return -2; //Unexpected Error
     }
   }
+
+  int deleteLandscape(int id)
+  {
+    try
+    {
+      shared_ptr<CANVAS_REP> canvas_repository = make_shared<CANVAS_REP>("canvas_user", "canvas_user");
+      canvas_repository->deleteCanvas(id);
+      return 0;
+    }
+    catch (BaseError& er)
+    {
+      return -1; //Error
+    }
+    catch (...)
+    {
+      return -2; //Unexpected Error
+    }
+  }
 }
 

@@ -113,7 +113,7 @@ namespace WebLandscape.Controllers
     }*/
 
     [HttpPost("Landscapes")]
-    public async Task<IActionResult> SendLandscape(CreateLandscapeSchema schema) //landscape id лишний
+    public async Task<IActionResult> SendLandscape(CreateLandscapeSchema schema)
     {
       int ret = LandscapeService.SendLandscape(schema);
 
@@ -123,9 +123,8 @@ namespace WebLandscape.Controllers
         return BadRequest(new Status(0, "BadRequest", "You couldn't created Landscape in DataBase", BadRequest().StatusCode));
     }
 
-
     [HttpPut("Landscapes")]
-    public async Task<IActionResult> UpdateLandscape(UpdateLandscapeSchema schema)  //user id лишний
+    public async Task<IActionResult> UpdateLandscape(UpdateLandscapeSchema schema)
     {
       int ret = LandscapeService.UpdateLandscape(schema);
 
@@ -133,6 +132,17 @@ namespace WebLandscape.Controllers
         return Ok(new Status(0, "Ok", "You updated Landscape in DataBase", Ok().StatusCode));
       else
         return BadRequest(new Status(0, "BadRequest", "You couldn't updated Landscape in DataBase", BadRequest().StatusCode));
+    }
+
+    [HttpDelete("Landscapes/{id}")]
+    public async Task<IActionResult> DeleteLandscape(int id)
+    {
+      int ret = LandscapeService.DeleteLandscape(id);
+
+      if (ret == 0)
+        return Ok(new Status(0, "Ok", "You deleted Landscape in DataBase", Ok().StatusCode));
+      else
+        return BadRequest(new Status(0, "BadRequest", "You couldn't delete Landscape in DataBase", BadRequest().StatusCode));
     }
   }
 }
