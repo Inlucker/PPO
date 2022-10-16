@@ -515,6 +515,39 @@ extern "C"
     }
   }
 
+  int addUserByName(char* user_name, int moderator_id)
+  {
+    try
+    {
+      string _user_name = "";
+      if (user_name != NULL)
+        _user_name = user_name;
+      shared_ptr<USER_REP> user_repository = make_shared<USER_REP>("moderator", "moderator");
+      shared_ptr<UserBL> userBL = user_repository->getCanvasUser(_user_name);
+
+      if (userBL->getRole() != "canvas_user")
+        return -3; //user is not canvas_user
+      if (userBL->getModeratorId() > 0)
+        return -4; //user already has moderator
+
+      shared_ptr<UserBL> moderatorBL = user_repository->getUser(moderator_id);
+      if (moderatorBL->getRole() != "moderator")
+        return -5; //moderator_id user is not moderator
+
+      UserBL newUserBl = UserBL(userBL->getId(), userBL->getLogin(), userBL->getPassword(), userBL->getRole(), moderator_id);
+      user_repository->updateUser(newUserBl, userBL->getId());
+      return 0;
+    }
+    catch (BaseError& er)
+    {
+      return -1; //Error
+    }
+    catch (...)
+    {
+      return -2; //Unexpected Error
+    }
+  }
+
   int removeUser(int user_id)
   {
     try
@@ -527,6 +560,35 @@ extern "C"
         return -4; //user has no moderator
       UserBL newUserBl = UserBL(userBL->getId(), userBL->getLogin(), userBL->getPassword(), userBL->getRole(), -1);
       user_repository->updateUser(newUserBl, user_id);
+      return 0;
+    }
+    catch (BaseError& er)
+    {
+      return -1; //Error
+    }
+    catch (...)
+    {
+      return -2; //Unexpected Error
+    }
+  }
+
+  int removeUserByName(char* user_name)
+  {
+    try
+    {
+      string _user_name = "";
+      if (user_name != NULL)
+        _user_name = user_name;
+      shared_ptr<USER_REP> user_repository = make_shared<USER_REP>("moderator", "moderator");
+      shared_ptr<UserBL> userBL = user_repository->getCanvasUser(user_name);
+
+      if (userBL->getRole() != "canvas_user")
+        return -3; //user is not canvas_user
+      if (userBL->getModeratorId() <= 0)
+        return -4; //user has no moderator
+
+      UserBL newUserBl = UserBL(userBL->getId(), userBL->getLogin(), userBL->getPassword(), userBL->getRole(), -1);
+      user_repository->updateUser(newUserBl, userBL->getId());
       return 0;
     }
     catch (BaseError& er)

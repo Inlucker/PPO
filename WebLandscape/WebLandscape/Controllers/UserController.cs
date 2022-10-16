@@ -126,20 +126,21 @@ namespace WebLandscape.Controllers
     }
 
     [Authorize(Roles = "moderator")]
-    [HttpPatch("users/add")]
-    public async Task<IActionResult> AddUser(AddUserSchema schema)
+    [HttpPatch("users/add/{moderator_id}")]
+    //public async Task<IActionResult> AddUser(AddUserSchema schema)
+    public async Task<IActionResult> AddUser(int moderator_id, int? user_id, String user_name)
     {
-      int ret = LandscapeService.AddUser(schema.user_id, schema.moderator_id);
+      int ret = LandscapeService.AddUser(moderator_id, user_id, user_name);
       if (ret != 0)
         return BadRequest(new Status(0, "BadRequest", "You couldn't add user", BadRequest().StatusCode));
       return Ok(new Status(0, "Ok", "You added user ", Ok().StatusCode));
     }
 
     [Authorize(Roles = "moderator")]
-    [HttpPatch("users/remove/{user_id}")]
-    public async Task<IActionResult> RemoveUser(int user_id)
+    [HttpPatch("users/remove")]
+    public async Task<IActionResult> RemoveUser(int? user_id, String user_name)
     {
-      int ret = LandscapeService.RemoveUser(user_id);
+      int ret = LandscapeService.RemoveUser(user_id, user_name);
       if (ret != 0)
         return BadRequest(new Status(0, "BadRequest", "You couldn't remove user", BadRequest().StatusCode));
       return Ok(new Status(0, "Ok", "You removed user ", Ok().StatusCode));

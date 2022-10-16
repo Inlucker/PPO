@@ -203,12 +203,6 @@
     <ClCompile Include="Essensities\UserBL.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Repositorys\IUsersRepository.cpp">
-      <Filter>Header Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Repositorys\UsersRepository.cpp">
-      <Filter>Header Files</Filter>
-    </ClCompile>
     <ClCompile Include="Repositorys\CanvasRepository.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -219,6 +213,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Repositorys\ParamsRepository.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Repositorys\UsersRepository.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Repositorys\IUsersRepository.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

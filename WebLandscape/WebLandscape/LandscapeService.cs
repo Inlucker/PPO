@@ -95,7 +95,11 @@ namespace WebLandscape
     [DllImport(CppFunctionsDLL, CallingConvention = CallingConvention.Cdecl)]
     static extern int addUser(int user_id, int moderator_id);
     [DllImport(CppFunctionsDLL, CallingConvention = CallingConvention.Cdecl)]
+    static extern int addUserByName(String user_name, int moderator_id);
+    [DllImport(CppFunctionsDLL, CallingConvention = CallingConvention.Cdecl)]
     static extern int removeUser(int user_id);
+    [DllImport(CppFunctionsDLL, CallingConvention = CallingConvention.Cdecl)]
+    static extern int removeUserByName(String user_name);
     [DllImport(CppFunctionsDLL, CallingConvention = CallingConvention.Cdecl)]
     static extern int getFreeCanvasUsersNumber();
     [DllImport(CppFunctionsDLL, CallingConvention = CallingConvention.Cdecl)]
@@ -401,14 +405,22 @@ namespace WebLandscape
       return res;
     }
 
-    public static int AddUser(int user_id, int moderator_id)
+    public static int AddUser(int moderator_id, int? user_id, String user_name)
     {
-      int res = addUser(user_id, moderator_id);
+      int res = -1;
+      if (user_id.HasValue)
+        res = addUser((int)user_id, moderator_id);
+      else if (user_name != null)
+        res = addUserByName(user_name, moderator_id);
       return res;
     }
-    public static int RemoveUser(int user_id)
+    public static int RemoveUser(int? user_id, String user_name)
     {
-      int res = removeUser(user_id);
+      int res = -1;
+      if (user_id.HasValue)
+        res = removeUser((int)user_id);
+      else if (user_name != null)
+        res = removeUserByName(user_name);
       return res;
     }
 
