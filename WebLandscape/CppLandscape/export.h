@@ -78,4 +78,8 @@ extern "C"
   //Moderator Actions
   EXPORT int addUser(int user_id, int moderator_id);
   EXPORT int removeUser(int user_id);
+  EXPORT int getFreeCanvasUsersNumber();
+  EXPORT int getFreeCanvasUsers(char* free_canvas_users[]);
+  EXPORT int getCanvasUsersNumber(int moderator_id);
+  EXPORT int getCanvasUsers(int moderator_id, char* canvas_users[]);
 }

@@ -96,6 +96,14 @@ namespace WebLandscape
     static extern int addUser(int user_id, int moderator_id);
     [DllImport(CppFunctionsDLL, CallingConvention = CallingConvention.Cdecl)]
     static extern int removeUser(int user_id);
+    [DllImport(CppFunctionsDLL, CallingConvention = CallingConvention.Cdecl)]
+    static extern int getFreeCanvasUsersNumber();
+    [DllImport(CppFunctionsDLL, CallingConvention = CallingConvention.Cdecl)]
+    static extern int getFreeCanvasUsers(IntPtr[] freeCanvasUsers);
+    [DllImport(CppFunctionsDLL, CallingConvention = CallingConvention.Cdecl)]
+    static extern int getCanvasUsersNumber(int moderator_id);
+    [DllImport(CppFunctionsDLL, CallingConvention = CallingConvention.Cdecl)]
+    static extern int getCanvasUsers(int moderator_id, IntPtr[] freeCanvasUsers);
 
     public static String GenHeightsMap(GenHeightsMapSchema model)
     {
@@ -402,6 +410,55 @@ namespace WebLandscape
     {
       int res = removeUser(user_id);
       return res;
+    }
+
+    public static int GetFreeCanvasUsers(out List<String> canvasUsers)
+    {
+      canvasUsers = new List<String>();
+      int size = getFreeCanvasUsersNumber();
+      if (size < 0)
+        return -1; //error
+
+      IntPtr[] namesPtrs = new IntPtr[size];
+      int ret = getFreeCanvasUsers(namesPtrs);
+      if (ret != size)
+      {
+        foreach (IntPtr pChar in namesPtrs)
+          deleteChar(pChar);
+        return -2; //different sizes
+      }
+      for (int i = 0; i < namesPtrs.Length; i++)
+      {
+        String canvasUser = Marshal.PtrToStringAnsi(namesPtrs[i]);
+        deleteChar(namesPtrs[i]);
+        namesPtrs[i] = IntPtr.Zero;
+        canvasUsers.Add(canvasUser);
+      }
+      return 0;
+    }
+    public static int GetCanvasUsers(int moderator_id, out List<String> canvasUsers)
+    {
+      canvasUsers = new List<String>();
+      int size = getFreeCanvasUsersNumber();
+      if (size < 0)
+        return -1; //error
+
+      IntPtr[] namesPtrs = new IntPtr[size];
+      int ret = getCanvasUsers(moderator_id, namesPtrs);
+      if (ret != size)
+      {
+        foreach (IntPtr pChar in namesPtrs)
+          deleteChar(pChar);
+        return -2; //different sizes
+      }
+      for (int i = 0; i < namesPtrs.Length; i++)
+      {
+        String canvasUser = Marshal.PtrToStringAnsi(namesPtrs[i]);
+        deleteChar(namesPtrs[i]);
+        namesPtrs[i] = IntPtr.Zero;
+        canvasUsers.Add(canvasUser);
+      }
+      return 0;
     }
   }
 }

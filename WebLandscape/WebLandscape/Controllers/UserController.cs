@@ -18,6 +18,27 @@ namespace WebLandscape.Controllers
   [Route("api/v1")]
   public class UserController : ControllerBase
   {
+    [Authorize(Roles = "moderator")]
+    [HttpGet("users/free")]
+    public async Task<IActionResult> getFreeCanvasUsers()
+    {
+      int ret = LandscapeService.GetFreeCanvasUsers(out List<String> canvasUsers);
+      if (ret != 0)
+        return BadRequest(canvasUsers);
+      return Ok(canvasUsers);
+    }
+
+    [Authorize(Roles = "moderator")]
+    [HttpGet("users/{moderator_id}")]
+    public async Task<IActionResult> getCanvasUsers(int moderator_id)
+    {
+      //List<User> canvasUser = new List<User>();
+      int ret = LandscapeService.GetCanvasUsers(moderator_id, out List<String> canvasUsers);
+      if (ret != 0)
+        return BadRequest(canvasUsers);
+      return Ok(canvasUsers);
+    }
+
     [HttpPost("login")]
     public async Task<IActionResult> Login(LoginSchema schema)
     //public User Login(LoginModel model)
@@ -104,19 +125,6 @@ namespace WebLandscape.Controllers
       //return RedirectToAction("Login", "Account");
     }
 
-    [Authorize]
-    [HttpPost("delete")]
-    public async Task<IActionResult> Delete(LoginSchema schema)
-    {
-      int ret = LandscapeService.DeleteUser(schema.Login, schema.Password);
-      if (ret != 0)
-        return BadRequest(new Status(0, "BadRequest", "You couldn't delete account", BadRequest().StatusCode));
-      await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-      return Ok(new Status(0, "Ok", "You deleted account and logged out", Ok().StatusCode));
-      //return NoContent();
-      //return RedirectToAction("Login", "Account");
-    }
-
     [Authorize(Roles = "moderator")]
     [HttpPatch("users/add")]
     public async Task<IActionResult> AddUser(AddUserSchema schema)
@@ -135,6 +143,19 @@ namespace WebLandscape.Controllers
       if (ret != 0)
         return BadRequest(new Status(0, "BadRequest", "You couldn't remove user", BadRequest().StatusCode));
       return Ok(new Status(0, "Ok", "You removed user ", Ok().StatusCode));
+    }
+
+    [Authorize]
+    [HttpPost("delete")]
+    public async Task<IActionResult> Delete(LoginSchema schema)
+    {
+      int ret = LandscapeService.DeleteUser(schema.Login, schema.Password);
+      if (ret != 0)
+        return BadRequest(new Status(0, "BadRequest", "You couldn't delete account", BadRequest().StatusCode));
+      await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+      return Ok(new Status(0, "Ok", "You deleted account and logged out", Ok().StatusCode));
+      //return NoContent();
+      //return RedirectToAction("Login", "Account");
     }
   }
 }

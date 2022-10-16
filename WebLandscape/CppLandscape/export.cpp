@@ -538,5 +538,103 @@ extern "C"
       return -2; //Unexpected Error
     }
   }
+
+  int getFreeCanvasUsersNumber()
+  {
+    try
+    {
+      shared_ptr<USER_REP> user_repository = make_shared<USER_REP>("moderator", "moderator");
+      vector<string> vec = user_repository->getFreeCanvasUsers();
+      int size = vec.size();
+      return size;
+    }
+    catch (BaseError& er)
+    {
+      return -1; //Error
+    }
+    catch (...)
+    {
+      return -2; //Unexpected Error
+    }
+  }
+
+  int getFreeCanvasUsers(char* free_canvas_users[])
+  {
+    try
+    {
+      shared_ptr<USER_REP> user_repository = make_shared<USER_REP>("moderator", "moderator");
+      vector<string> vec = user_repository->getFreeCanvasUsers();
+      int size = vec.size();
+      for (int i = 0; i < size; i++)
+      {
+        rsize_t len = vec[i].length();
+        free_canvas_users[i] = new char[len+1];
+        strcpy_s(free_canvas_users[i], len + 1, vec[i].c_str());
+      }
+      return size;
+    }
+    catch (BaseError& er)
+    {
+      return -1; //Error
+    }
+    catch (...)
+    {
+      return -2; //Unexpected Error
+    }
+  }
+
+  int getCanvasUsersNumber(int moderator_id)
+  {
+    try
+    {
+      shared_ptr<USER_REP> user_repository = make_shared<USER_REP>("moderator", "moderator");
+
+      shared_ptr<UserBL> moderatorBL = user_repository->getUser(moderator_id);
+      if (moderatorBL->getRole() != "moderator")
+        return -3; //moderator_id user is not moderator
+
+      vector<string> vec = user_repository->getCanvasUsersByMid(moderator_id);
+      int size = vec.size();
+      return size;
+    }
+    catch (BaseError& er)
+    {
+      return -1; //Error
+    }
+    catch (...)
+    {
+      return -2; //Unexpected Error
+    }
+  }
+
+  int getCanvasUsers(int moderator_id, char* canvas_users[])
+  {
+    try
+    {
+      shared_ptr<USER_REP> user_repository = make_shared<USER_REP>("moderator", "moderator");
+
+      shared_ptr<UserBL> moderatorBL = user_repository->getUser(moderator_id);
+      if (moderatorBL->getRole() != "moderator")
+        return -3; //moderator_id user is not moderator
+
+      vector<string> vec = user_repository->getCanvasUsersByMid(moderator_id);
+      int size = vec.size();
+      for (int i = 0; i < size; i++)
+      {
+        rsize_t len = vec[i].length();
+        canvas_users[i] = new char[len + 1];
+        strcpy_s(canvas_users[i], len + 1, vec[i].c_str());
+      }
+      return size;
+    }
+    catch (BaseError& er)
+    {
+      return -1; //Error
+    }
+    catch (...)
+    {
+      return -2; //Unexpected Error
+    }
+  }
 }
 
