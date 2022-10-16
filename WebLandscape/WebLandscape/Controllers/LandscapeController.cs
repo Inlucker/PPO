@@ -18,10 +18,10 @@ namespace WebLandscape.Controllers
   [Authorize(Roles = "canvas_user")]
   public class LandscapeController : ControllerBase
   {
-    private static readonly string[] Summaries = new[]
+    /*private static readonly string[] Summaries = new[]
     {
       "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-    };
+    };*/
 
     private readonly ILogger<LandscapeController> _logger;
 
