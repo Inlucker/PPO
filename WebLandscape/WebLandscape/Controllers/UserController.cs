@@ -11,6 +11,7 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
+using System.Web;
 
 namespace WebLandscape.Controllers
 {
@@ -22,6 +23,15 @@ namespace WebLandscape.Controllers
     [HttpGet("users/free")]
     public async Task<IActionResult> getFreeCanvasUsers()
     {
+      ClaimsPrincipal currentUser = this.User;
+      if (null != currentUser)
+      {
+        foreach (Claim claim in currentUser.Claims)
+        {
+          Console.WriteLine("CLAIM TYPE: " + claim.Type + "; CLAIM VALUE: " + claim.Value + "</br>");
+        }
+      }
+
       int ret = LandscapeService.GetFreeCanvasUsers(out List<String> canvasUsers);
       if (ret != 0)
         return BadRequest(canvasUsers);
@@ -30,8 +40,24 @@ namespace WebLandscape.Controllers
 
     [Authorize(Roles = "moderator")]
     [HttpGet("users")]
-    public async Task<IActionResult> getCanvasUsers(int moderator_id)
+    public async Task<IActionResult> getCanvasUsers(/*int moderator_id*/)
     {
+      int moderator_id = -1;
+      ClaimsPrincipal currentUser = this.User;
+      if (null != currentUser)
+      {
+        foreach (Claim claim in currentUser.Claims)
+        {
+          if (claim.Type == "id")
+          {
+            bool success = int.TryParse(claim.Value, out int i);
+            moderator_id = i;
+            break;
+          }
+        }
+      }
+      if (moderator_id <= 0)
+        return BadRequest(new Status(1, "BadRequest", "You couldn't get your Canvas Users", BadRequest().StatusCode));
       //List<User> canvasUser = new List<User>();
       int ret = LandscapeService.GetCanvasUsers(moderator_id, out List<String> canvasUsers);
       if (ret != 0)
@@ -79,8 +105,11 @@ namespace WebLandscape.Controllers
     {
       var claims = new List<Claim>
             {
+                new Claim("id", user.Id.ToString()),
                 new Claim(ClaimTypes.Name, user.Login),
-                new Claim(ClaimTypes.Role, user.Role)
+                new Claim("password", user.Password),
+                new Claim(ClaimTypes.Role, user.Role),
+                new Claim("moderator_id", user.ModeratorId.ToString())
             };
       var claimsIdentity = new ClaimsIdentity(
           claims, CookieAuthenticationDefaults.AuthenticationScheme);
@@ -148,9 +177,23 @@ namespace WebLandscape.Controllers
 
     [Authorize]
     [HttpDelete("me")]
-    public async Task<IActionResult> Delete(LoginSchema schema)
+    public async Task<IActionResult> Delete(/*LoginSchema schema*/)
     {
-      int ret = LandscapeService.DeleteUser(schema.Login, schema.Password);
+      String login = null, password = null;
+      ClaimsPrincipal currentUser = this.User;
+      if (null != currentUser)
+      {
+        foreach (Claim claim in currentUser.Claims)
+        {
+          if (claim.Type == ClaimTypes.Name)
+            login = claim.Value;
+          if (claim.Type == "password")
+            password = claim.Value;
+        }
+      }
+      if (login == null || password == null)
+        return BadRequest(new Status(1, "BadRequest", "You couldn't delete account", BadRequest().StatusCode));
+      int ret = LandscapeService.DeleteUser(login, password);
       if (ret != 0)
         return BadRequest(new Status(0, "BadRequest", "You couldn't delete account", BadRequest().StatusCode));
       await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
