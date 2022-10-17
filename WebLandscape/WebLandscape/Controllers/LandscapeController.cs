@@ -43,9 +43,9 @@ namespace WebLandscape.Controllers
         Summary = Summaries[rng.Next(Summaries.Length)]
       })
       .ToArray();
-    }
+    }*/
 
-    [HttpPost("AddNumbers")]
+    /*[HttpPost("AddNumbers")]
     public async Task<IActionResult> Add(int a, int b)
     {
       try
@@ -86,22 +86,6 @@ namespace WebLandscape.Controllers
           return Ok(lst);
         else
           return BadRequest(lst);
-      }
-      return BadRequest();
-    }
-
-    [AllowAnonymous]
-    [HttpGet("generate")]
-    public async Task<IActionResult> GenLandscape(int size, bool smoothing, String name = "Name", int? red = 20, int? green = 150, int? blue = 20)
-    {
-      if (size > 0)
-      {
-        Landscape landscape = LandscapeService.GenLandscape((int)size, (bool)smoothing, name, red, green, blue);
-
-        if (landscape != null)
-          return Ok(landscape);
-        else
-          return BadRequest(landscape);
       }
       return BadRequest();
     }

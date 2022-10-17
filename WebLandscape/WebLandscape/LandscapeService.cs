@@ -460,7 +460,7 @@ namespace WebLandscape
     public static int GetCanvasUsers(int moderator_id, out List<String> canvasUsers)
     {
       canvasUsers = new List<String>();
-      int size = getFreeCanvasUsersNumber();
+      int size = getCanvasUsersNumber(moderator_id);
       if (size < 0)
         return -1; //error
 

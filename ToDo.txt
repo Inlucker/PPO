@@ -4,3 +4,9 @@ ToDo list:
 3) (Done) Сделать прослойку между контролерами и C++
 4) (Done) Поправить swagger по api/v1
 5) (Done) Доделать API 
+
+Fix delete/me etc...
+
+For Lab3
+Js3D
+WebAsm

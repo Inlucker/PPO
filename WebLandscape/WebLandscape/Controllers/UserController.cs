@@ -29,7 +29,7 @@ namespace WebLandscape.Controllers
     }
 
     [Authorize(Roles = "moderator")]
-    [HttpGet("users/{moderator_id}")]
+    [HttpGet("users")]
     public async Task<IActionResult> getCanvasUsers(int moderator_id)
     {
       //List<User> canvasUser = new List<User>();
@@ -126,7 +126,7 @@ namespace WebLandscape.Controllers
     }
 
     [Authorize(Roles = "moderator")]
-    [HttpPatch("users/add/{moderator_id}")]
+    [HttpPatch("users/modeartor/{moderator_id}")]
     //public async Task<IActionResult> AddUser(AddUserSchema schema)
     public async Task<IActionResult> AddUser(int moderator_id, int? user_id, String user_name)
     {
@@ -137,7 +137,7 @@ namespace WebLandscape.Controllers
     }
 
     [Authorize(Roles = "moderator")]
-    [HttpPatch("users/remove")]
+    [HttpPatch("users/modeartor")]
     public async Task<IActionResult> RemoveUser(int? user_id, String user_name)
     {
       int ret = LandscapeService.RemoveUser(user_id, user_name);
@@ -147,7 +147,7 @@ namespace WebLandscape.Controllers
     }
 
     [Authorize]
-    [HttpDelete("delete")]
+    [HttpDelete("me")]
     public async Task<IActionResult> Delete(LoginSchema schema)
     {
       int ret = LandscapeService.DeleteUser(schema.Login, schema.Password);
