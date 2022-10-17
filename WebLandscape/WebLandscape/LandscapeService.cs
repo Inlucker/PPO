@@ -113,6 +113,8 @@ namespace WebLandscape
     //Params
     [DllImport(CppFunctionsDLL, CallingConvention = CallingConvention.Cdecl)]
     static extern int getParams(int canvas_id, ref int width, ref int height, ref double range, ref bool smooth, ref int mult, ref int red, ref int green, ref int blue, ref int size);
+    [DllImport(CppFunctionsDLL, CallingConvention = CallingConvention.Cdecl)]
+    static extern int createParams(int canvas_id, int width, int height, double range, bool smooth, int mult, int red, int green, int blue, int size);
 
     public static String GenHeightsMap(GenHeightsMapSchema model)
     {
@@ -488,6 +490,11 @@ namespace WebLandscape
       ret = getParams(canvas_id, ref w, ref h, ref ran, ref sm, ref m, ref re, ref g, ref b, ref siz);
       Params p = new Params { canvas_id = canvas_id, width = w, height = h, range = ran, smooth = sm, mult = m, red = re, green = g, blue = b, size = siz};
       return p;
+    }
+    internal static int CreateParams(Params par)
+    {
+      int ret = createParams(par.canvas_id, par.width, par.height, par.range, par.smooth, par.mult, par.red, par.green, par.blue, par.size);
+      return ret;
     }
   }
 }

@@ -28,5 +28,17 @@ namespace WebLandscape.Controllers
       else
         return BadRequest(new Status(0, "BadRequest", "You couldn't get params", BadRequest().StatusCode));
     }
+
+
+    [HttpPost("")]
+    public async Task<ActionResult<Landscape>> GetParams(Params par)
+    {
+      int ret = LandscapeService.CreateParams(par);
+
+      if (ret == 0)
+        return Ok(new Status(0, "BadRequest", "You created params", BadRequest().StatusCode));
+      else
+        return BadRequest(new Status(0, "BadRequest", "You couldn't create params", BadRequest().StatusCode));
+    }
   }
 }

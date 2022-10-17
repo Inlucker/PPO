@@ -89,4 +89,5 @@ extern "C"
 
   //Params
   EXPORT int getParams(int canvas_id, int& width, int& height, double& range, bool& smooth, int& mult, int& red, int& green, int& blue, int& size);
+  EXPORT int createParams(int canvas_id, int width, int height, double range, bool smooth, int mult, int red, int green, int blue, int size);
 }
