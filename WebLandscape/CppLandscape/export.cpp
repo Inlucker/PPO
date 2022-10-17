@@ -698,5 +698,35 @@ extern "C"
       return -2; //Unexpected Error
     }
   }
+
+  //Params
+  int getParams(int canvas_id, int& width, int& height, double& range, bool& smooth, int& mult, int& red, int& green, int& blue, int& size)
+  {
+
+    try
+    {
+      shared_ptr<PARAMS_REP> params_repository = make_shared<PARAMS_REP>("canvas_user", "canvas_user");
+
+      shared_ptr<ParamsBL> paramsBL = params_repository->getParams(canvas_id);
+      width = paramsBL->getWidth();
+      height = paramsBL->getHeight();
+      range = paramsBL->getRange();
+      smooth = paramsBL->getSmooth();
+      mult = paramsBL->getMult();
+      red = paramsBL->getRed();
+      green = paramsBL->getGreen();
+      blue = paramsBL->getBlue();
+      size = paramsBL->getSize();
+      return 0;
+    }
+    catch (BaseError& er)
+    {
+      return -1; //Error
+    }
+    catch (...)
+    {
+      return -2; //Unexpected Error
+    }
+  }
 }
 

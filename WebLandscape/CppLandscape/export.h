@@ -9,8 +9,10 @@
 
 #include "Essensities/UserBL.h"
 #include "Essensities/CanvasBl.h"
+#include "Essensities/ParamsBL.h"
 #include "Repositorys/UsersRepository.h"
 #include "Repositorys/CanvasRepository.h"
+#include "Repositorys/ParamsRepository.h"
 
 #include <iostream>
 #include <fstream>
@@ -84,4 +86,7 @@ extern "C"
   EXPORT int getFreeCanvasUsers(char* free_canvas_users[]);
   EXPORT int getCanvasUsersNumber(int moderator_id);
   EXPORT int getCanvasUsers(int moderator_id, char* canvas_users[]);
+
+  //Params
+  EXPORT int getParams(int canvas_id, int& width, int& height, double& range, bool& smooth, int& mult, int& red, int& green, int& blue, int& size);
 }

@@ -14,7 +14,7 @@ using Microsoft.AspNetCore.Authorization;
 namespace WebLandscape.Controllers
 {
   [ApiController]
-  [Route("api/v1/Landscapes")]
+  [Route("api/v1/landscapes")]
   [Authorize(Roles = "canvas_user")]
   public class LandscapeController : ControllerBase
   {
@@ -125,7 +125,7 @@ namespace WebLandscape.Controllers
       if (ret == 0)
         return Ok(new Status(0, "Ok", "You updated Landscape in DataBase", Ok().StatusCode));
       else
-        return BadRequest(new Status(0, "BadRequest", "You couldn't updated Landscape in DataBase", BadRequest().StatusCode));
+        return BadRequest(new Status(0, "BadRequest", "You couldn't update Landscape in DataBase", BadRequest().StatusCode));
     }
 
     [HttpDelete("{id}")]

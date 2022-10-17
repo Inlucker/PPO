@@ -109,6 +109,11 @@ namespace WebLandscape
     [DllImport(CppFunctionsDLL, CallingConvention = CallingConvention.Cdecl)]
     static extern int getCanvasUsers(int moderator_id, IntPtr[] freeCanvasUsers);
 
+
+    //Params
+    [DllImport(CppFunctionsDLL, CallingConvention = CallingConvention.Cdecl)]
+    static extern int getParams(int canvas_id, ref int width, ref int height, ref double range, ref bool smooth, ref int mult, ref int red, ref int green, ref int blue, ref int size);
+
     public static String GenHeightsMap(GenHeightsMapSchema model)
     {
       IntPtr pChar = genHeightsMap(model.Size, model.Smoothing);
@@ -471,6 +476,18 @@ namespace WebLandscape
         canvasUsers.Add(canvasUser);
       }
       return 0;
+    }
+
+    //Params
+    internal static Params GetParams(int canvas_id, out int ret)
+    {
+      int w = -1, h = -1, m = -1, re = -1, g = -1, b = -1, siz = -1;
+      double ran = -1;
+      bool sm = false;
+
+      ret = getParams(canvas_id, ref w, ref h, ref ran, ref sm, ref m, ref re, ref g, ref b, ref siz);
+      Params p = new Params { canvas_id = canvas_id, width = w, height = h, range = ran, smooth = sm, mult = m, red = re, green = g, blue = b, size = siz};
+      return p;
     }
   }
 }
