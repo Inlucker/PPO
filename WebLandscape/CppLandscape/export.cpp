@@ -117,7 +117,7 @@ extern "C"
         _role = role;
 
       shared_ptr<USER_REP> user_repository = make_shared<USER_REP>();
-      UserBL* new_user = new UserBL(-1, login, password, role, -1);
+      UserBL* new_user = new UserBL(-1, _login, _password, _role, -1);
       user_repository->addUser(*new_user);
 
       return new_user;
@@ -208,6 +208,53 @@ extern "C"
   void deleteChar(char* pChar)
   {
     delete[] pChar;
+  }
+
+  int checkCanvasByUserId(int canvas_id, int user_id)
+  {
+    try
+    {
+      shared_ptr<CANVAS_REP> canvas_repository = make_shared<CANVAS_REP>("canvas_user", "canvas_user");
+      shared_ptr<CanvasBL> canvasBL = canvas_repository->getCanvas(canvas_id);
+      if (canvasBL->getUserId() == user_id)
+        return 0;
+      else
+        return -3;
+    }
+    catch (BaseError& er)
+    {
+      return -1; //Error
+    }
+    catch (...)
+    {
+      return -2; //Unexpected Error
+    }
+  }
+
+  int checkCanvasByModeratorId(int canvas_id, int moderator_id)
+  {
+    try
+    {
+      shared_ptr<CANVAS_REP> canvas_repository = make_shared<CANVAS_REP>("moderator", "moderator");
+      shared_ptr<CanvasBL> canvasBL = canvas_repository->getCanvas(canvas_id);
+      shared_ptr<USER_REP> user_repository = make_shared<USER_REP>("moderator", "moderator");
+      string user_name = user_repository->getUser(canvasBL->getUserId())->getLogin();
+      vector<string> users = user_repository->getCanvasUsersByMid(moderator_id);
+      for (const string& user : users)
+      {
+        if (user == user_name)
+          return 0;
+      }
+      return -3;
+    }
+    catch (BaseError& er)
+    {
+      return -1; //Error
+    }
+    catch (...)
+    {
+      return -2; //Unexpected Error
+    }
   }
 
   //CanvasBL
@@ -360,6 +407,27 @@ extern "C"
     }
   }
 
+  int checkUserByModeratorId(int user_id, int moderator_id)
+  {
+    try
+    {
+      shared_ptr<USER_REP> user_repository = make_shared<USER_REP>();
+      shared_ptr<UserBL> user_bl = user_repository->getUser(user_id);
+      if (user_bl->getModeratorId() == moderator_id)
+        return 0;
+      else
+        return -3;
+    }
+    catch (BaseError& er)
+    {
+      return -1; //Error
+    }
+    catch (...)
+    {
+      return -2; //Unexpected Error
+    }
+  }
+
   //Generation
   char* genHeightsMap(int size, bool smooth, int& ret_code)
   {
@@ -496,7 +564,6 @@ extern "C"
         return -3; //user is not canvas_user
       if (userBL->getModeratorId() > 0)
         return -4; //user already has moderator
-
       shared_ptr<UserBL> moderatorBL = user_repository->getUser(moderator_id);
       if (moderatorBL->getRole() != "moderator")
         return -5; //moderator_id user is not moderator
@@ -548,16 +615,20 @@ extern "C"
     }
   }
 
-  int removeUser(int user_id)
+  int removeUser(int user_id, int moderator_id)
   {
     try
     {
       shared_ptr<USER_REP> user_repository = make_shared<USER_REP>("moderator", "moderator");
       shared_ptr<UserBL> userBL = user_repository->getUser(user_id);
+
       if (userBL->getRole() != "canvas_user")
         return -3; //user is not canvas_user
       if (userBL->getModeratorId() <= 0)
         return -4; //user has no moderator
+      if (userBL->getModeratorId() != moderator_id)
+        return -5; //It's not your canvas_user
+
       UserBL newUserBl = UserBL(userBL->getId(), userBL->getLogin(), userBL->getPassword(), userBL->getRole(), -1);
       user_repository->updateUser(newUserBl, user_id);
       return 0;
@@ -572,7 +643,7 @@ extern "C"
     }
   }
 
-  int removeUserByName(char* user_name)
+  int removeUserByName(char* user_name, int moderator_id)
   {
     try
     {
@@ -580,12 +651,14 @@ extern "C"
       if (user_name != NULL)
         _user_name = user_name;
       shared_ptr<USER_REP> user_repository = make_shared<USER_REP>("moderator", "moderator");
-      shared_ptr<UserBL> userBL = user_repository->getCanvasUser(user_name);
+      shared_ptr<UserBL> userBL = user_repository->getCanvasUser(_user_name);
 
       if (userBL->getRole() != "canvas_user")
         return -3; //user is not canvas_user
       if (userBL->getModeratorId() <= 0)
         return -4; //user has no moderator
+      if (userBL->getModeratorId() != moderator_id)
+        return -5; //It's not your canvas_user
 
       UserBL newUserBl = UserBL(userBL->getId(), userBL->getLogin(), userBL->getPassword(), userBL->getRole(), -1);
       user_repository->updateUser(newUserBl, userBL->getId());

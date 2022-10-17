@@ -219,7 +219,8 @@ void CanvasRepository::updateCanvas(CanvasBL &canvas_bl, int id)
     canvas_bl.getHeightsMap().toStr(hm);
     canvas_bl.getHeightsMapPoints().toStr(hmp);
     canvas_bl.getColor(c);
-    string query = "update " + m_schema + ".Canvas set HeightsMap = '" + hm;
+    string query = "update " + m_schema + ".Canvas set Name = '" + canvas_bl.getName();
+    query += "', HeightsMap = '" + hm;
     query += "', TriPolArray = '" + hmp;
     query += "', Color = '" + c;
     query += "' where id = " + to_string(id) + ";";

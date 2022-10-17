@@ -40,26 +40,12 @@ namespace WebLandscape.Controllers
 
     [Authorize(Roles = "moderator")]
     [HttpGet("users")]
-    public async Task<IActionResult> getCanvasUsers(/*int moderator_id*/)
+    public async Task<IActionResult> getCanvasUsers()
     {
-      int moderator_id = -1;
-      ClaimsPrincipal currentUser = this.User;
-      if (null != currentUser)
-      {
-        foreach (Claim claim in currentUser.Claims)
-        {
-          if (claim.Type == "id")
-          {
-            bool success = int.TryParse(claim.Value, out int i);
-            moderator_id = i;
-            break;
-          }
-        }
-      }
-      if (moderator_id <= 0)
-        return BadRequest(new Status(1, "BadRequest", "You couldn't get your Canvas Users", BadRequest().StatusCode));
-      //List<User> canvasUser = new List<User>();
-      int ret = LandscapeService.GetCanvasUsers(moderator_id, out List<String> canvasUsers);
+      User user = getUser();
+      if (!user.isOk())
+        return BadRequest(new Status(1, "BadRequest", "You didn't log in", BadRequest().StatusCode));
+      int ret = LandscapeService.GetCanvasUsers(user.Id, out List<String> canvasUsers);
       if (ret != 0)
         return BadRequest(canvasUsers);
       return Ok(canvasUsers);
@@ -67,7 +53,6 @@ namespace WebLandscape.Controllers
 
     [HttpPost("login")]
     public async Task<IActionResult> Login(LoginSchema schema)
-    //public User Login(LoginModel model)
     {
       User user = LandscapeService.Login(schema.Login, schema.Password);
       if (user != null)
@@ -75,17 +60,9 @@ namespace WebLandscape.Controllers
         await Authenticate(user);
 
         return Ok(new Status(0, "Ok", "You logged in", Ok().StatusCode));
-        //return user;
-        //return CreatedAtAction("Login", new { id = model.Login }, model);
-        //return NoContent();
-        //return RedirectToAction("AddNumbers");
       }
       ModelState.AddModelError("", "Некорректные логин и(или) пароль");
       return BadRequest(new Status(1, "BadRequest", "You couldn't log in", BadRequest().StatusCode));
-      //return user;
-      //return NoContent();
-      //return BadRequest();
-      //return CreatedAtAction("Login", new { id = model.Login }, model);
     }
 
     [HttpPost("register")]
@@ -101,6 +78,7 @@ namespace WebLandscape.Controllers
       ModelState.AddModelError("", "Некорректные логин и(или) пароль");
       return BadRequest(new Status(2, "BadRequest", "You couldn't register", BadRequest().StatusCode));
     }
+
     private async Task Authenticate(User user)
     {
       var claims = new List<Claim>
@@ -150,56 +128,69 @@ namespace WebLandscape.Controllers
     {
       await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
       return Ok(new Status(0, "Ok", "You logged out", Ok().StatusCode));
-      //return NoContent();
-      //return RedirectToAction("Login", "Account");
     }
 
     [Authorize(Roles = "moderator")]
-    [HttpPatch("users/modeartor/{moderator_id}")]
-    //public async Task<IActionResult> AddUser(AddUserSchema schema)
-    public async Task<IActionResult> AddUser(int moderator_id, int? user_id, String user_name)
+    [HttpPatch("users/moderator/add")]
+    public async Task<IActionResult> AddUser(int? user_id, String user_name)
     {
-      int ret = LandscapeService.AddUser(moderator_id, user_id, user_name);
+      User user = getUser();
+      if (!user.isOk())
+        return BadRequest(new Status(1, "BadRequest", "You didn't log in", BadRequest().StatusCode));
+      int ret = LandscapeService.AddUser(user.Id, user_id, user_name);
       if (ret != 0)
-        return BadRequest(new Status(0, "BadRequest", "You couldn't add user", BadRequest().StatusCode));
+        return BadRequest(new Status(1, "BadRequest", "You couldn't add user", BadRequest().StatusCode));
       return Ok(new Status(0, "Ok", "You added user ", Ok().StatusCode));
     }
 
     [Authorize(Roles = "moderator")]
-    [HttpPatch("users/modeartor")]
+    [HttpPatch("users/moderator/remove")]
     public async Task<IActionResult> RemoveUser(int? user_id, String user_name)
     {
-      int ret = LandscapeService.RemoveUser(user_id, user_name);
+      User user = getUser();
+      if (!user.isOk())
+        return BadRequest(new Status(1, "BadRequest", "You didn't log in", BadRequest().StatusCode));
+      int ret = LandscapeService.RemoveUser(user_id, user_name, user.Id);
       if (ret != 0)
-        return BadRequest(new Status(0, "BadRequest", "You couldn't remove user", BadRequest().StatusCode));
+        return BadRequest(new Status(1, "BadRequest", "You couldn't remove user", BadRequest().StatusCode));
       return Ok(new Status(0, "Ok", "You removed user ", Ok().StatusCode));
     }
 
     [Authorize]
     [HttpDelete("me")]
-    public async Task<IActionResult> Delete(/*LoginSchema schema*/)
+    public async Task<IActionResult> Delete()
     {
-      String login = null, password = null;
+      User user = getUser();
+      if (!user.isOk())
+        return BadRequest(new Status(1, "BadRequest", "You didn't log in", BadRequest().StatusCode));
+      int ret = LandscapeService.DeleteUser(user.Login, user.Password);
+      if (ret != 0)
+        return BadRequest(new Status(1, "BadRequest", "You couldn't delete account", BadRequest().StatusCode));
+      await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+      return Ok(new Status(0, "Ok", "You deleted account and logged out", Ok().StatusCode));
+    }
+
+    private User getUser()
+    {
+      User user = new User();
       ClaimsPrincipal currentUser = this.User;
       if (null != currentUser)
       {
         foreach (Claim claim in currentUser.Claims)
         {
+          if (claim.Type == "id")
+            user.Id = int.Parse(claim.Value);
           if (claim.Type == ClaimTypes.Name)
-            login = claim.Value;
+            user.Login = claim.Value;
           if (claim.Type == "password")
-            password = claim.Value;
+            user.Password = claim.Value;
+          if (claim.Type == ClaimTypes.Role)
+            user.Role = claim.Value;
+          if (claim.Type == "moderator_id")
+            user.ModeratorId = int.Parse(claim.Value);
         }
       }
-      if (login == null || password == null)
-        return BadRequest(new Status(1, "BadRequest", "You couldn't delete account", BadRequest().StatusCode));
-      int ret = LandscapeService.DeleteUser(login, password);
-      if (ret != 0)
-        return BadRequest(new Status(0, "BadRequest", "You couldn't delete account", BadRequest().StatusCode));
-      await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-      return Ok(new Status(0, "Ok", "You deleted account and logged out", Ok().StatusCode));
-      //return NoContent();
-      //return RedirectToAction("Login", "Account");
+      return user;
     }
   }
 }

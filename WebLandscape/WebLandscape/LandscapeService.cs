@@ -67,6 +67,10 @@ namespace WebLandscape
     static extern void deleteChar(IntPtr pChar);
     [DllImport(CppFunctionsDLL, CallingConvention = CallingConvention.Cdecl)]
     static extern void deleteCanvasBL(IntPtr pCanvasBL);
+    [DllImport(CppFunctionsDLL, CallingConvention = CallingConvention.Cdecl)]
+    static extern int checkCanvasByUserId(int canvas_id, int user_id);
+    [DllImport(CppFunctionsDLL, CallingConvention = CallingConvention.Cdecl)]
+    static extern int checkCanvasByModeratorId(int canvas_id, int moderator_id);
 
 
     //List<CanvasBL>
@@ -74,6 +78,8 @@ namespace WebLandscape
     static extern int getLandscapesNumberByUserId(int user_id);
     [DllImport(CppFunctionsDLL, CallingConvention = CallingConvention.Cdecl)]
     static extern int getLandscapesByUserId(int user_id, int[] idArray, int[,] strArray);
+    [DllImport(CppFunctionsDLL, CallingConvention = CallingConvention.Cdecl)]
+    static extern int checkUserByModeratorId(int user_id, int moderator_id);
 
 
     //HeightsMap
@@ -97,9 +103,9 @@ namespace WebLandscape
     [DllImport(CppFunctionsDLL, CallingConvention = CallingConvention.Cdecl)]
     static extern int addUserByName(String user_name, int moderator_id);
     [DllImport(CppFunctionsDLL, CallingConvention = CallingConvention.Cdecl)]
-    static extern int removeUser(int user_id);
+    static extern int removeUser(int user_id, int moderator_id);
     [DllImport(CppFunctionsDLL, CallingConvention = CallingConvention.Cdecl)]
-    static extern int removeUserByName(String user_name);
+    static extern int removeUserByName(String user_name, int moderator_id);
     [DllImport(CppFunctionsDLL, CallingConvention = CallingConvention.Cdecl)]
     static extern int getFreeCanvasUsersNumber();
     [DllImport(CppFunctionsDLL, CallingConvention = CallingConvention.Cdecl)]
@@ -194,10 +200,12 @@ namespace WebLandscape
 
       return canvasBL;
     }
-
-    public static Landscape GetLandscape(int id, out int ret_code)
+    public static Landscape GetLandscapeForModerator(int id, int moderator_id, out int ret_code)
     {
-      ret_code = 0;
+      ret_code = checkCanvasByModeratorId(id, moderator_id);
+      if (ret_code != 0)
+        return null;
+
       Landscape canvasBL = new Landscape();
 
       //create canvasBL
@@ -248,8 +256,119 @@ namespace WebLandscape
 
       return canvasBL;
     }
+    public static Landscape GetLandscapeForCanvasUser(int id, int user_id, out int ret_code)
+    {
+      ret_code = checkCanvasByUserId(id, user_id);
+      if (ret_code != 0)
+        return null;
 
-    public static List<CanvasIdName> GetLandscapesByUserId(int user_id, out int ret_code)
+      Landscape canvasBL = new Landscape();
+
+      //create canvasBL
+      IntPtr pCanvasBl = getCanvasBL(id);
+
+      //canvas id
+      int canvasId = getIdCanvasBL(pCanvasBl);
+      if (canvasId == -1)
+      {
+        ret_code = -1;
+        return null; //Вернуть ошибку
+      }
+      canvasBL.id = canvasId;
+
+      //canvas user_id
+      canvasBL.user_id = getUserIdCanvasBL(pCanvasBl);
+
+      //canvas name
+      IntPtr pChar = getNameCanvasBL(pCanvasBl);
+      String canvasName = Marshal.PtrToStringAnsi(pChar);
+      canvasBL.name = canvasName;
+      deleteChar(pChar);
+      pChar = IntPtr.Zero;
+
+      //canvas heights_map
+      IntPtr pHeightsMapChar = getHeightsMapCanvasBL(pCanvasBl);
+      String heightsMapStr = Marshal.PtrToStringAnsi(pHeightsMapChar);
+      canvasBL.heights_map = heightsMapStr;
+      deleteChar(pHeightsMapChar);
+      pHeightsMapChar = IntPtr.Zero;
+
+      //canvas heights_map_points
+      IntPtr pHeightsMapPointsChar = getHeightsMapPointsCanvasBL(pCanvasBl);
+      canvasBL.heights_map_points = Marshal.PtrToStringAnsi(pHeightsMapPointsChar);
+      deleteChar(pHeightsMapChar);
+      pHeightsMapChar = IntPtr.Zero;
+
+      //canvas color
+      int r = 0, g = 0, b = 0;
+      getColorCanvasBL(pCanvasBl, ref r, ref g, ref b);
+      canvasBL.red = r;
+      canvasBL.green = g;
+      canvasBL.blue = b;
+
+      //delete canvasBL
+      deleteCanvasBL(pCanvasBl);
+      pCanvasBl = IntPtr.Zero;
+
+      return canvasBL;
+    }
+    public static List<CanvasIdName> GetLandscapesForModerator(int user_id, int moderator_id, out int ret_code)
+    {
+      ret_code = 0;
+      List<CanvasIdName> lst = new List<CanvasIdName>();
+      if (user_id < 0)
+      {
+        ret_code = -1;
+        return lst;
+      }
+
+      int ret = checkUserByModeratorId(user_id, moderator_id);
+      if (ret != 0)
+      {
+        ret_code = -2;
+        return lst;
+      }
+
+      int size = getLandscapesNumberByUserId(user_id);
+      if (size < 0)
+      {
+        ret_code = -3;
+        return lst;
+      }
+
+      int[] idArray = new int[size];
+      int[,] nameArray = new int[size, 256];
+      ret = getLandscapesByUserId((int)user_id, idArray, nameArray);
+      if (ret != 0)
+      {
+        ret_code = -4;
+        return lst;
+      }
+
+      char[,] nameArray2 = new char[size, 256];
+      for (int i = 0; i < size; i++)
+        for (int j = 0; j < 256; j++)
+          nameArray2[i, j] = (char)nameArray[i, j];
+
+      string[] nameArray3 = new string[size];
+      for (int i = 0; i < size; i++)
+      {
+        var builder = new StringBuilder();
+        for (int j = 0; j < 256; j++)
+        {
+          if (nameArray2[i, j] == '\0')
+            break;
+          builder.Append(nameArray2[i, j]);
+        }
+        nameArray3[i] = builder.ToString();
+      }
+
+      for (int i = 0; i < size; i++)
+        lst.Add(new CanvasIdName { id = idArray[i], name = nameArray3[i] });
+
+      return lst;
+    }
+    public static List<CanvasIdName> GetLandscapesForCanvasUser(int user_id, out int ret_code)
     {
       ret_code = 0;
       List<CanvasIdName> lst = new List<CanvasIdName>();
@@ -299,26 +418,29 @@ namespace WebLandscape
       return lst;
     }
 
-    public static int SendLandscape(CreateLandscapeSchema schema)
+    public static int SendLandscape(CreateLandscapeSchema schema, int user_id)
     {
       int res = 0;
-      res = sendLandscape(schema.user_id, schema.name, schema.heights_map, schema.heights_map_points, schema.red, schema.green, schema.blue);
+      res = sendLandscape(user_id, schema.name, schema.heights_map, schema.heights_map_points, schema.red, schema.green, schema.blue);
 
       return res;
     }
 
-    public static int UpdateLandscape(UpdateLandscapeSchema schema)
+    public static int UpdateLandscape(UpdateLandscapeSchema schema, int user_id)
     {
-      int res = 0;
+      int res = checkCanvasByUserId(schema.id, user_id);
+      if (res != 0)
+        return res;
       res = updateLandscape(schema.id, schema.name, schema.heights_map, schema.heights_map_points, schema.red, schema.green, schema.blue);
 
       return res;
     }
-    public static int DeleteLandscape(int id)
+    public static int DeleteLandscape(int canvas_id, int user_id)
     {
-      int res = 0;
-      res = deleteLandscape(id);
-
+      int res = checkCanvasByUserId(canvas_id, user_id);
+      if (res != 0)
+        return res;
+      res = deleteLandscape(canvas_id);
       return res;
     }
 
@@ -423,13 +545,13 @@ namespace WebLandscape
         res = addUserByName(user_name, moderator_id);
       return res;
     }
-    public static int RemoveUser(int? user_id, String user_name)
+    public static int RemoveUser(int? user_id, String user_name, int moderator_id)
     {
       int res = -1;
       if (user_id.HasValue)
-        res = removeUser((int)user_id);
+        res = removeUser((int)user_id, moderator_id);
       else if (user_name != null)
-        res = removeUserByName(user_name);
+        res = removeUserByName(user_name, moderator_id);
       return res;
     }
 
@@ -483,8 +605,13 @@ namespace WebLandscape
     }
 
     //Params
-    public static Params GetParams(int canvas_id, out int ret)
+    public static Params GetParams(int canvas_id, int user_id, out int ret)
     {
+      if (checkCanvasByUserId(canvas_id, user_id) != 0)
+      {
+        ret = -1;
+        return null;
+      }
       int w = -1, h = -1, m = -1, re = -1, g = -1, b = -1, siz = -1;
       double ran = -1;
       bool sm = false;
@@ -494,13 +621,17 @@ namespace WebLandscape
       return p;
     }
 
-    public static int CreateParams(Params par)
+    public static int CreateParams(Params par, int user_id)
     {
+      if (checkCanvasByUserId(par.canvas_id, user_id) != 0)
+        return -1;
       int ret = createParams(par.canvas_id, par.width, par.height, par.range, par.smooth, par.mult, par.red, par.green, par.blue, par.size);
       return ret;
     }
-    public static int UpdateParams(Params par)
+    public static int UpdateParams(Params par, int user_id)
     {
+      if (checkCanvasByUserId(par.canvas_id, user_id) != 0)
+        return -1;
       int ret = updateParams(par.canvas_id, par.width, par.height, par.range, par.smooth, par.mult, par.red, par.green, par.blue, par.size);
       return ret;
     }

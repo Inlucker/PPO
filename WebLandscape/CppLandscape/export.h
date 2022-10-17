@@ -50,7 +50,6 @@ extern "C"
   EXPORT int getUserModeratorId(UserBL* pUserBL);
   EXPORT void deleteUserBL(UserBL* pUserBL);
 
-  EXPORT void deleteChar(char* pChar);
 
   //CanvasBL
   EXPORT CanvasBL* getCanvasBL(int id);
@@ -63,10 +62,14 @@ extern "C"
   EXPORT char* getHeightsMapPointsCanvasBL(CanvasBL* pCanvasBL);
   EXPORT void getColorCanvasBL(CanvasBL* pCanvasBL, int& r, int& g, int& b);
   EXPORT void deleteCanvasBL (CanvasBL* pCanvasBL);
+  EXPORT void deleteChar(char* pChar);
+  EXPORT int checkCanvasByUserId(int canvas_id, int user_id);
+  EXPORT int checkCanvasByModeratorId(int canvas_id, int moderator_id);
 
   //List<CanvasBL>
   EXPORT int getLandscapesNumberByUserId(int user_id);
   EXPORT int getLandscapesByUserId(int user_id, int idArray[], int strArray[][256]);
+  EXPORT int checkUserByModeratorId(int user_id, int moderator_id);
 
   //Generation
   EXPORT char* genHeightsMap(int size, bool smooth, int& ret_code);
@@ -80,8 +83,8 @@ extern "C"
   //Moderator Actions
   EXPORT int addUser(int user_id, int moderator_id);
   EXPORT int addUserByName(char* user_name, int moderator_id);
-  EXPORT int removeUser(int user_id);
-  EXPORT int removeUserByName(char* user_name);
+  EXPORT int removeUser(int user_id, int moderator_id);
+  EXPORT int removeUserByName(char* user_name, int moderator_id);
   EXPORT int getFreeCanvasUsersNumber();
   EXPORT int getFreeCanvasUsers(char* free_canvas_users[]);
   EXPORT int getCanvasUsersNumber(int moderator_id);

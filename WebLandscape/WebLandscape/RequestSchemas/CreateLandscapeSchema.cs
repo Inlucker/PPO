@@ -5,8 +5,6 @@ namespace WebLandscape.RequestSchemas
 {
   public class CreateLandscapeSchema
   {
-    [Required(ErrorMessage = "Не указан user_id")]
-    public int user_id { get; set; }
     [Required(ErrorMessage = "Не указан name")]
     public String name { get; set; }
     [Required(ErrorMessage = "Не указан heights_map")]

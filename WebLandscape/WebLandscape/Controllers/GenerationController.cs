@@ -19,7 +19,7 @@ namespace WebLandscape.Controllers
   {
     [AllowAnonymous]
     [HttpGet("generation")]
-    public async Task<IActionResult> GenLandscape(int size, bool smoothing, String name = "Name", int? red = 20, int? green = 150, int? blue = 20)
+    public async Task<IActionResult> GenLandscape(int size = 9, bool smoothing = true, String name = "Name", int? red = 20, int? green = 150, int? blue = 20)
     {
       if (size > 0)
       {
