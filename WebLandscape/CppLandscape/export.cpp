@@ -746,5 +746,24 @@ extern "C"
       return -2; //Unexpected Error
     }
   }
+  int updateParams(int canvas_id, int width, int height, double range, bool smooth, int mult, int red, int green, int blue, int size)
+  {
+    try
+    {
+      ParamsBL paramsBL = ParamsBL(canvas_id, width, height, range, smooth, mult, red, green, blue, size);
+      shared_ptr<PARAMS_REP> params_repository = make_shared<PARAMS_REP>("canvas_user", "canvas_user");
+
+      params_repository->updateParams(paramsBL, canvas_id);
+      return 0;
+    }
+    catch (BaseError& er)
+    {
+      return -1; //Error
+    }
+    catch (...)
+    {
+      return -2; //Unexpected Error
+    }
+  }
 }
 

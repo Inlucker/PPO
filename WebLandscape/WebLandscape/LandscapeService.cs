@@ -115,6 +115,8 @@ namespace WebLandscape
     static extern int getParams(int canvas_id, ref int width, ref int height, ref double range, ref bool smooth, ref int mult, ref int red, ref int green, ref int blue, ref int size);
     [DllImport(CppFunctionsDLL, CallingConvention = CallingConvention.Cdecl)]
     static extern int createParams(int canvas_id, int width, int height, double range, bool smooth, int mult, int red, int green, int blue, int size);
+    [DllImport(CppFunctionsDLL, CallingConvention = CallingConvention.Cdecl)]
+    static extern int updateParams(int canvas_id, int width, int height, double range, bool smooth, int mult, int red, int green, int blue, int size);
 
     public static String GenHeightsMap(GenHeightsMapSchema model)
     {
@@ -481,7 +483,7 @@ namespace WebLandscape
     }
 
     //Params
-    internal static Params GetParams(int canvas_id, out int ret)
+    public static Params GetParams(int canvas_id, out int ret)
     {
       int w = -1, h = -1, m = -1, re = -1, g = -1, b = -1, siz = -1;
       double ran = -1;
@@ -491,9 +493,15 @@ namespace WebLandscape
       Params p = new Params { canvas_id = canvas_id, width = w, height = h, range = ran, smooth = sm, mult = m, red = re, green = g, blue = b, size = siz};
       return p;
     }
-    internal static int CreateParams(Params par)
+
+    public static int CreateParams(Params par)
     {
       int ret = createParams(par.canvas_id, par.width, par.height, par.range, par.smooth, par.mult, par.red, par.green, par.blue, par.size);
+      return ret;
+    }
+    public static int UpdateParams(Params par)
+    {
+      int ret = updateParams(par.canvas_id, par.width, par.height, par.range, par.smooth, par.mult, par.red, par.green, par.blue, par.size);
       return ret;
     }
   }

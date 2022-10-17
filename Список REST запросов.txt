@@ -16,7 +16,7 @@ POST:
 
 PUT:
 (Done) Обновить ландшафт(HeightsMap, TriPolMas, Color)
-Обновить параметры(width, height, range, smooth, mult, red, green, blue, size)
+(Done) Обновить параметры(width, height, range, smooth, mult, red, green, blue, size)
 
 PATCH:
 (Done) Добавление пользователя модератором(id пользователя, id модератора)

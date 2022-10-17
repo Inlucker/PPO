@@ -164,13 +164,17 @@ void ParamsRepository::updateParams(ParamsBL &params, int id)
     string query = "update " + m_schema + ".Params set width = " + to_string(width);
     query += ", height = " + to_string(height);
     query += ", range = " + to_string(range);
-    query += ", smooth = " + to_string(smooth);
+    query += ", smooth = ";
+    if (smooth)
+      query += "TRUE";
+    else
+      query += "FALSE";
     query += ", mult = " + to_string(mult);
     query += ", red = " + to_string(red);
     query += ", green = " + to_string(green);
     query += ", blue = " + to_string(blue);
     query += ", size = " + to_string(size);
-    query += " where id = " + to_string(id) + ";";
+    query += " where canvas_id = " + to_string(id) + ";";
     PQsendQuery(m_connection.get(), query.c_str());
 
     int flag = 0;
