@@ -24,3 +24,8 @@
 ![ab1](ab3.jpg)
 
 Как видно по результатам, как и ожидалось, при большем количестве бэкендов, скорость обработки запросв возрастает.
+
+# Лабораторная работа №2
+[Ссылка на фигму](https://www.figma.com/file/6ub7Secf5p6BYxG9JzJCFr/WEB-Lab02?node-id=0%3A1&t=XQp09KsX0L8LMowa-1)
+
+[Ссылка на прототип](https://www.figma.com/proto/UNuKbDcIoz1FbVMtyiHCPU/WEB_Lab02(Final)?node-id=114%3A14368&scaling=scale-down&page-id=1%3A31&starting-point-node-id=114%3A14368)
