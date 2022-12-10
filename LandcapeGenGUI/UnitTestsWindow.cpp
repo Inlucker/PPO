@@ -57,11 +57,8 @@ void UnitTestsWindow::on_base_controller_test_btn_clicked()
 
 void UnitTestsWindow::on_canvas_repository_test_btn_clicked()
 {
-    shared_ptr<CanvasRepositoryTest> crt;
     try
     {
-        //crt = make_shared<CanvasRepositoryTest>();
-        //shared_ptr<CanvasRepositoryTest> crt = make_shared<CanvasRepositoryTest>();
         CanvasRepositoryTest crt;
         const string& out = crt.getOutput();
         ui->textEdit->setPlainText(QString(out.c_str()));

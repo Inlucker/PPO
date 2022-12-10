@@ -21,12 +21,9 @@ private:
     int deleteCanvasTest();
 
 private:
-    string m_dbhost;
-    int m_dbport;
-    string m_dbname;
-    string m_dbuser;
-    string m_dbpass;
-    string m_dbschema;
+    QString old_login;
+    QString old_pass;
+    QString old_schema;
 
     int errors_count = 0;
     string output = "";
