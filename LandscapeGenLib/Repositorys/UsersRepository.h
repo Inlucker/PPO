@@ -20,7 +20,7 @@ public:
     shared_ptr<UserBL> getCanvasUser(string name);
     vector<string> getFreeCanvasUsers();
     vector<string> getCanvasUsersByMid(int m_id);
-    virtual void addUser(UserBL& user) override;
+    virtual int addUser(UserBL& user) override;
     virtual void deleteUser(int id) override;
     virtual void updateUser(UserBL& user_bl, int id) override;
 

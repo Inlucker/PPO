@@ -47,7 +47,7 @@ shared_ptr<UserBL> UsersRepository::getUser(string login, string password)
 shared_ptr<UserBL> UsersRepository::getCanvasUser(string name)
 {
     connect();
-    string query = "SELECT * FROM " + m_schema + ".Users where login='" + name + "';";
+    string query = "SELECT * FROM " + m_schema + ".Users where login='" + name + "' and role = 'canvas_user';";
     PQsendQuery(m_connection.get(), query.c_str());
 
     bool flag = false;
@@ -155,24 +155,31 @@ vector<string> UsersRepository::getCanvasUsersByMid(int m_id)
     return vec;
 }
 
-void UsersRepository::addUser(UserBL &user)
+int UsersRepository::addUser(UserBL &user)
 {
+    int id = -1;
     connect();
     string login = user.getLogin();
     string password = user.getPassword();
     string role = user.getRole();
+    string moderator_id = std::to_string(user.getModeratorId());
 
     string query = "insert into " + m_schema + ".Users(login, password, role, moderator_id) values('";
     //string query = "insert into " + m_dbschema + ".Canvas values(-1, 1, 'CanvasName', '";
     query += login + "', '";
     query += password + "', '";
-    query += role + "', NULL);";
+    query += role + "', ";
+    query += moderator_id + ")";
+    query += "RETURNING id;";
     PQsendQuery(m_connection.get(), query.c_str());
 
     bool flag = false;
     string error_msg = "";
     while (auto res = PQgetResult( m_connection.get()))
     {
+        int rows_n = PQntuples(res);
+        if (PQresultStatus(res) == PGRES_TUPLES_OK && rows_n)
+            id = atoi(PQgetvalue (res, 0, 0));
         if (PQresultStatus(res) == PGRES_FATAL_ERROR)
         {
             error_msg += "\n";
@@ -188,6 +195,7 @@ void UsersRepository::addUser(UserBL &user)
         time_t t_time = time(NULL);
         throw RegistrateUserError(error_msg, __FILE__, __LINE__, ctime(&t_time));
     }
+    return id;
 }
 
 void UsersRepository::deleteUser(int id)

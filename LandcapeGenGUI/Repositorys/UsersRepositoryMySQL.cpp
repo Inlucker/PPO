@@ -35,7 +35,7 @@ shared_ptr<UserBL> UsersRepositoryMySQL::getUser(string login, string password)
 
 shared_ptr<UserBL> UsersRepositoryMySQL::getCanvasUser(string name)
 {
-    string query = "SELECT * FROM " + m_schema + ".Users where login='" + name + "';";
+    string query = "SELECT * FROM " + m_schema + ".Users where login='" + name + "' and role = 'canvas_user';";
 
     QSqlQuery q;
     q.exec(QString::fromStdString(query));

@@ -59,11 +59,12 @@ CanvasRepositoryTest::CanvasRepositoryTest()
 
     if (!db->open())
         QFAIL("Disconnected!");
+
+    sut = CanvasRepository();
 }
 
 CanvasRepositoryTest::~CanvasRepositoryTest()
 {
-    sut = CanvasRepository();
 }
 
 void CanvasRepositoryTest::initTestCase()
@@ -275,19 +276,12 @@ void CanvasRepositoryTest::addCanvasTest()
     hm.diamondSquare();
     CanvasBL canvas = CanvasBL(1, 1, "CanvasName", hm, *hm.createPoints(), 20, 150, 20);
     shared_ptr<CanvasBL> same_canvas;
-
-    int last_canvas_id = -1;
-    string query = "SELECT * FROM " + m_schema + ".Canvas;";
-    QSqlQuery q;
-    if (!q.exec(QString::fromStdString(query)))
-        QFAIL(q.lastError().text().toStdString().c_str());
-    while (q.next())
-        last_canvas_id = q.value(0).toInt();
+    int id = -1;
 
     //ACT
     try
     {
-        sut.addCanvas(canvas);
+        id = sut.addCanvas(canvas);
     }
     //ASSERT
     catch (BaseError &er)
@@ -301,8 +295,8 @@ void CanvasRepositoryTest::addCanvasTest()
         return;
     }
 
-    query = "SELECT * FROM " + m_schema + ".Canvas where id=" + to_string(last_canvas_id+1) + ";";
-
+    string query = "SELECT * FROM " + m_schema + ".Canvas where id=" + to_string(id) + ";";
+    QSqlQuery q;
     if (!q.exec(QString::fromStdString(query)))
         QFAIL(q.lastError().text().toStdString().c_str());
     if (q.next())
@@ -342,7 +336,6 @@ void CanvasRepositoryTest::deleteCanvasTest()
     }
 
     string query = "SELECT * FROM " + m_schema + ".Canvas where id=" + to_string(1) + ";";
-
     QSqlQuery q;
     if (!q.exec(QString::fromStdString(query)))
         QFAIL(q.lastError().text().toStdString().c_str());
@@ -377,7 +370,6 @@ void CanvasRepositoryTest::updateCanvasTest()
     }
 
     string query = "SELECT * FROM " + m_schema + ".Canvas where id=" + to_string(1) + ";";
-
     QSqlQuery q;
     if (!q.exec(QString::fromStdString(query)))
         QFAIL(q.lastError().text().toStdString().c_str());
