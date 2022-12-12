@@ -16,7 +16,7 @@ else:unix: LIBS += -L'C:/Program Files/PostgreSQL/13/lib/' -llibpq
 INCLUDEPATH += 'C:/Program Files/PostgreSQL/13/include'
 DEPENDPATH += 'C:/Program Files/PostgreSQL/13/include'
 
-#LandscapeGenLib2
+#LandscapeGenLib
 win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../../LandscapeGenLib/release/ -lLandscapeGenLib
 else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../../LandscapeGenLib/debug/ -lLandscapeGenLib
 else:unix: LIBS += -L$$PWD/../../LandscapeGenLib/ -lLandscapeGenLib

@@ -5,7 +5,7 @@ ModeratorCanvasesController::ModeratorCanvasesController()
     canvas = make_shared<LandscapeCanvas>();
 }
 
-void ModeratorCanvasesController::selectCanvas(shared_ptr<LandscapeCanvas> c)
+void ModeratorCanvasesController::selectCanvas(shared_ptr<LandscapeCanvasI> c)
 {
     canvas = c;
 }
@@ -45,7 +45,7 @@ void ModeratorCanvasesController::getColor(int &r, int &g, int &b) const
     canvas->getColor(r, g, b);
 }
 
-shared_ptr<LandscapeCanvas> ModeratorCanvasesController::getLandscapeCanvas() const
+shared_ptr<LandscapeCanvasI> ModeratorCanvasesController::getLandscapeCanvas() const
 {
     return canvas;
 }

@@ -1,4 +1,4 @@
-QT += testlib sql
+QT += testlib
 QT -= gui
 
 CONFIG += qt console warn_on depend_includepath testcase
@@ -6,15 +6,7 @@ CONFIG -= app_bundle
 
 TEMPLATE = app
 
-SOURCES +=  tst_usersrepositorytest.cpp
-
-#libpq
-win32:CONFIG(release, debug|release): LIBS += -L'C:/Program Files/PostgreSQL/13/lib/' -llibpq
-else:win32:CONFIG(debug, debug|release): LIBS += -L'C:/Program Files/PostgreSQL/13/lib/' -llibpq
-else:unix: LIBS += -L'C:/Program Files/PostgreSQL/13/lib/' -llibpq
-
-INCLUDEPATH += 'C:/Program Files/PostgreSQL/13/include'
-DEPENDPATH += 'C:/Program Files/PostgreSQL/13/include'
+SOURCES +=  tst_basecontrollertest.cpp
 
 #LandscapeGenLib
 win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../../LandscapeGenLib/release/ -lLandscapeGenLib

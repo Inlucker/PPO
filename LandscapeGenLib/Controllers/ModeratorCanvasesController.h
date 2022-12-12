@@ -9,7 +9,7 @@ class ModeratorCanvasesController : public BaseController
 public:
     ModeratorCanvasesController();
 
-    void selectCanvas(shared_ptr<LandscapeCanvas> c);
+    void selectCanvas(shared_ptr<LandscapeCanvasI> c);
 
     shared_ptr<FrameBuffer> getFrameBuffer();
     void cleanCanvas();
@@ -21,7 +21,7 @@ public:
 
     void getColor(int& r, int& g, int& b) const;
 
-    shared_ptr<LandscapeCanvas> getLandscapeCanvas() const;
+    shared_ptr<LandscapeCanvasI> getLandscapeCanvas() const;
     shared_ptr<HeightsMap> getHeightsMap() const;
     shared_ptr<HeightsMapPoints> getHeightsMapPoints() const;
     shared_ptr<TriPolArray> getTriPolArray() const;
@@ -30,7 +30,7 @@ public:
     int getImgWidth() const;
     int getImgHeight() const;
 private:
-    shared_ptr<LandscapeCanvas> canvas;
+    shared_ptr<LandscapeCanvasI> canvas;
 };
 
 #endif // MODERATORCANVASESCONTROLLER_H

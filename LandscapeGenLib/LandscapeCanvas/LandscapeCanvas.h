@@ -14,7 +14,54 @@ using namespace std;
 #include "Triangles/TriangularPolygon.h"
 #include "ZBuffer/ZBufferAlg.h"
 
-class LandscapeCanvas
+class LandscapeCanvasI
+{
+public:
+    //explicit LandscapeCanvasI() = default;
+    //virtual ~LandscapeCanvasI() = 0;
+    //virtual bool operator ==(LandscapeCanvasI& an_canvas);
+
+    virtual void generateNewLandscape(int size) = 0;
+    virtual void readFromFile(string file_name) = 0;
+    virtual void writeToFile(string file_name) = 0;
+    virtual shared_ptr<FrameBuffer> getFrameBuffer() = 0;
+    virtual void cleanCanvas() = 0;
+    virtual void resetHeightsMap() = 0;
+    virtual void resetHeightsMap(HeightsMap& hm) = 0;
+    virtual void updateResolution() = 0;
+
+    //Resolution setters
+    virtual void setWidth(int new_width) = 0;
+    virtual void setHeight(int new_height) = 0;
+
+    //generating seters
+    virtual void setRange(float new_range) = 0;
+    virtual void setSmoothing(bool new_smoothing) = 0;
+
+    //drawing seters
+    virtual void setMult(int new_mult) = 0;
+    virtual void setLandscapeColor(int r, int g, int b) = 0;
+
+    //transforming
+    virtual void transform(const Point& move, const Point& scale, const Point& rotate) = 0;
+    virtual void move(const Point& move) = 0;
+    virtual void scale(const Point& scale) = 0;
+    virtual void rotate(const Point& rotate) = 0;
+
+    virtual void getColor(int& r, int& g, int& b) noexcept = 0;
+
+    virtual shared_ptr<HeightsMap> getHeightsMap() const = 0;
+    virtual shared_ptr<HeightsMapPoints> getHeightsMapPoints() const = 0;
+    virtual shared_ptr<TriPolArray> getTriPolArray() const = 0;
+    virtual shared_ptr<ZBufferAlg> getZBufferAlg() const = 0;
+    virtual int getMult() const = 0;
+    virtual int getImgWidth() const = 0;
+    virtual int getImgHeight() const = 0;
+
+    virtual void writeColorToFile(string file_name) = 0;
+};
+
+class LandscapeCanvas : public LandscapeCanvasI
 {
 public:
     LandscapeCanvas();
