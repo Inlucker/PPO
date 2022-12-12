@@ -6,12 +6,15 @@ class ParamsBL
 {
 public:
     ParamsBL() = delete;
-    ParamsBL(int c_id, int w, int h, int ran, bool s, int m, int r, int g, int b, int siz);
+    ParamsBL(int c_id, int w, int h, double ran, bool s, int m, int r, int g, int b, int siz);
+
+    bool operator ==(ParamsBL& an_p);
+    bool operator !=(ParamsBL& an_p);
 
     int getCanvasID() noexcept;
     int getWidth() noexcept;
     int getHeight() noexcept;
-    int getRange() noexcept;
+    double getRange() noexcept;
     bool getSmooth() noexcept;
     int getMult() noexcept;
     int getRed() noexcept;
@@ -20,7 +23,9 @@ public:
     int getSize() noexcept;
 
 private:
-    int canvas_id, width, height, range, mult, red, green, blue, size;
+    int canvas_id, width, height;
+    double range;
+    int mult, red, green, blue, size;
     bool smooth;
 };
 

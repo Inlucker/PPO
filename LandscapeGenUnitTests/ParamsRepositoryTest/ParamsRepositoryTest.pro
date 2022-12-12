@@ -6,7 +6,7 @@ CONFIG -= app_bundle
 
 TEMPLATE = app
 
-SOURCES +=  tst_usersrepositorytest.cpp
+SOURCES +=  tst_paramsrepositorytest.cpp
 
 #libpq
 win32:CONFIG(release, debug|release): LIBS += -L'C:/Program Files/PostgreSQL/13/lib/' -llibpq

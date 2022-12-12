@@ -56,7 +56,6 @@ CanvasBL::CanvasBL(int _id, int u_id, string n, HeightsMap &hm, HeightsMapPoints
 
 bool CanvasBL::operator ==(CanvasBL &an_c)
 {
-
     bool res = true;
 
     if (this->user_id != an_c.user_id ||

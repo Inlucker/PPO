@@ -22,7 +22,7 @@ shared_ptr<ParamsBL> ParamsRepository::getParams(int id)
             int c_id = atoi(PQgetvalue (res, 0, 0));
             int width = atoi(PQgetvalue (res, 0, 1));
             int height = atoi(PQgetvalue (res, 0, 2));
-            int range = atoi(PQgetvalue (res, 0, 3));
+            double range = atof(PQgetvalue (res, 0, 3));
             //qDebug(logInfo()) << PQgetvalue (res, 0, 4);
             bool smooth = PQgetvalue (res, 0, 4);
             //bool smooth = false;
@@ -61,7 +61,7 @@ void ParamsRepository::addParams(ParamsBL &params)
     int c_id = params.getCanvasID();
     int width = params.getWidth();
     int height = params.getHeight();
-    int range = params.getRange();
+    double range = params.getRange();
     bool smooth = params.getSmooth();
     int mult = params.getMult();
     int red = params.getRed();
@@ -143,7 +143,7 @@ void ParamsRepository::updateParams(ParamsBL &params, int id)
     //int c_id = params.getCanvasID();
     int width = params.getWidth();
     int height = params.getHeight();
-    int range = params.getRange();
+    double range = params.getRange();
     bool smooth = params.getSmooth();
     int mult = params.getMult();
     int red = params.getRed();
