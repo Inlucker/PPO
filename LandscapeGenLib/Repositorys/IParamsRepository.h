@@ -13,7 +13,7 @@ public:
     virtual ~IParamsRepository() = 0;
 
     virtual shared_ptr<ParamsBL> getParams(int id) = 0;
-    virtual void addParams(ParamsBL& params) = 0;
+    virtual int addParams(ParamsBL& params) = 0;
     virtual void deleteParams(int id) = 0;
     virtual void updateParams(ParamsBL& params, int id) = 0;
 };

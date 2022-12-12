@@ -13,10 +13,9 @@ public:
     virtual ~ParamsRepository() = default;
 
     virtual shared_ptr<ParamsBL> getParams(int id) override;
-    virtual void addParams(ParamsBL& params) override;
+    virtual int addParams(ParamsBL& params) override;
     virtual void deleteParams(int id) override;
     virtual void updateParams(ParamsBL& params, int id) override;
-
 
 protected:
     void connect();

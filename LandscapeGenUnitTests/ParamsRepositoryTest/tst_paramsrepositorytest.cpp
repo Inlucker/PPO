@@ -7,6 +7,8 @@
 #include "Settings.h"
 #include "Repositorys/ParamsRepository.h"
 #include "Errors/RepositoryErrors.h"
+#include "HeightsMap/HeightsMap.h"
+#include "Essensities/CanvasBL.h"
 
 class ParamsRepositoryTest : public QObject
 {
@@ -21,9 +23,9 @@ private slots:
     void init();
 
     void getParamsTest();
-    //void addParamsTest();
-    //void deleteParamsTest();
-    //void updateParamsTest();
+    void addParamsTest();
+    void deleteParamsTest();
+    void updateParamsTest();
 
     void cleanup();
     void cleanupTestCase();
@@ -73,6 +75,47 @@ void ParamsRepositoryTest::initTestCase()
     QSqlQuery q;
     if (!q.exec(QString::fromStdString(query)))
         QFAIL(q.lastError().text().toStdString().c_str());
+
+    query = "create table if not exists "+ m_schema + ".Canvas\
+            (\
+                id serial primary key,\
+                user_id int,\
+                name text,\
+                HeightsMap text,\
+                TriPolArray text,\
+                Color text\
+            );";
+
+    if (!q.exec(QString::fromStdString(query)))
+        QFAIL(q.lastError().text().toStdString().c_str());
+
+    for (int i = 0; i < 5; i++)
+    {
+        int size = 33;
+        HeightsMap hm = HeightsMap(size);
+        hm.diamondSquare();
+        CanvasBL canvas = CanvasBL(1, 1, "CanvasName" + std::to_string(i), hm, *hm.createPoints(), 20, 150, 20);
+        string u_id = std::to_string(canvas.getUserId());
+        string name = canvas.getName();
+        string tmp;
+        canvas.getHeightsMap().toStr(tmp);
+        string hm_str = tmp;
+        canvas.getHeightsMapPoints().toStr(tmp);
+        string hmp = tmp;
+        int r, g, b;
+        canvas.getColor(r, g, b);
+        string c = to_string(r) + " " + to_string(g) + " " + to_string(b);
+
+        query = "insert into " + m_schema + ".Canvas(user_id, name, HeightsMap, TriPolArray, Color) values(";
+        query += u_id + ", '";
+        query += name + "', '";
+        query += hm_str + "', '";
+        query += hmp + "', '";
+        query += c + "');";
+
+        if (!q.exec(QString::fromStdString(query)))
+            QFAIL(q.lastError().text().toStdString().c_str());
+    }
 }
 
 void ParamsRepositoryTest::init()
@@ -80,7 +123,7 @@ void ParamsRepositoryTest::init()
     string query = "create table if not exists " + m_schema + ".Params\
                     (\
                         canvas_id int unique,\
-                        FOREIGN KEY (canvas_id) REFERENCES PPO.Canvas (id),\
+                        FOREIGN KEY (canvas_id) REFERENCES " + m_schema + ".Canvas (id),\
                         width int,\
                         height int,\
                         range float,\
@@ -152,6 +195,129 @@ void ParamsRepositoryTest::getParamsTest()
     QVERIFY2(*params == *same_params, "getParamsTest error");
 }
 
+void ParamsRepositoryTest::addParamsTest()
+{
+    //ARRANGE in init()
+    ParamsBL params = ParamsBL(5, 860, 440, 24.00, false, 2, 110, 21, 140, 65);
+    shared_ptr<ParamsBL> same_params;
+    int id = -1;
+
+    //ACT
+    try
+    {
+        id = sut.addParams(params);
+    }
+    //ASSERT
+    catch (BaseError &er)
+    {
+        QFAIL(er.what());
+        return;
+    }
+    catch (...)
+    {
+        QFAIL("Unexpected error");
+        return;
+    }
+
+    //user = UserBL(id, user.getLogin(), user.getPassword(), user.getRole(), user.getModeratorId());
+    string query = "SELECT * FROM " + m_schema + ".Params where canvas_id=" + std::to_string(id) + ";";
+    QSqlQuery q;
+    if (!q.exec(QString::fromStdString(query)))
+        QFAIL(q.lastError().text().toStdString().c_str());
+    if (q.next())
+    {
+        int c_id = q.value(0).toInt();
+        int width = q.value(1).toInt();
+        int height = q.value(2).toInt();
+        double range = q.value(3).toDouble();
+        bool smooth = q.value(4).toBool();
+        int mult = q.value(5).toInt();
+        int red = q.value(6).toInt();
+        int green = q.value(7).toInt();
+        int blue = q.value(8).toInt();
+        int size = q.value(9).toInt();
+
+        same_params =  make_shared<ParamsBL>(c_id, width, height, range, smooth, mult, red, green, blue, size);
+    }
+
+    QVERIFY2(params == *same_params, "addParamsTest error");
+}
+
+void ParamsRepositoryTest::deleteParamsTest()
+{
+    //ARRANGE в init()
+
+    //ACT
+    try
+    {
+        sut.deleteParams(1);
+    }
+    //ASSERT
+    catch (DeleteCanvasError &er)
+    {
+        QFAIL(er.what());
+        return;
+    }
+    catch (...)
+    {
+        QFAIL("Unexpected error");
+        return;
+    }
+
+    string query = "SELECT * FROM " + m_schema + ".Params where canvas_id=" + to_string(1) + ";";
+    QSqlQuery q;
+    if (!q.exec(QString::fromStdString(query)))
+        QFAIL(q.lastError().text().toStdString().c_str());
+    if (q.next())
+        QFAIL("Canvas is not deleted");
+}
+
+void ParamsRepositoryTest::updateParamsTest()
+{
+    //ARRANGE
+    ParamsBL params = ParamsBL(1, 860, 440, 24.00, false, 2, 110, 21, 140, 65);
+    shared_ptr<ParamsBL> same_params;
+
+    //ACT
+    try
+    {
+        sut.updateParams(params, 1);
+    }
+    //ASSERT
+    catch (BaseError &er)
+    {
+        QFAIL(er.what());
+        return;
+    }
+    catch (...)
+    {
+        QFAIL("Unexpected error");
+        return;
+    }
+
+    string query = "SELECT * FROM " + m_schema + ".Params where canvas_id=" + to_string(1) + ";";
+    QSqlQuery q;
+    if (!q.exec(QString::fromStdString(query)))
+        QFAIL(q.lastError().text().toStdString().c_str());
+    if (q.next())
+    {
+        int c_id = q.value(0).toInt();
+        int width = q.value(1).toInt();
+        int height = q.value(2).toInt();
+        double range = q.value(3).toDouble();
+        bool smooth = q.value(4).toBool();
+        int mult = q.value(5).toInt();
+        int red = q.value(6).toInt();
+        int green = q.value(7).toInt();
+        int blue = q.value(8).toInt();
+        int size = q.value(9).toInt();
+
+        same_params =  make_shared<ParamsBL>(c_id, width, height, range, smooth, mult, red, green, blue, size);
+    }
+
+    QVERIFY2(params == *same_params, "addParamsTest error");
+}
+
 void ParamsRepositoryTest::cleanup()
 {
     string query = "drop table " + m_schema + ".Params cascade;";
@@ -162,8 +328,12 @@ void ParamsRepositoryTest::cleanup()
 
 void ParamsRepositoryTest::cleanupTestCase()
 {
-    string query = "drop schema " + m_schema + " cascade;";
+    string query = "drop table " + m_schema + ".Canvas cascade;";
     QSqlQuery q;
+    if (!q.exec(QString::fromStdString(query)))
+        QFAIL(q.lastError().text().toStdString().c_str());
+
+    query = "drop schema " + m_schema + " cascade;";
     if (!q.exec(QString::fromStdString(query)))
         QFAIL(q.lastError().text().toStdString().c_str());
 }

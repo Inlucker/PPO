@@ -317,7 +317,6 @@ void UsersRepositoryTest::addUserTest()
 
 void UsersRepositoryTest::deleteUserTest()
 {
-
     //ARRANGE в init()
 
     //ACT

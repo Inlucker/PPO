@@ -55,8 +55,9 @@ shared_ptr<ParamsBL> ParamsRepository::getParams(int id)
         throw GetParamsError("Unexpected GetParamsError?", __FILE__, __LINE__, ctime(&t_time));
 }
 
-void ParamsRepository::addParams(ParamsBL &params)
+int ParamsRepository::addParams(ParamsBL &params)
 {
+    int id = -1;
     connect();
     int c_id = params.getCanvasID();
     int width = params.getWidth();
@@ -83,13 +84,17 @@ void ParamsRepository::addParams(ParamsBL &params)
     query += std::to_string(red) + ", ";
     query += std::to_string(green) + ", ";
     query += std::to_string(blue) + ", ";
-    query += std::to_string(size) + ");";
+    query += std::to_string(size) + ")";
+    query += "RETURNING canvas_id;";
     PQsendQuery(m_connection.get(), query.c_str());
 
     bool flag = false;
     string error_msg = "";
     while (auto res = PQgetResult( m_connection.get()))
     {
+        int rows_n = PQntuples(res);
+        if (PQresultStatus(res) == PGRES_TUPLES_OK && rows_n)
+            id = atoi(PQgetvalue (res, 0, 0));
         if (PQresultStatus(res) == PGRES_FATAL_ERROR)
         {
             error_msg += "\n";
@@ -105,6 +110,7 @@ void ParamsRepository::addParams(ParamsBL &params)
         time_t t_time = time(NULL);
         throw InsertParamsError(error_msg, __FILE__, __LINE__, ctime(&t_time));
     }
+    return id;
 }
 
 void ParamsRepository::deleteParams(int id)
@@ -154,13 +160,17 @@ void ParamsRepository::updateParams(ParamsBL &params, int id)
     string query = "update " + m_schema + ".Params set width = " + to_string(width);
     query += ", height = " + to_string(height);
     query += ", range = " + to_string(range);
-    query += ", smooth = " + to_string(smooth);
+    query += ", smooth = ";
+    if (smooth)
+      query += "TRUE";
+    else
+      query += "FALSE";
     query += ", mult = " + to_string(mult);
     query += ", red = " + to_string(red);
     query += ", green = " + to_string(green);
     query += ", blue = " + to_string(blue);
     query += ", size = " + to_string(size);
-    query += " where id = " + to_string(id) + ";";
+    query += " where canvas_id = " + to_string(id) + ";";
     PQsendQuery(m_connection.get(), query.c_str());
 
     int flag = 0;
