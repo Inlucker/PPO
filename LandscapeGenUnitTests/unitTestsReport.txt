@@ -12,13 +12,15 @@ Totals: 7 passed, 0 failed, 0 skipped, 0 blacklisted, 3ms
  
 ********* Start testing of CanvasRepositoryTest *********
 Config: Using QtTest library 5.15.1, Qt 5.15.1 (x86_64-little_endian-llp64 shared (dynamic) release build; by MSVC 2019)
-QWARN  : CanvasRepositoryTest::initTestCase() QSqlQuery::exec: database not open
-FAIL!  : CanvasRepositoryTest::initTestCase()
-tst_canvasrepositorytest.cpp(107) : failure location
-QWARN  : CanvasRepositoryTest::cleanupTestCase() QSqlQuery::exec: database not open
-FAIL!  : CanvasRepositoryTest::cleanupTestCase()
-tst_canvasrepositorytest.cpp(443) : failure location
-Totals: 0 passed, 2 failed, 0 skipped, 0 blacklisted, 1ms
+PASS   : CanvasRepositoryTest::initTestCase()
+PASS   : CanvasRepositoryTest::getCanvasByIdTest()
+PASS   : CanvasRepositoryTest::getCanvasByNameTest()
+PASS   : CanvasRepositoryTest::getCanvasesByUidTest()
+PASS   : CanvasRepositoryTest::addCanvasTest()
+PASS   : CanvasRepositoryTest::deleteCanvasTest()
+PASS   : CanvasRepositoryTest::updateCanvasTest()
+PASS   : CanvasRepositoryTest::cleanupTestCase()
+Totals: 8 passed, 0 failed, 0 skipped, 0 blacklisted, 523ms
 ********* Finished testing of CanvasRepositoryTest *********
  
 ********* Start testing of ModeratorCanvasesControllerTest *********
@@ -42,18 +44,18 @@ PASS   : ModeratorCanvasesControllerTest::getMultTest()
 PASS   : ModeratorCanvasesControllerTest::getImgWidthTest()
 PASS   : ModeratorCanvasesControllerTest::getImgHeightTest()
 PASS   : ModeratorCanvasesControllerTest::cleanupTestCase()
-Totals: 19 passed, 0 failed, 0 skipped, 0 blacklisted, 2808ms
+Totals: 19 passed, 0 failed, 0 skipped, 0 blacklisted, 2854ms
 ********* Finished testing of ModeratorCanvasesControllerTest *********
  
 ********* Start testing of ParamsRepositoryTest *********
 Config: Using QtTest library 5.15.1, Qt 5.15.1 (x86_64-little_endian-llp64 shared (dynamic) release build; by MSVC 2019)
-QWARN  : ParamsRepositoryTest::initTestCase() QSqlQuery::exec: database not open
-FAIL!  : ParamsRepositoryTest::initTestCase()
-tst_paramsrepositorytest.cpp(78) : failure location
-QWARN  : ParamsRepositoryTest::cleanupTestCase() QSqlQuery::exec: database not open
-FAIL!  : ParamsRepositoryTest::cleanupTestCase()
-tst_paramsrepositorytest.cpp(335) : failure location
-Totals: 0 passed, 2 failed, 0 skipped, 0 blacklisted, 1ms
+PASS   : ParamsRepositoryTest::initTestCase()
+PASS   : ParamsRepositoryTest::getParamsTest()
+PASS   : ParamsRepositoryTest::addParamsTest()
+PASS   : ParamsRepositoryTest::deleteParamsTest()
+PASS   : ParamsRepositoryTest::updateParamsTest()
+PASS   : ParamsRepositoryTest::cleanupTestCase()
+Totals: 6 passed, 0 failed, 0 skipped, 0 blacklisted, 154ms
 ********* Finished testing of ParamsRepositoryTest *********
  
 ********* Start testing of UserControllerTest *********
@@ -86,17 +88,20 @@ PASS   : UserControllerTest::getMultTest()
 PASS   : UserControllerTest::getImgWidthTest()
 PASS   : UserControllerTest::getImgHeightTest()
 PASS   : UserControllerTest::cleanupTestCase()
-Totals: 28 passed, 0 failed, 0 skipped, 0 blacklisted, 3575ms
+Totals: 28 passed, 0 failed, 0 skipped, 0 blacklisted, 3523ms
 ********* Finished testing of UserControllerTest *********
  
 ********* Start testing of UsersRepositoryTest *********
 Config: Using QtTest library 5.15.1, Qt 5.15.1 (x86_64-little_endian-llp64 shared (dynamic) release build; by MSVC 2019)
-QWARN  : UsersRepositoryTest::initTestCase() QSqlQuery::exec: database not open
-FAIL!  : UsersRepositoryTest::initTestCase()
-tst_usersrepositorytest.cpp(78) : failure location
-QWARN  : UsersRepositoryTest::cleanupTestCase() QSqlQuery::exec: database not open
-FAIL!  : UsersRepositoryTest::cleanupTestCase()
-tst_usersrepositorytest.cpp(403) : failure location
-Totals: 0 passed, 2 failed, 0 skipped, 0 blacklisted, 1ms
+PASS   : UsersRepositoryTest::initTestCase()
+PASS   : UsersRepositoryTest::getUserByLoginPassTest()
+PASS   : UsersRepositoryTest::getCanvasUserByNameTest()
+PASS   : UsersRepositoryTest::getFreeCanvasUsersTest()
+PASS   : UsersRepositoryTest::getCanvasUsersByMidTest()
+PASS   : UsersRepositoryTest::addUserTest()
+PASS   : UsersRepositoryTest::deleteUserTest()
+PASS   : UsersRepositoryTest::updateUserTest()
+PASS   : UsersRepositoryTest::cleanupTestCase()
+Totals: 9 passed, 0 failed, 0 skipped, 0 blacklisted, 262ms
 ********* Finished testing of UsersRepositoryTest *********
  

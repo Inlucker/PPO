@@ -107,9 +107,9 @@ unix {
 !isEmpty(target.path): INSTALLS += target
 
 #libpq
-win32:CONFIG(release, debug|release): LIBS += -L'C:/Program Files/PostgreSQL/13/lib/' -llibpq
-else:win32:CONFIG(debug, debug|release): LIBS += -L'C:/Program Files/PostgreSQL/13/lib/' -llibpq
+win32:CONFIG(release, debug|release): LIBS += -L'C:/Program Files/PostgreSQL/14/lib/' -llibpq
+else:win32:CONFIG(debug, debug|release): LIBS += -L'C:/Program Files/PostgreSQL/14/lib/' -llibpq
 else:unix: LIBS += -L'C:/Program Files/PostgreSQL/13/lib/' -llibpq
 
-INCLUDEPATH += 'C:/Program Files/PostgreSQL/13/include'
-DEPENDPATH += 'C:/Program Files/PostgreSQL/13/include'
+INCLUDEPATH += 'C:/Program Files/PostgreSQL/14/include'
+DEPENDPATH += 'C:/Program Files/PostgreSQL/14/include'

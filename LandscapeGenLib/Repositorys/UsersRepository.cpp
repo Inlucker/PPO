@@ -84,7 +84,7 @@ shared_ptr<UserBL> UsersRepository::getCanvasUser(string name)
 vector<string> UsersRepository::getFreeCanvasUsers()
 {
     connect();
-    string query = "select login FROM PPO.Users where role = 'canvas_user' and moderator_id is null;";
+    string query = "select login FROM "+ m_schema + ".Users where role = 'canvas_user' and moderator_id is null;";
     PQsendQuery(m_connection.get(), query.c_str());
 
     vector<string> vec;
@@ -121,7 +121,7 @@ vector<string> UsersRepository::getFreeCanvasUsers()
 vector<string> UsersRepository::getCanvasUsersByMid(int m_id)
 {
     connect();
-    string query = "select login FROM PPO.Users where moderator_id = " + std::to_string(m_id) + ";";
+    string query = "select login FROM "+ m_schema + ".Users where moderator_id = " + std::to_string(m_id) + ";";
     PQsendQuery(m_connection.get(), query.c_str());
 
     vector<string> vec;

@@ -1,4 +1,8 @@
 @echo off
+echo Runing tests...
+
+call setPath.bat
+
 set report=unitTestsReport.txt
 break > %report%
 cd  .\BaseControllerTest\release

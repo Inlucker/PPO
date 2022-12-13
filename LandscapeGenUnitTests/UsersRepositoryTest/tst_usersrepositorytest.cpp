@@ -63,6 +63,9 @@ UsersRepositoryTest::UsersRepositoryTest()
         //QFAIL(db->lastError().text().toStdString().c_str());
 
     sut = UsersRepository();
+
+    //int ver = PQlibVersion();
+    //cout << ver << endl;
 }
 
 UsersRepositoryTest::~UsersRepositoryTest()
@@ -88,7 +91,7 @@ void UsersRepositoryTest::init()
                         password text,\
                         role text,\
                         moderator_id int,\
-                        FOREIGN KEY (moderator_id) REFERENCES PPO.Users (id)\
+                        FOREIGN KEY (moderator_id) REFERENCES "+ m_schema + ".Users (id)\
                     );\
                     alter table "+ m_schema + ".Users ADD constraint unique_login unique (login);";
 
