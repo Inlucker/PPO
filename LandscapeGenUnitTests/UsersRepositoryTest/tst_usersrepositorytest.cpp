@@ -59,7 +59,8 @@ UsersRepositoryTest::UsersRepositoryTest()
     db->setPassword(m_dbpass);
 
     if (!db->open())
-        QFAIL("Disconnected!");
+        qDebug() << db->lastError().text();
+        //QFAIL(db->lastError().text().toStdString().c_str());
 
     sut = UsersRepository();
 }
@@ -402,6 +403,6 @@ void UsersRepositoryTest::cleanupTestCase()
         QFAIL(q.lastError().text().toStdString().c_str());
 }
 
-QTEST_APPLESS_MAIN(UsersRepositoryTest)
+QTEST_GUILESS_MAIN(UsersRepositoryTest)
 
 #include "tst_usersrepositorytest.moc"

@@ -75,13 +75,14 @@ Thumbs.db
 
 #*.pro
 
-/debug
-/release
+*debug
+*release
 /html
 usersarsenappdatalocaltemp*
 logFile.txt
 .qtc_clangd
 .qmake.stash
 moc_*
-*.bat
+msvc_make.bat
+target_wrapper.bat
 *.lib

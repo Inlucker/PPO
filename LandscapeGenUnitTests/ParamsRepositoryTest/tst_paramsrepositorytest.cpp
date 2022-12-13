@@ -59,7 +59,8 @@ ParamsRepositoryTest::ParamsRepositoryTest()
     db->setPassword(m_dbpass);
 
     if (!db->open())
-        QFAIL("Disconnected!");
+        qDebug() << db->lastError().text();
+        //QFAIL(db->lastError().text().toStdString().c_str());
 
     sut = ParamsRepository();
 }
@@ -338,6 +339,6 @@ void ParamsRepositoryTest::cleanupTestCase()
         QFAIL(q.lastError().text().toStdString().c_str());
 }
 
-QTEST_APPLESS_MAIN(ParamsRepositoryTest)
+QTEST_GUILESS_MAIN(ParamsRepositoryTest)
 
 #include "tst_paramsrepositorytest.moc"

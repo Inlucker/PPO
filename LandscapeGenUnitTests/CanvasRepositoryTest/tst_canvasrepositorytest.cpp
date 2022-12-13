@@ -50,6 +50,12 @@ CanvasRepositoryTest::CanvasRepositoryTest()
     QString m_dbuser = Settings::get(Settings::DBUser, Settings::DataBase).toString();
     QString m_dbpass = Settings::get(Settings::DBPass, Settings::DataBase).toString();
 
+    /*qDebug() << Settings::get(Settings::DBHost, Settings::DataBase).toString();
+    qDebug() << Settings::get(Settings::DBPort, Settings::DataBase).toInt();
+    qDebug() << Settings::get(Settings::DBName, Settings::DataBase).toString();
+    qDebug() << Settings::get(Settings::DBUser, Settings::DataBase).toString();
+    qDebug() << Settings::get(Settings::DBPass, Settings::DataBase).toString();
+    qDebug() << Settings::get(Settings::Schema, Settings::DataBase).toString();*/
 
     db->setHostName(m_dbhost);
     db->setPort(m_dbport);
@@ -58,7 +64,8 @@ CanvasRepositoryTest::CanvasRepositoryTest()
     db->setPassword(m_dbpass);
 
     if (!db->open())
-        QFAIL("Disconnected!");
+        qDebug() << db->lastError().text();
+        //QFAIL(db->lastError().text().toStdString().c_str());
 
     sut = CanvasRepository();
 }
@@ -69,6 +76,31 @@ CanvasRepositoryTest::~CanvasRepositoryTest()
 
 void CanvasRepositoryTest::initTestCase()
 {
+    /*QFile cfgDefaults(FILENAME);
+    cfgDefaults.open(QIODevice::ReadOnly);
+    Settings::setDefaults(cfgDefaults.readAll());
+
+    m_schema = Settings::get(Settings::Schema, Settings::DataBase).toString().toStdString();
+    db = make_unique<QSqlDatabase>(QSqlDatabase::addDatabase("QPSQL"));
+
+    QString m_dbhost = Settings::get(Settings::DBHost, Settings::DataBase).toString();
+    int m_dbport = Settings::get(Settings::DBPort, Settings::DataBase).toInt();
+    QString m_dbname = Settings::get(Settings::DBName, Settings::DataBase).toString();
+    QString m_dbuser = Settings::get(Settings::DBUser, Settings::DataBase).toString();
+    QString m_dbpass = Settings::get(Settings::DBPass, Settings::DataBase).toString();
+
+
+    db->setHostName(m_dbhost);
+    db->setPort(m_dbport);
+    db->setDatabaseName(m_dbname);
+    db->setUserName(m_dbuser);
+    db->setPassword(m_dbpass);
+
+    if (!db->open())
+        QFAIL("Disconnected!");
+
+    sut = CanvasRepository();*/
+
     string query = "create schema "+ m_schema + ";";
     QSqlQuery q;
     if (!q.exec(QString::fromStdString(query)))
@@ -411,7 +443,6 @@ void CanvasRepositoryTest::cleanupTestCase()
         QFAIL(q.lastError().text().toStdString().c_str());
 }
 
-//QTEST_APPLESS_MAIN(CanvasRepositoryTest)
-QTEST_MAIN(CanvasRepositoryTest)
+QTEST_GUILESS_MAIN(CanvasRepositoryTest)
 
 #include "tst_canvasrepositorytest.moc"
