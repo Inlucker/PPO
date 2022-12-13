@@ -1,5 +1,3 @@
-include(gtest_dependency.pri)
-
 QT += testlib
 QT -= gui
 
@@ -8,11 +6,7 @@ CONFIG -= app_bundle
 
 TEMPLATE = app
 
-SOURCES +=  tst_moderatorcanvasescontrollertest.cpp \
-    LandscapeCanvasMock.cpp
-
-HEADERS += \
-    LandscapeCanvasMock.h
+SOURCES +=  tst_usercontrollertest.cpp
 
 #LandscapeGenLib
 win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../../LandscapeGenLib/release/ -lLandscapeGenLib

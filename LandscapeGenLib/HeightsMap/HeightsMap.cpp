@@ -149,7 +149,7 @@ void HeightsMap::writeToFile(string file_name)
     file << height << " ";
     for (auto& elem : *this)
     {
-        file << elem << " ";
+        file << to_string(elem) << " ";
     }
     file.close();
 }
@@ -199,8 +199,12 @@ bool HeightsMap::operator ==(HeightsMap &an_mtrx) const
     bool res = true;
     for (int i = 0; i < elems_num; i++)
     {
-        if (abs((*this)[i] - an_mtrx[i]) > EPS)
+        /*double test1 = (*this)[i];
+        double test2 = an_mtrx[i];
+        double eps = EPS;*/
+        if (fabs((*this)[i]-an_mtrx[i]) > EPS)
         {
+            printf("%.7f != %.7f\n", (*this)[i], an_mtrx[i]);
             //cout << (*this)[i] << " != " << an_mtrx[i] << endl;
             res = false;
             break;

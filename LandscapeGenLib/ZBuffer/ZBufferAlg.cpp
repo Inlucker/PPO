@@ -172,6 +172,11 @@ void ZBufferAlg::execute2(TriPolArray &mas) //Boost and fix white lines
 
 }
 
+void ZBufferAlg::resetFrameBuffer()
+{
+    frame_buffer = make_shared<FrameBuffer>(width, height);
+}
+
 shared_ptr<FrameBuffer> ZBufferAlg::getFrameBuffer() const noexcept
 {
     return frame_buffer;

@@ -4,7 +4,7 @@
 #include <iostream>
 
 #ifndef EPS
-#define EPS 1e-06
+#define EPS 1e-05
 #endif
 
 using namespace std;

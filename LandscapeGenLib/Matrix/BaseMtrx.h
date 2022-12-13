@@ -13,7 +13,7 @@ using namespace std;
 #include "Errors/MtrxErrors.h"
 
 #ifndef EPS
-#define EPS 1e-06
+#define EPS 1e-05
 #endif
 
 template<typename Type>
@@ -23,6 +23,9 @@ public:
     BaseMtrx();
     explicit BaseMtrx(int new_size);
     BaseMtrx(int new_width, int new_height);
+
+    BaseMtrx(const BaseMtrx<Type>& mtrx); //copy
+    BaseMtrx<Type>& operator =(const BaseMtrx<Type>& mtrx);
 
     virtual ~BaseMtrx() = default;
 

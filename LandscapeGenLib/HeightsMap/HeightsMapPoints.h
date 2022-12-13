@@ -19,6 +19,9 @@ public:
     explicit HeightsMapPoints(int new_size);
     explicit HeightsMapPoints(string& hmp);
 
+    HeightsMapPoints(const HeightsMapPoints& mtrx); //copy
+    HeightsMapPoints& operator =(const HeightsMapPoints& mtrx);
+
     shared_ptr<TriPolArray> createTriPolArray();
     shared_ptr<TriPolArray> createTriPolArray(int r, int g, int b);
 

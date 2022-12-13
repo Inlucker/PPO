@@ -70,6 +70,43 @@ HeightsMapPoints::HeightsMapPoints(string &hmp)
     updateCenter();
 }
 
+HeightsMapPoints::HeightsMapPoints(const HeightsMapPoints &mtrx)
+{
+    time_t t_time = time(NULL);
+    if (mtrx.elems_num < 0)
+        throw MtrxNegativeSizeError("mtrx elems_num < 0", __FILE__, __LINE__, ctime(&t_time));
+    this->elems_num = mtrx.elemsNum();
+    this->size = mtrx.size;
+    this->width = mtrx.width;
+    this->height = mtrx.height;
+    this->map_points_center = mtrx.map_points_center;
+
+    alloc_data();
+
+    for (int i = 0; i < this->elems_num; i++)
+        this->data_ptr[i] = make_shared<Point>(mtrx[i]->x, mtrx[i]->y, mtrx[i]->z);
+    //cout << "HERE copy constructor1" << endl;
+}
+
+HeightsMapPoints &HeightsMapPoints::operator =(const HeightsMapPoints &mtrx)
+{
+    time_t t_time = time(NULL);
+    if (mtrx.elems_num < 0)
+        throw MtrxNegativeSizeError("mtrx elems_num < 0", __FILE__, __LINE__, ctime(&t_time));
+    this->elems_num = mtrx.elemsNum();
+    this->size = mtrx.size;
+    this->width = mtrx.width;
+    this->height = mtrx.height;
+    this->map_points_center = mtrx.map_points_center;
+
+    alloc_data();
+
+    for (int i = 0; i < this->elems_num; i++)
+        this->data_ptr[i] = make_shared<Point>(mtrx[i]->x, mtrx[i]->y, mtrx[i]->z);
+    //cout << "HERE copy constructor2" << endl;
+    return *this;
+}
+
 shared_ptr<TriPolArray> HeightsMapPoints::createTriPolArray()
 {
     int arr_size = 0;
@@ -253,7 +290,7 @@ bool HeightsMapPoints::operator ==(HeightsMapPoints &an_mtrx) const
     {
         if (*(*this)[i] != *an_mtrx[i])
         {
-            //cout << *(*this)[i] << " != " << *an_mtrx[i] << endl;
+            cout << *(*this)[i] << " != " << *an_mtrx[i] << endl;
             res = false;
             break;
         }

@@ -13,7 +13,7 @@
 #include "Errors/VectorErrors.h"
 
 #ifndef EPS
-#define EPS 1e-06
+#define EPS 1e-05
 #endif
 
 using namespace std;
@@ -29,7 +29,7 @@ public:
     Vector(initializer_list<Type> args);
     Vector<Type>& operator =(initializer_list<Type> args);
 
-    explicit Vector(const Vector<Type>& vec); //copy
+    Vector(const Vector<Type>& vec); //copy
     Vector<Type>& operator =(const Vector<Type>& vec);
     Vector(Vector<Type>&& vec) noexcept; //РџРµСЂРµРЅРµРѕСЃ
     Vector<Type>& operator =(Vector<Type>&& vec) noexcept;

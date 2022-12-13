@@ -1,6 +1,5 @@
 #include <QtTest>
 
-// add necessary includes here
 #include "LandscapeCanvasMock.h"
 #include "Controllers/ModeratorCanvasesController.h"
 
@@ -283,8 +282,8 @@ void ModeratorCanvasesControllerTest::getHeightsMapPointsTest()
     shared_ptr<HeightsMapPoints> heigths_map_point = sut->getHeightsMapPoints();
 
     //ASSERT
-    QVERIFY2(heigths_map_point == same_heigths_map_points, "getHeightsMapTest error");
-    QVERIFY2(*heigths_map_point == *same_heigths_map_points, "getHeightsMapTest error");*/
+    QVERIFY2(heigths_map_point == same_heigths_map_points, "getHeightsMapPointsTest error");
+    QVERIFY2(*heigths_map_point == *same_heigths_map_points, "getHeightsMapPointsTest error");*/
 
     //ARRANGE
     shared_ptr<LandscapeCanvasMock> canvas_mock_ptr = make_shared<LandscapeCanvasMock>();

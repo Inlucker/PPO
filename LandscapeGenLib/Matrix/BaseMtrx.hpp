@@ -68,6 +68,43 @@ BaseMtrx<Type>::BaseMtrx(int new_width, int new_height)
     }
 }
 
+template<typename Type>
+BaseMtrx<Type>::BaseMtrx(const BaseMtrx<Type> &mtrx)
+{
+    time_t t_time = time(NULL);
+    if (mtrx.elems_num < 0)
+        throw MtrxNegativeSizeError("mtrx elems_num < 0", __FILE__, __LINE__, ctime(&t_time));
+    this->elems_num = mtrx.elemsNum();
+    this->size = mtrx.size;
+    this->width = mtrx.width;
+    this->height = mtrx.height;
+
+    alloc_data();
+
+    for (int i = 0; i < this->elems_num; i++)
+        this->data_ptr[i] = mtrx[i];
+    //cout << "HERE copy constructor1" << endl;
+}
+
+template<typename Type>
+BaseMtrx<Type> &BaseMtrx<Type>::operator =(const BaseMtrx<Type> &mtrx)
+{
+    time_t t_time = time(NULL);
+    if (mtrx.elems_num < 0)
+        throw MtrxNegativeSizeError("mtrx elems_num < 0", __FILE__, __LINE__, ctime(&t_time));
+    this->elems_num = mtrx.elemsNum();
+    this->size = mtrx.size;
+    this->width = mtrx.width;
+    this->height = mtrx.height;
+
+    alloc_data();
+
+    for (int i = 0; i < this->elems_num; i++)
+        data_ptr[i] = mtrx[i];
+    //cout << "HERE copy constructor2" << endl;
+    return *this;
+}
+
 /*template<typename Type>
 bool BaseMtrx<Type>::isEmpty() const noexcept
 {
@@ -198,7 +235,7 @@ const Type &BaseMtrx<Type>::operator()(const int &i, const int &j) const
 template<typename Type>
 void BaseMtrx<Type>::alloc_data()
 {
-    data_ptr.reset();
+    this->data_ptr.reset();
     if (elems_num != 0)
     {
         shared_ptr<Type[]> new_ptr(new Type[elems_num]);
@@ -207,7 +244,7 @@ void BaseMtrx<Type>::alloc_data()
         if (!new_ptr)
             throw MtrxAllocError("Allocationg data_ptr error", __FILE__, __LINE__, ctime(&t_time));
 
-        data_ptr = new_ptr;
+        this->data_ptr = new_ptr;
     }
 }
 

@@ -188,7 +188,8 @@ shared_ptr<FrameBuffer> LandscapeCanvas::getFrameBuffer() const
 
 void LandscapeCanvas::cleanCanvas()
 {
-    zbuffer_alg->getFrameBuffer().reset();
+    //zbuffer_alg->getFrameBuffer().reset();
+    zbuffer_alg->resetFrameBuffer();
     //frame_buffer.reset();
 }
 

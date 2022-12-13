@@ -5,5 +5,6 @@ SUBDIRS += \
     CanvasRepositoryTest \
     ModeratorCanvasesControllerTest \
     ParamsRepositoryTest \
+    UserControllerTest \
     UsersRepositoryTest
 

@@ -21,6 +21,8 @@ public:
     void executeFT(TriPolArray &mas, int first, int last, int red, int green, int blue);
     void execute2(TriPolArray &mas); //Boost and fix white lines
 
+    void resetFrameBuffer();
+
     shared_ptr<FrameBuffer> getFrameBuffer() const noexcept;
 private:
     vector<double> interpolate(double i0, double d0, double i1, double d1) const;
