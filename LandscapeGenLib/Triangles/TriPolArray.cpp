@@ -62,6 +62,20 @@ int TriPolArray::getB() const
     return b;
 }
 
+bool TriPolArray::operator ==(TriPolArray &an_tpa) const
+{
+    BaseType an = static_cast<BaseType>(an_tpa);
+    return (this->r == an_tpa.r &&
+            this->g == an_tpa.g &&
+            this->b == an_tpa.b &&
+            BaseType::operator==(an));
+}
+
+bool TriPolArray::operator !=(TriPolArray &an_tpa) const
+{
+    return !(*this == an_tpa);
+}
+
 /*void TriPolArray::updatePoints(HeightsMapPoints &map)
 {
     Iterator<TriangularPolygon> mas_it = this->begin();

@@ -236,17 +236,18 @@ bool BaseMtrx<double>::operator ==(const BaseMtrx<double> &an_mtrx)
 }*/
 
 template<typename Type>
-bool BaseMtrx<Type>::operator ==(const BaseMtrx<Type> &an_mtrx)
+bool BaseMtrx<Type>::operator ==(const BaseMtrx<Type> &an_mtrx) const
 {
-    if (this->elems_num != an_mtrx.elems_num &&
-            this->width != an_mtrx.width &&
+    if (this->elems_num != an_mtrx.elems_num ||
+            this->width != an_mtrx.width ||
             this->height != an_mtrx.height)
         return false;
 
     bool res = true;
     for (int i = 0; i < elems_num; i++)
     {
-        if ((*this)[i] != an_mtrx[i])
+        //if (this[i] != an_mtrx[i])
+        if (this->getElem(i) != an_mtrx.getElem(i))
         {
             res = false;
             break;
@@ -257,7 +258,7 @@ bool BaseMtrx<Type>::operator ==(const BaseMtrx<Type> &an_mtrx)
 }
 
 template<typename Type>
-bool BaseMtrx<Type>::operator !=(const BaseMtrx<Type>& an_mtrx)
+bool BaseMtrx<Type>::operator !=(const BaseMtrx<Type>& an_mtrx) const
 {
     return !(*this == an_mtrx);
 }

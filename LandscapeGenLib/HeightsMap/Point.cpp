@@ -63,7 +63,7 @@ void Point::setZ(double new_z)
     z = new_z;
 }
 
-bool Point::operator ==(Point &an_p)
+bool Point::operator ==(Point &an_p) const
 {
     bool res = true;
     if (abs(this->x - an_p.x) > EPS ||
@@ -73,7 +73,7 @@ bool Point::operator ==(Point &an_p)
     return res;
 }
 
-bool Point::operator !=(Point &an_p)
+bool Point::operator !=(Point &an_p) const
 {
     return !(*this == an_p);
 }

@@ -16,8 +16,8 @@ public:
     CanvasBL(int _id, int u_id, string n, string& hm, string& tpa, string& c);
     CanvasBL(int _id, int u_id, string n, HeightsMap& hm, HeightsMapPoints& hmp, int r, int g, int b);
 
-    bool operator ==(CanvasBL& an_c);
-    bool operator !=(CanvasBL& an_c);
+    bool operator ==(CanvasBL& an_c) const;
+    bool operator !=(CanvasBL& an_c) const;
 
     int getId();
     int getUserId();

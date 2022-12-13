@@ -43,6 +43,9 @@ public:
     //void setPoints(const Point &new_p1, const Point &new_p2, const Point &new_p3);
     void update();
 
+    bool operator ==(TriangularPolygon& an_tp) const;
+    bool operator !=(TriangularPolygon& an_tp) const;
+
 private:
     void calcRect();
     void calcNormals();

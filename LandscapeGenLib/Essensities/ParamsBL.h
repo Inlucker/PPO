@@ -8,8 +8,8 @@ public:
     ParamsBL() = delete;
     ParamsBL(int c_id, int w, int h, double ran, bool s, int m, int r, int g, int b, int siz);
 
-    bool operator ==(ParamsBL& an_p);
-    bool operator !=(ParamsBL& an_p);
+    bool operator ==(ParamsBL& an_p) const;
+    bool operator !=(ParamsBL& an_p) const;
 
     int getCanvasID() noexcept;
     int getWidth() noexcept;

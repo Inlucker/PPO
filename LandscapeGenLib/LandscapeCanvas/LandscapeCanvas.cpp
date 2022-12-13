@@ -18,7 +18,7 @@ LandscapeCanvas::LandscapeCanvas()
     green = 150;
     blue = 20;
 
-    frame_buffer.reset();
+    //frame_buffer.reset();
 }
 
 LandscapeCanvas::LandscapeCanvas(HeightsMap &hm)
@@ -39,7 +39,7 @@ LandscapeCanvas::LandscapeCanvas(HeightsMap &hm)
     green = 150;
     blue = 20;
 
-    frame_buffer.reset();
+    //frame_buffer.reset();
 }
 
 LandscapeCanvas::LandscapeCanvas(HeightsMap &hm, HeightsMapPoints &hmp, int r, int g, int b)
@@ -60,7 +60,7 @@ LandscapeCanvas::LandscapeCanvas(HeightsMap &hm, HeightsMapPoints &hmp, int r, i
     green = g;
     blue = b;
 
-    frame_buffer.reset();
+    //frame_buffer.reset();
 
     heights_map = make_unique<HeightsMap>(hm);
     heights_map_points = make_shared<HeightsMapPoints>(hmp);
@@ -71,25 +71,60 @@ LandscapeCanvas::~LandscapeCanvas()
 {
 }
 
-bool LandscapeCanvas::operator ==(LandscapeCanvas &an_canvas)
+bool LandscapeCanvas::operator ==(LandscapeCanvas &an_canvas) const
 {
-    bool res = true;
+    bool res = false;
+    bool f1 = false, f2 = false, f3 = false, f4 = false, f5 = false;
 
-    if (this->img_width != an_canvas.img_width ||
+    if (this->img_width == an_canvas.img_width &&
+            this->img_height == an_canvas.img_height &&
+            abs(this->range - an_canvas.range) <= EPS &&
+            this->smoothing == an_canvas.smoothing &&
+            this->mult == an_canvas.mult &&
+            this->red == an_canvas.red &&
+            this->green == an_canvas.green &&
+            this->blue == an_canvas.blue)
+        f1 = true;
+
+    if ((this->heights_map == an_canvas.heights_map) ||
+        (this->heights_map && an_canvas.heights_map && *this->heights_map == *an_canvas.heights_map))
+        f2 = true;
+
+    if ((this->heights_map_points == an_canvas.heights_map_points) ||
+        (this->heights_map_points && an_canvas.heights_map_points && *this->heights_map_points == *an_canvas.heights_map_points))
+        f3 = true;
+
+    if ((this->tri_pol_mas == an_canvas.tri_pol_mas) ||
+        (this->tri_pol_mas && an_canvas.tri_pol_mas && *this->tri_pol_mas == *an_canvas.tri_pol_mas))
+        f4 = true;
+
+    //shared_ptr<FrameBuffer> frame_buffer = zbuffer_alg->getFrameBuffer();
+    if ((this->getFrameBuffer() == an_canvas.getFrameBuffer()) ||
+        (this->getFrameBuffer() && an_canvas.getFrameBuffer() && *(this->getFrameBuffer()) == *an_canvas.getFrameBuffer()))
+        f5 = true;
+
+    res = f1 && f2 && f3 && f4 && f5;
+
+    /*if (this->img_width != an_canvas.img_width ||
             this->img_height != an_canvas.img_height ||
-            this->range != an_canvas.range ||
+            abs(this->range - an_canvas.range) > EPS ||
             this->smoothing != an_canvas.smoothing ||
             this->mult != an_canvas.mult ||
             this->red != an_canvas.red ||
             this->green != an_canvas.green ||
             this->blue != an_canvas.blue ||
-            this->heights_map != an_canvas.heights_map ||
-            this->heights_map_points != an_canvas.heights_map_points ||
-            this->tri_pol_mas != an_canvas.tri_pol_mas ||
+            (this->heights_map && an_canvas.heights_map && *this->heights_map != *an_canvas.heights_map) ||
+            *this->heights_map_points != *an_canvas.heights_map_points ||
+            *this->tri_pol_mas != *an_canvas.tri_pol_mas ||
             //this->zbuffer_alg != an_canvas.zbuffer_alg ||
-            this->frame_buffer != an_canvas.frame_buffer)
-        res = false;
+            *this->frame_buffer != *an_canvas.frame_buffer)
+        res = false;*/
     return res;
+}
+
+bool LandscapeCanvas::operator !=(LandscapeCanvas &an_canvas) const
+{
+    return !(*this == an_canvas);
 }
 
 void LandscapeCanvas::generateNewLandscape(int size)
@@ -145,14 +180,16 @@ void LandscapeCanvas::writeToFile(string file_name)
     heights_map->writeToFile(file_name);
 }
 
-shared_ptr<FrameBuffer> LandscapeCanvas::getFrameBuffer()
+shared_ptr<FrameBuffer> LandscapeCanvas::getFrameBuffer() const
 {
-    return frame_buffer;
+    return zbuffer_alg->getFrameBuffer();
+    //return frame_buffer;
 }
 
 void LandscapeCanvas::cleanCanvas()
 {
-    frame_buffer.reset();
+    zbuffer_alg->getFrameBuffer().reset();
+    //frame_buffer.reset();
 }
 
 void LandscapeCanvas::resetHeightsMap()

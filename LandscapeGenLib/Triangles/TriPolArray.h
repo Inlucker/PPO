@@ -22,7 +22,8 @@ public:
     int getG() const;
     int getB() const;
 
-
+    bool operator ==(TriPolArray& an_tpa) const;
+    bool operator !=(TriPolArray& an_tpa) const;
 
 private:
     int r;

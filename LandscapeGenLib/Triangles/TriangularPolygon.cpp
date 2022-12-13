@@ -99,6 +99,25 @@ void TriangularPolygon::update()
     //calcIntensity();
 }
 
+/*
+shared_ptr<Point> p1, p2, p3;
+double min_x, max_x, min_y, max_y;
+Vector<double> norm_vec1, norm_vec2, norm_vec3; //make it 6 double values?
+double A, B, C, D;
+double intensity; //Instead of color*/
+
+bool TriangularPolygon::operator ==(TriangularPolygon &an_tp) const
+{
+    return (*this->p1 == *an_tp.p1 &&
+            *this->p2 == *an_tp.p2 &&
+            *this->p3 == *an_tp.p3);
+}
+
+bool TriangularPolygon::operator !=(TriangularPolygon &an_tp) const
+{
+    return !(*this == an_tp);
+}
+
 /*int TriangularPolygon::getP1() const
 {
     return p1;

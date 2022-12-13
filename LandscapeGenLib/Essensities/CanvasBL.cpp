@@ -54,7 +54,7 @@ CanvasBL::CanvasBL(int _id, int u_id, string n, HeightsMap &hm, HeightsMapPoints
     blue = b;
 }
 
-bool CanvasBL::operator ==(CanvasBL &an_c)
+bool CanvasBL::operator ==(CanvasBL &an_c) const
 {
     bool res = true;
 
@@ -69,7 +69,7 @@ bool CanvasBL::operator ==(CanvasBL &an_c)
     return res;
 }
 
-bool CanvasBL::operator !=(CanvasBL &an_c)
+bool CanvasBL::operator !=(CanvasBL &an_c) const
 {
     return !(*this == an_c);
 }

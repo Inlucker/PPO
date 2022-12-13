@@ -37,6 +37,9 @@ public:
     Type& operator [](int id);
     const Type& operator [](int id) const;
 
+    bool operator ==(BaseArray<Type>& an_array) const;
+    bool operator !=(BaseArray<Type>& an_array) const;
+
 protected:
     virtual void alloc_data();
 

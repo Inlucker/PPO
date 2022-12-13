@@ -31,8 +31,8 @@ public:
     void setY(double new_y);
     void setZ(double new_z);
 
-    bool operator ==(Point& an_p);
-    bool operator !=(Point& an_p);
+    bool operator ==(Point& an_p) const;
+    bool operator !=(Point& an_p) const;
 
 private:
     friend HeightsMapPoints;

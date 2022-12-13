@@ -189,7 +189,7 @@ shared_ptr<HeightsMapPoints> HeightsMap::createPoints()
     return createPoints(1, 1, 1);
 }
 
-bool HeightsMap::operator ==(HeightsMap &an_mtrx)
+bool HeightsMap::operator ==(HeightsMap &an_mtrx) const
 {
     if (this->elems_num != an_mtrx.elems_num &&
             this->width != an_mtrx.width &&
@@ -211,7 +211,7 @@ bool HeightsMap::operator ==(HeightsMap &an_mtrx)
     return res;
 }
 
-bool HeightsMap::operator !=(HeightsMap &an_mtrx)
+bool HeightsMap::operator !=(HeightsMap &an_mtrx) const
 {
     return !(*this == an_mtrx);
 }

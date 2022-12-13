@@ -49,9 +49,8 @@ public:
     Type& operator()(int i, int j);
     const Type& operator()(const int &i, const int &j) const;
 
-    //bool operator ==(BaseMtrx<double>& an_mtrx);
-    bool operator ==(const BaseMtrx<Type>& an_mtrx);
-    bool operator !=(const BaseMtrx<Type>& an_mtrx);
+    bool operator ==(const BaseMtrx<Type>& an_mtrx) const;
+    bool operator !=(const BaseMtrx<Type>& an_mtrx) const;
 
 protected:
     virtual void alloc_data();

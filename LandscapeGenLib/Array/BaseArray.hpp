@@ -119,6 +119,25 @@ const Type &BaseArray<Type>::operator [](int id) const
 }
 
 template<typename Type>
+bool BaseArray<Type>::operator ==(BaseArray<Type> &an_array) const
+{
+    if (this->size() != an_array.size())
+        return false;
+
+    for (int i = 0; i < elems_num; i++)
+        if ((*this)[i] != an_array[i])
+            return false;
+
+    return true;
+}
+
+template<typename Type>
+bool BaseArray<Type>::operator !=(BaseArray<Type> &an_array) const
+{
+    return !(*this == an_array);
+}
+
+template<typename Type>
 void BaseArray<Type>::alloc_data()
 {
     data_ptr.reset();

@@ -241,7 +241,7 @@ void HeightsMapPoints::toStr(string& res)
     }
 }
 
-bool HeightsMapPoints::operator ==(HeightsMapPoints &an_mtrx)
+bool HeightsMapPoints::operator ==(HeightsMapPoints &an_mtrx) const
 {
     if (this->elems_num != an_mtrx.elems_num &&
             this->width != an_mtrx.width &&
@@ -263,7 +263,7 @@ bool HeightsMapPoints::operator ==(HeightsMapPoints &an_mtrx)
     return res;
 }
 
-bool HeightsMapPoints::operator !=(HeightsMapPoints &an_mtrx)
+bool HeightsMapPoints::operator !=(HeightsMapPoints &an_mtrx) const
 {
     return !(*this == an_mtrx);
 }

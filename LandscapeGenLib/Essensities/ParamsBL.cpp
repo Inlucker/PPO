@@ -7,7 +7,7 @@ ParamsBL::ParamsBL(int c_id, int w, int h, double ran, bool s, int m, int r, int
 
 }
 
-bool ParamsBL::operator ==(ParamsBL &an_p)
+bool ParamsBL::operator ==(ParamsBL &an_p) const
 {
     bool res = true;
 
@@ -25,7 +25,7 @@ bool ParamsBL::operator ==(ParamsBL &an_p)
     return res;
 }
 
-bool ParamsBL::operator !=(ParamsBL &an_p)
+bool ParamsBL::operator !=(ParamsBL &an_p) const
 {
     return !(*this == an_p);
 }

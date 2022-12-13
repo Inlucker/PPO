@@ -35,8 +35,8 @@ public:
     shared_ptr<HeightsMapPoints> createPoints(double kx, double ky, double kz);
     shared_ptr<HeightsMapPoints> createPoints();
 
-    bool operator ==(HeightsMap& an_mtrx);
-    bool operator !=(HeightsMap& an_mtrx);
+    bool operator ==(HeightsMap& an_mtrx) const;
+    bool operator !=(HeightsMap& an_mtrx) const;
 private:
     void changeSizes(int new_width, int new_height);
 

@@ -34,8 +34,8 @@ public:
     void writeToFile(string file_name);
     void toStr(string& res);
 
-    bool operator ==(HeightsMapPoints& an_mtrx);
-    bool operator !=(HeightsMapPoints& an_mtrx);
+    bool operator ==(HeightsMapPoints& an_mtrx) const;
+    bool operator !=(HeightsMapPoints& an_mtrx) const;
 private:
     void changeSizes(int new_width, int new_height);
     //void alloc_data();

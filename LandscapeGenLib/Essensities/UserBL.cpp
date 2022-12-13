@@ -18,7 +18,7 @@ UserBL::UserBL(int i, string l, string p, string r, int m_id)
     moderator_id = m_id;
 }
 
-bool UserBL::operator ==(UserBL &an_ubl)
+bool UserBL::operator ==(UserBL &an_ubl) const
 {
     bool res = true;
 
@@ -31,7 +31,7 @@ bool UserBL::operator ==(UserBL &an_ubl)
     return res;
 }
 
-bool UserBL::operator !=(UserBL &an_ubl)
+bool UserBL::operator !=(UserBL &an_ubl) const
 {
     return !(*this == an_ubl);
 }

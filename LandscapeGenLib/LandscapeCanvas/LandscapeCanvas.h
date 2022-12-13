@@ -19,12 +19,11 @@ class LandscapeCanvasI
 public:
     //explicit LandscapeCanvasI() = default;
     //virtual ~LandscapeCanvasI() = 0;
-    //virtual bool operator ==(LandscapeCanvasI& an_canvas);
 
     virtual void generateNewLandscape(int size) = 0;
     virtual void readFromFile(string file_name) = 0;
     virtual void writeToFile(string file_name) = 0;
-    virtual shared_ptr<FrameBuffer> getFrameBuffer() = 0;
+    virtual shared_ptr<FrameBuffer> getFrameBuffer() const = 0;
     virtual void cleanCanvas() = 0;
     virtual void resetHeightsMap() = 0;
     virtual void resetHeightsMap(HeightsMap& hm) = 0;
@@ -68,13 +67,14 @@ public:
     explicit LandscapeCanvas(HeightsMap &hm);
     LandscapeCanvas(HeightsMap &hm, HeightsMapPoints &hmp, int r, int g, int b);
     virtual ~LandscapeCanvas();
-    bool operator ==(LandscapeCanvas& an_canvas);
+    bool operator ==(LandscapeCanvas& an_canvas) const;
+    bool operator !=(LandscapeCanvas& an_canvas) const;
 
     void generateNewLandscape(int size);
     void readFromFile(string file_name);
     void writeToFile(string file_name);
     //virtual void drawLandscape() = 0;
-    shared_ptr<FrameBuffer> getFrameBuffer();
+    shared_ptr<FrameBuffer> getFrameBuffer() const;
     void cleanCanvas();
     void resetHeightsMap();
     void resetHeightsMap(HeightsMap& hm);
@@ -130,7 +130,7 @@ private:
 
     shared_ptr<TriPolArray> tri_pol_mas;
     shared_ptr<ZBufferAlg> zbuffer_alg;
-    shared_ptr<FrameBuffer> frame_buffer;
+    //shared_ptr<FrameBuffer> frame_buffer;
 };
 
 #endif // LANDSCAPECANVAS_H
