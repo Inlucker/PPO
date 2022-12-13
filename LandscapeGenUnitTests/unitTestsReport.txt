@@ -1,0 +1,102 @@
+********* Start testing of BaseControllerTest *********
+Config: Using QtTest library 5.15.1, Qt 5.15.1 (x86_64-little_endian-llp64 shared (dynamic) release build; by MSVC 2019)
+PASS   : BaseControllerTest::initTestCase()
+PASS   : BaseControllerTest::noParamsConstrcutorTest()
+PASS   : BaseControllerTest::userBLConstrcutorTest()
+PASS   : BaseControllerTest::loginTest()
+PASS   : BaseControllerTest::logoutTest()
+PASS   : BaseControllerTest::getUserTest()
+PASS   : BaseControllerTest::cleanupTestCase()
+Totals: 7 passed, 0 failed, 0 skipped, 0 blacklisted, 3ms
+********* Finished testing of BaseControllerTest *********
+ 
+********* Start testing of CanvasRepositoryTest *********
+Config: Using QtTest library 5.15.1, Qt 5.15.1 (x86_64-little_endian-llp64 shared (dynamic) release build; by MSVC 2019)
+QWARN  : CanvasRepositoryTest::initTestCase() QSqlQuery::exec: database not open
+FAIL!  : CanvasRepositoryTest::initTestCase()
+tst_canvasrepositorytest.cpp(107) : failure location
+QWARN  : CanvasRepositoryTest::cleanupTestCase() QSqlQuery::exec: database not open
+FAIL!  : CanvasRepositoryTest::cleanupTestCase()
+tst_canvasrepositorytest.cpp(443) : failure location
+Totals: 0 passed, 2 failed, 0 skipped, 0 blacklisted, 1ms
+********* Finished testing of CanvasRepositoryTest *********
+ 
+********* Start testing of ModeratorCanvasesControllerTest *********
+Config: Using QtTest library 5.15.1, Qt 5.15.1 (x86_64-little_endian-llp64 shared (dynamic) release build; by MSVC 2019)
+PASS   : ModeratorCanvasesControllerTest::initTestCase()
+PASS   : ModeratorCanvasesControllerTest::noParamsConstructorTest()
+PASS   : ModeratorCanvasesControllerTest::selectCanvasTest()
+PASS   : ModeratorCanvasesControllerTest::getFrameBufferTest()
+PASS   : ModeratorCanvasesControllerTest::cleanCanvasTest()
+PASS   : ModeratorCanvasesControllerTest::transformTest()
+PASS   : ModeratorCanvasesControllerTest::moveTest()
+PASS   : ModeratorCanvasesControllerTest::scaleTest()
+PASS   : ModeratorCanvasesControllerTest::rotateTest()
+PASS   : ModeratorCanvasesControllerTest::getColorTest()
+PASS   : ModeratorCanvasesControllerTest::getLandscapeCanvasTest()
+PASS   : ModeratorCanvasesControllerTest::getHeightsMapTest()
+PASS   : ModeratorCanvasesControllerTest::getHeightsMapPointsTest()
+PASS   : ModeratorCanvasesControllerTest::getTriPolArrayTest()
+PASS   : ModeratorCanvasesControllerTest::getZBufferAlgTest()
+PASS   : ModeratorCanvasesControllerTest::getMultTest()
+PASS   : ModeratorCanvasesControllerTest::getImgWidthTest()
+PASS   : ModeratorCanvasesControllerTest::getImgHeightTest()
+PASS   : ModeratorCanvasesControllerTest::cleanupTestCase()
+Totals: 19 passed, 0 failed, 0 skipped, 0 blacklisted, 2808ms
+********* Finished testing of ModeratorCanvasesControllerTest *********
+ 
+********* Start testing of ParamsRepositoryTest *********
+Config: Using QtTest library 5.15.1, Qt 5.15.1 (x86_64-little_endian-llp64 shared (dynamic) release build; by MSVC 2019)
+QWARN  : ParamsRepositoryTest::initTestCase() QSqlQuery::exec: database not open
+FAIL!  : ParamsRepositoryTest::initTestCase()
+tst_paramsrepositorytest.cpp(78) : failure location
+QWARN  : ParamsRepositoryTest::cleanupTestCase() QSqlQuery::exec: database not open
+FAIL!  : ParamsRepositoryTest::cleanupTestCase()
+tst_paramsrepositorytest.cpp(335) : failure location
+Totals: 0 passed, 2 failed, 0 skipped, 0 blacklisted, 1ms
+********* Finished testing of ParamsRepositoryTest *********
+ 
+********* Start testing of UserControllerTest *********
+Config: Using QtTest library 5.15.1, Qt 5.15.1 (x86_64-little_endian-llp64 shared (dynamic) release build; by MSVC 2019)
+PASS   : UserControllerTest::initTestCase()
+PASS   : UserControllerTest::selectCanvasTest()
+PASS   : UserControllerTest::generateNewLandscapeTest()
+PASS   : UserControllerTest::readFromFileTest()
+PASS   : UserControllerTest::writeToFileTest()
+PASS   : UserControllerTest::getFrameBufferTest()
+PASS   : UserControllerTest::cleanCanvasTest()
+PASS   : UserControllerTest::resetHeightsMapTest()
+PASS   : UserControllerTest::updateResolutionTest()
+PASS   : UserControllerTest::setWidthTest()
+PASS   : UserControllerTest::setHeightTest()
+PASS   : UserControllerTest::setSmoothingTest()
+PASS   : UserControllerTest::setMultTest()
+PASS   : UserControllerTest::setLandscapeColorTest()
+PASS   : UserControllerTest::transformTest()
+PASS   : UserControllerTest::moveTest()
+PASS   : UserControllerTest::scaleTest()
+PASS   : UserControllerTest::rotateTest()
+PASS   : UserControllerTest::getColorTest()
+PASS   : UserControllerTest::getLandscapeCanvasTest()
+PASS   : UserControllerTest::getHeightsMapTest()
+PASS   : UserControllerTest::getHeightsMapPointsTest()
+PASS   : UserControllerTest::getTriPolArrayTest()
+PASS   : UserControllerTest::getZBufferAlgTest()
+PASS   : UserControllerTest::getMultTest()
+PASS   : UserControllerTest::getImgWidthTest()
+PASS   : UserControllerTest::getImgHeightTest()
+PASS   : UserControllerTest::cleanupTestCase()
+Totals: 28 passed, 0 failed, 0 skipped, 0 blacklisted, 3575ms
+********* Finished testing of UserControllerTest *********
+ 
+********* Start testing of UsersRepositoryTest *********
+Config: Using QtTest library 5.15.1, Qt 5.15.1 (x86_64-little_endian-llp64 shared (dynamic) release build; by MSVC 2019)
+QWARN  : UsersRepositoryTest::initTestCase() QSqlQuery::exec: database not open
+FAIL!  : UsersRepositoryTest::initTestCase()
+tst_usersrepositorytest.cpp(78) : failure location
+QWARN  : UsersRepositoryTest::cleanupTestCase() QSqlQuery::exec: database not open
+FAIL!  : UsersRepositoryTest::cleanupTestCase()
+tst_usersrepositorytest.cpp(403) : failure location
+Totals: 0 passed, 2 failed, 0 skipped, 0 blacklisted, 1ms
+********* Finished testing of UsersRepositoryTest *********
+ 
