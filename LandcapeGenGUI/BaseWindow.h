@@ -12,8 +12,8 @@ using namespace std;
 #include "ModeratorWindow.h"
 #include "Controllers/BaseController.h"
 #include "Repositorys/UsersRepository.h"
-#include "Repositorys/UsersRepositoryMySQL.h"
-#include "Repositorys/CanvasRepositoryMySQL.h"
+//#include "Repositorys/UsersRepositoryMySQL.h"
+//#include "Repositorys/CanvasRepositoryMySQL.h"
 #include "LoggingCategories.h"
 
 #include "defines.h"

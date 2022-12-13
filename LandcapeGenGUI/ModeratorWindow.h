@@ -6,8 +6,8 @@
 #include "Controllers/ModeratorController.h"
 #include "Repositorys/CanvasRepository.h"
 #include "Repositorys/UsersRepository.h"
-#include "Repositorys/UsersRepositoryMySQL.h"
-#include "Repositorys/CanvasRepositoryMySQL.h"
+//#include "Repositorys/UsersRepositoryMySQL.h"
+//#include "Repositorys/CanvasRepositoryMySQL.h"
 
 #include "ModeratorCanvasWindow.h"
 #include "defines.h"

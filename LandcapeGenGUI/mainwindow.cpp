@@ -501,7 +501,7 @@ void MainWindow::on_load_canvas_btn_clicked()
         //int r, g, b;
         //cbl.getColor(r, g, b);
         //canvas->selectCanvas(make_shared<LandscapeCanvas>(cbl.getHeightsMap(), cbl.getHeightsMapPoints(), r, g, b));
-        QList list = ui->my_canvases_listWidget->selectedItems();
+        QList<QListWidgetItem*> list = ui->my_canvases_listWidget->selectedItems();
         if (list.size()>0)
         {
             shared_ptr<ParamsBL> params_bl = canvas->selectCanvas(list[0]->statusTip().toInt());
@@ -576,7 +576,7 @@ void MainWindow::on_delete_canvas_btn_clicked()
     try
     {
         qInfo(logUserAction()) << "Pressed delete canvas button";
-        QList list = ui->my_canvases_listWidget->selectedItems();
+        QList<QListWidgetItem*> list = ui->my_canvases_listWidget->selectedItems();
         for (auto &elem : list)
         {
             canvas->deleteCanvas(elem->statusTip().toInt());
@@ -599,7 +599,7 @@ void MainWindow::on_update_canvas_btn_clicked()
     try
     {
         qInfo(logUserAction()) << "Pressed update canvas button";
-        QList list = ui->my_canvases_listWidget->selectedItems();
+        QList<QListWidgetItem*> list = ui->my_canvases_listWidget->selectedItems();
         for (auto &elem : list)
         {
             canvas->updateCanvas(elem->statusTip().toInt());

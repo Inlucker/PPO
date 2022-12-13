@@ -104,7 +104,7 @@ void ModeratorWindow::on_add_btn_clicked()
     try
     {
         qInfo(logUserAction()) << "Pressed add user button";
-        QList list = ui->free_users_listWidget->selectedItems();
+        QList<QListWidgetItem*> list = ui->free_users_listWidget->selectedItems();
         for (auto &elem : list)
         {
             addUser(elem->text().toStdString());
@@ -127,7 +127,7 @@ void ModeratorWindow::on_delete_btn_clicked()
     try
     {
         qInfo(logUserAction()) << "Pressed delete user button";
-        QList list = ui->my_users_listWidget->selectedItems();
+        QList<QListWidgetItem*> list = ui->my_users_listWidget->selectedItems();
         for (auto &elem : list)
         {
             deleteUser(elem->text().toStdString());
@@ -171,7 +171,7 @@ void ModeratorWindow::on_add_btn_2_clicked()
     try
     {
         qInfo(logUserAction()) << "Pressed Watch User Canvases button";
-        QList list = ui->my_users_listWidget->selectedItems();
+        QList<QListWidgetItem*> list = ui->my_users_listWidget->selectedItems();
         if (list.size() > 0)
         {
             shared_ptr<UserBL> user_bl = users_repository->getCanvasUser(list[0]->text().toStdString());

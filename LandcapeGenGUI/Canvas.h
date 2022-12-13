@@ -14,10 +14,10 @@ using namespace std;
 #include "Controllers/usercontroller.h"
 #include "Repositorys/CanvasRepository.h"
 #include "Repositorys/UsersRepository.h"
-#include "Repositorys/UsersRepositoryMySQL.h"
-#include "Repositorys/CanvasRepositoryMySQL.h"
+//#include "Repositorys/UsersRepositoryMySQL.h"
+//#include "Repositorys/CanvasRepositoryMySQL.h"
 #include "Repositorys/ParamsRepository.h"
-#include "Repositorys/ParamsRepositoryMySQL.h"
+//#include "Repositorys/ParamsRepositoryMySQL.h"
 
 #include "defines.h"
 

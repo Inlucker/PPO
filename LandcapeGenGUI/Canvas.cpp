@@ -319,8 +319,8 @@ void Canvas::mouseReleaseEvent(QMouseEvent *event)
 
 void Canvas::mousePressEvent(QMouseEvent *event)
 {
-    previous_x = event->position().x();
-    previous_y = event->position().y();
+    previous_x = event->x();
+    previous_y = event->y();
     if (event->button() == Qt::LeftButton && !LMB_is_pressed && this->rect().contains(event->pos()))
         LMB_is_pressed = true;
 
@@ -335,8 +335,8 @@ void Canvas::mouseMoveEvent(QMouseEvent *event)
 {
     if (LMB_is_pressed)
     {
-        double x = double(previous_x - event->position().x()) / ROTATE_SPEED;
-        double y = double(previous_y - event->position().y()) / ROTATE_SPEED;
+        double x = double(previous_x - event->x()) / ROTATE_SPEED;
+        double y = double(previous_y - event->y()) / ROTATE_SPEED;
 
         //heights_map_points->transform(Point(0, 0, 0), Point(1, 1, 1), Point(-y, -x, 0));
         rotate(Point(-y, -x, 0));
@@ -346,8 +346,8 @@ void Canvas::mouseMoveEvent(QMouseEvent *event)
     }
     else if (RMB_is_pressed)
     {
-        double x = double(previous_x - event->position().x()) / MOVE_SPEED;
-        double y = double(previous_y - event->position().y()) / MOVE_SPEED;
+        double x = double(previous_x - event->x()) / MOVE_SPEED;
+        double y = double(previous_y - event->y()) / MOVE_SPEED;
 
         //heights_map_points->transform(Point(-x, -y, 0), Point(1, 1, 1), Point(0, 0, 0));
         move(Point(-x, -y, 0));
@@ -358,8 +358,8 @@ void Canvas::mouseMoveEvent(QMouseEvent *event)
 
     update();
 
-    previous_x = event->position().x();
-    previous_y = event->position().y();
+    previous_x = event->x();
+    previous_y = event->y();
 }
 
 #define SCALE_SPEED 10
@@ -414,7 +414,12 @@ void Canvas::drawImageFT(int i0, int i1)
 {
     for (int i = i0; i <= i1; i++)
         for (int j = 0; j < frame_buffer->getWidth();  j++)
-            plotXImg(i, j, (*frame_buffer)(i, j), MULT);
+        {
+            color_t c = (*frame_buffer)(i, j);
+            int r, g ,b;
+            c.getRgb(&r, &g, &b);
+            plotXImg(i, j, QColor(r, g, b), MULT);
+        }
 }
 
 void Canvas::DrawLineBrezenheimFloat(const Point& p1, const Point& p2, QColor c)
@@ -563,7 +568,10 @@ void Canvas::zbufferParamDraw()
     {
         for (int j = 0; j < frame_buffer->getWidth() && It != frame_buffer->cend(); It++, j++)
         {
-            plotXImg(i, j, (*frame_buffer)(i, j), user_controller->getMult());
+            color_t c = (*frame_buffer)(i, j);
+            int r, g ,b;
+            c.getRgb(&r, &g, &b);
+            plotXImg(i, j, QColor(r, g, b), user_controller->getMult());
             //double intensity = (*frame_buffer)(i, j);
             //plotXImg(i, j, QColor(red * intensity, green * intensity, blue * intensity), MULT);
         }
@@ -640,7 +648,10 @@ void Canvas::zbufferInterpolationDraw()
     {
         for (int j = 0; j < frame_buffer->getWidth() && It != frame_buffer->cend(); It++, j++)
         {
-            plotXImg(i, j, (*frame_buffer)(i, j), user_controller->getMult());
+            color_t c = (*frame_buffer)(i, j);
+            int r, g ,b;
+            c.getRgb(&r, &g, &b);
+            plotXImg(i, j, QColor(r, g, b), user_controller->getMult());
             //double intensity = (*frame_buffer)(i, j);
             //plotXImg(i, j, QColor(red * intensity, green * intensity, blue * intensity), MULT);
         }

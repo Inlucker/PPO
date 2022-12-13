@@ -46,8 +46,8 @@ void ModeratorCanvasWindow::mouseReleaseEvent(QMouseEvent *event)
 
 void ModeratorCanvasWindow::mousePressEvent(QMouseEvent *event)
 {
-    previous_x = event->position().x();
-    previous_y = event->position().y();
+    previous_x = event->x();
+    previous_y = event->y();
     if (event->button() == Qt::LeftButton && !LMB_is_pressed && this->rect().contains(event->pos()))
         LMB_is_pressed = true;
 
@@ -62,8 +62,8 @@ void ModeratorCanvasWindow::mouseMoveEvent(QMouseEvent *event)
 {
     if (LMB_is_pressed)
     {
-        double x = double(previous_x - event->position().x()) / ROTATE_SPEED;
-        double y = double(previous_y - event->position().y()) / ROTATE_SPEED;
+        double x = double(previous_x - event->x()) / ROTATE_SPEED;
+        double y = double(previous_y - event->y()) / ROTATE_SPEED;
 
         //heights_map_points->transform(Point(0, 0, 0), Point(1, 1, 1), Point(-y, -x, 0));
         controller->rotate(Point(-y, -x, 0));
@@ -73,8 +73,8 @@ void ModeratorCanvasWindow::mouseMoveEvent(QMouseEvent *event)
     }
     else if (RMB_is_pressed)
     {
-        double x = double(previous_x - event->position().x()) / MOVE_SPEED;
-        double y = double(previous_y - event->position().y()) / MOVE_SPEED;
+        double x = double(previous_x - event->x()) / MOVE_SPEED;
+        double y = double(previous_y - event->y()) / MOVE_SPEED;
 
         //heights_map_points->transform(Point(-x, -y, 0), Point(1, 1, 1), Point(0, 0, 0));
         controller->move(Point(-x, -y, 0));
@@ -85,8 +85,8 @@ void ModeratorCanvasWindow::mouseMoveEvent(QMouseEvent *event)
 
     update();
 
-    previous_x = event->position().x();
-    previous_y = event->position().y();
+    previous_x = event->x();
+    previous_y = event->y();
 }
 
 #define SCALE_SPEED 10
@@ -167,7 +167,10 @@ void ModeratorCanvasWindow::drawLandScape()
     {
         for (int j = 0; j < frame_buffer->getWidth() && It != frame_buffer->cend(); It++, j++)
         {
-            plotXImg(i, j, (*frame_buffer)(i, j), controller->getMult());
+            color_t c = (*frame_buffer)(i, j);
+            int r, g ,b;
+            c.getRgb(&r, &g, &b);
+            plotXImg(i, j, QColor(r, g, b), controller->getMult());
             //double intensity = (*frame_buffer)(i, j);
             //plotXImg(i, j, QColor(red * intensity, green * intensity, blue * intensity), MULT);
         }
@@ -198,7 +201,7 @@ void ModeratorCanvasWindow::on_load_btn_clicked()
     try
     {
         qInfo(logUserAction()) << "Pressed LOAD button in ModeratorCanvasWindow";
-        QList list = ui->canvases_listWidget->selectedItems();
+        QList<QListWidgetItem*> list = ui->canvases_listWidget->selectedItems();
         if (list.size()>0)
         {
             int id = list[0]->statusTip().toInt();

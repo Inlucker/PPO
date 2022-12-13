@@ -13,7 +13,7 @@ FrameBuffer::FrameBuffer(int new_width, int new_height) : BaseType(new_width, ne
 void FrameBuffer::reset() noexcept
 {
     for (auto &elem:*this)
-        elem = color_t(1, 1, 1);
+        elem = color_t(255, 255, 255);
 }
 
 ostream& operator <<(ostream& os, const FrameBuffer& buf)

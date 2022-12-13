@@ -1,8 +1,8 @@
 #ifndef DEFINES_H
 #define DEFINES_H
 
-//#define POSTGRESQL
-#define MYSQL
+#define POSTGRESQL
+//#define MYSQL
 //#define PARAMS
 
 #ifdef MYSQL
@@ -16,5 +16,7 @@
     #define CANVAS_REP CanvasRepository
     #define PARAMS_REP ParamsRepository
 #endif
+
+#define HM 2
 
 #endif // DEFINES_H

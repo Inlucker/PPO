@@ -8,9 +8,9 @@
 
 #include "Controllers/ModeratorCanvasesController.h"
 #include "Repositorys/CanvasRepository.h"
-#include "Repositorys/CanvasRepositoryMySQL.h"
+//#include "Repositorys/CanvasRepositoryMySQL.h"
 #include "Repositorys/UsersRepository.h"
-#include "Repositorys/UsersRepositoryMySQL.h"
+//#include "Repositorys/UsersRepositoryMySQL.h"
 #include "defines.h"
 
 #include <memory>
