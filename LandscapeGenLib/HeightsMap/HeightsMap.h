@@ -30,7 +30,7 @@ public:
 
     void readFromFile(string file_name);
     void writeToFile(string file_name);
-    void toStr(string& res);
+    void toStr(string& res) const;
 
     shared_ptr<HeightsMapPoints> createPoints(double kx, double ky, double kz);
     shared_ptr<HeightsMapPoints> createPoints();

@@ -10,6 +10,7 @@ using namespace std;
 
 #include "Essensities/CanvasBL.h"
 #include "Essensities/UserBL.h"
+#include "CanvasMother.h"
 
 enum Status
 {
@@ -30,7 +31,7 @@ public:
 
     //Canvas
     static Status createCanvasTable(string schema = m_schema);
-    static Status insertCanvasTable(CanvasBL canvas, string schema = m_schema);
+    static Status insertCanvasTable(CanvasBL &canvas, string schema = m_schema);
     static Status fillCanvasTable(int n = 5, string schema = m_schema);
     static Status dropCanvasTable(string schema = m_schema);
     static Status getCanvas(shared_ptr<CanvasBL> &canvas, int id = 1, string schema = m_schema);

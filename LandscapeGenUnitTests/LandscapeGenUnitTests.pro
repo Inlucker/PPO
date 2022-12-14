@@ -9,9 +9,4 @@ SUBDIRS += \
     UserControllerTest \
     UsersRepositoryTest
 
-HEADERS += \
-    common/CanvasBLBuilder.h
-
-SOURCES += \
-    common/CanvasBLBuilder.cpp
-
+INCLUDEPATH += common

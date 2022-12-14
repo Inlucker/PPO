@@ -1,5 +1,5 @@
 #include "DataBaseBuilder.h"
-//#include <QtTest>
+//#include "CanvasMother.h"
 
 string DataBaseBuilder::m_schema = "";
 QSqlQuery DataBaseBuilder::m_query = QSqlQuery();
@@ -60,7 +60,7 @@ Status DataBaseBuilder::createCanvasTable(string schema)
     return execQuery(query);
 }
 
-Status DataBaseBuilder::insertCanvasTable(CanvasBL canvas, string schema)
+Status DataBaseBuilder::insertCanvasTable(CanvasBL &canvas, string schema)
 {
     string u_id = std::to_string(canvas.getUserId());
     string name = canvas.getName();
@@ -87,21 +87,22 @@ Status DataBaseBuilder::fillCanvasTable(int n, string schema)
 {
     string query = "";
     int size = 33;
-    HeightsMap hm = HeightsMap(size);
     for (int i = 0; i < n; i++)
     {
+        shared_ptr<CanvasBL> canvas = CanvasMother::withSize(size);
+        /*HeightsMap hm = HeightsMap(size);
         hm.diamondSquare();
-        CanvasBL canvas = CanvasBL(1, 1, "CanvasName" + std::to_string(i), hm, *hm.createPoints(), 20, 150, 20);
+        shared_ptr<CanvasBL> canvas = make_shared<CanvasBL>(1, 1, "CanvasName", hm, *hm.createPoints(), 20, 150, 20);*/
 
-        string u_id = std::to_string(canvas.getUserId());
-        string name = canvas.getName();
+        string u_id = std::to_string(canvas->getUserId());
+        string name = canvas->getName();
         string tmp;
-        canvas.getHeightsMap().toStr(tmp);
+        canvas->getHeightsMap().toStr(tmp);
         string hm_str = tmp;
-        canvas.getHeightsMapPoints().toStr(tmp);
+        canvas->getHeightsMapPoints().toStr(tmp);
         string hmp = tmp;
         int r, g, b;
-        canvas.getColor(r, g, b);
+        canvas->getColor(r, g, b);
         string c = to_string(r) + " " + to_string(g) + " " + to_string(b);
 
         query += "insert into " + schema + ".Canvas(user_id, name, HeightsMap, TriPolArray, Color) values(";

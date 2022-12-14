@@ -35,7 +35,7 @@ public:
     const Point& getCenter() const;
 
     void writeToFile(string file_name);
-    void toStr(string& res);
+    void toStr(string& res) const;
 
     bool operator ==(HeightsMapPoints& an_mtrx) const;
     bool operator !=(HeightsMapPoints& an_mtrx) const;

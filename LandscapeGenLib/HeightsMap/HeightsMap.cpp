@@ -154,7 +154,7 @@ void HeightsMap::writeToFile(string file_name)
     file.close();
 }
 
-void HeightsMap::toStr(string& res)
+void HeightsMap::toStr(string& res) const
 {
     res = "";
     res += to_string(width) + " ";

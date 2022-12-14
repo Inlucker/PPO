@@ -7,21 +7,9 @@ PASS   : BaseControllerTest::loginTest()
 PASS   : BaseControllerTest::logoutTest()
 PASS   : BaseControllerTest::getUserTest()
 PASS   : BaseControllerTest::cleanupTestCase()
-Totals: 7 passed, 0 failed, 0 skipped, 0 blacklisted, 1ms
+Totals: 7 passed, 0 failed, 0 skipped, 0 blacklisted, 2ms
 ********* Finished testing of BaseControllerTest *********
  
-********* Start testing of CanvasRepositoryTest *********
-Config: Using QtTest library 5.15.1, Qt 5.15.1 (x86_64-little_endian-llp64 shared (dynamic) release build; by MSVC 2019)
-PASS   : CanvasRepositoryTest::initTestCase()
-PASS   : CanvasRepositoryTest::getCanvasByIdTest()
-PASS   : CanvasRepositoryTest::getCanvasByNameTest()
-PASS   : CanvasRepositoryTest::getCanvasesByUidTest()
-PASS   : CanvasRepositoryTest::addCanvasTest()
-PASS   : CanvasRepositoryTest::deleteCanvasTest()
-PASS   : CanvasRepositoryTest::updateCanvasTest()
-PASS   : CanvasRepositoryTest::cleanupTestCase()
-Totals: 8 passed, 0 failed, 0 skipped, 0 blacklisted, 587ms
-********* Finished testing of CanvasRepositoryTest *********
  
 ********* Start testing of ModeratorCanvasesControllerTest *********
 Config: Using QtTest library 5.15.1, Qt 5.15.1 (x86_64-little_endian-llp64 shared (dynamic) release build; by MSVC 2019)
@@ -44,19 +32,9 @@ PASS   : ModeratorCanvasesControllerTest::getMultTest()
 PASS   : ModeratorCanvasesControllerTest::getImgWidthTest()
 PASS   : ModeratorCanvasesControllerTest::getImgHeightTest()
 PASS   : ModeratorCanvasesControllerTest::cleanupTestCase()
-Totals: 19 passed, 0 failed, 0 skipped, 0 blacklisted, 2772ms
+Totals: 19 passed, 0 failed, 0 skipped, 0 blacklisted, 3232ms
 ********* Finished testing of ModeratorCanvasesControllerTest *********
  
-********* Start testing of ParamsRepositoryTest *********
-Config: Using QtTest library 5.15.1, Qt 5.15.1 (x86_64-little_endian-llp64 shared (dynamic) release build; by MSVC 2019)
-PASS   : ParamsRepositoryTest::initTestCase()
-PASS   : ParamsRepositoryTest::getParamsTest()
-PASS   : ParamsRepositoryTest::addParamsTest()
-PASS   : ParamsRepositoryTest::deleteParamsTest()
-PASS   : ParamsRepositoryTest::updateParamsTest()
-PASS   : ParamsRepositoryTest::cleanupTestCase()
-Totals: 6 passed, 0 failed, 0 skipped, 0 blacklisted, 224ms
-********* Finished testing of ParamsRepositoryTest *********
  
 ********* Start testing of UserControllerTest *********
 Config: Using QtTest library 5.15.1, Qt 5.15.1 (x86_64-little_endian-llp64 shared (dynamic) release build; by MSVC 2019)
@@ -88,20 +66,7 @@ PASS   : UserControllerTest::getMultTest()
 PASS   : UserControllerTest::getImgWidthTest()
 PASS   : UserControllerTest::getImgHeightTest()
 PASS   : UserControllerTest::cleanupTestCase()
-Totals: 28 passed, 0 failed, 0 skipped, 0 blacklisted, 3430ms
+Totals: 28 passed, 0 failed, 0 skipped, 0 blacklisted, 3580ms
 ********* Finished testing of UserControllerTest *********
  
-********* Start testing of UsersRepositoryTest *********
-Config: Using QtTest library 5.15.1, Qt 5.15.1 (x86_64-little_endian-llp64 shared (dynamic) release build; by MSVC 2019)
-PASS   : UsersRepositoryTest::initTestCase()
-PASS   : UsersRepositoryTest::getUserByLoginPassTest()
-PASS   : UsersRepositoryTest::getCanvasUserByNameTest()
-PASS   : UsersRepositoryTest::getFreeCanvasUsersTest()
-PASS   : UsersRepositoryTest::getCanvasUsersByMidTest()
-PASS   : UsersRepositoryTest::addUserTest()
-PASS   : UsersRepositoryTest::deleteUserTest()
-PASS   : UsersRepositoryTest::updateUserTest()
-PASS   : UsersRepositoryTest::cleanupTestCase()
-Totals: 9 passed, 0 failed, 0 skipped, 0 blacklisted, 266ms
-********* Finished testing of UsersRepositoryTest *********
  
