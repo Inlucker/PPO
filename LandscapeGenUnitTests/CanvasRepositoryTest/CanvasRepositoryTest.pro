@@ -18,7 +18,6 @@ HEADERS += ../common/DataBaseBuilder.h \
     ../common/common.h
 
 INCLUDEPATH += $$PWD/../common
-DEPENDPATH += $$PWD/../common
 
 #libpq
 win32:CONFIG(release, debug|release): LIBS += -L'C:/Program Files/PostgreSQL/14/lib/' -llibpq

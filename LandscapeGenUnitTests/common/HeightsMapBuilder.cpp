@@ -1,4 +1,5 @@
 #include "HeightsMapBuilder.h"
+#include "CanvasMother.h"
 
 shared_ptr<HeightsMap> HeightsMapBuilder::build()
 {

@@ -1,5 +1,5 @@
 #include "DataBaseBuilder.h"
-//#include "CanvasMother.h"
+#include "CanvasMother.h"
 
 string DataBaseBuilder::m_schema = "";
 QSqlQuery DataBaseBuilder::m_query = QSqlQuery();
@@ -90,9 +90,6 @@ Status DataBaseBuilder::fillCanvasTable(int n, string schema)
     for (int i = 0; i < n; i++)
     {
         shared_ptr<CanvasBL> canvas = CanvasMother::withSize(size);
-        /*HeightsMap hm = HeightsMap(size);
-        hm.diamondSquare();
-        shared_ptr<CanvasBL> canvas = make_shared<CanvasBL>(1, 1, "CanvasName", hm, *hm.createPoints(), 20, 150, 20);*/
 
         string u_id = std::to_string(canvas->getUserId());
         string name = canvas->getName();

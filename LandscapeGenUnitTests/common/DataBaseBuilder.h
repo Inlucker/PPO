@@ -10,7 +10,6 @@ using namespace std;
 
 #include "Essensities/CanvasBL.h"
 #include "Essensities/UserBL.h"
-#include "CanvasMother.h"
 
 enum Status
 {

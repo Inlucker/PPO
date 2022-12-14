@@ -8,5 +8,3 @@ SUBDIRS += \
     ParamsRepositoryTest \
     UserControllerTest \
     UsersRepositoryTest
-
-INCLUDEPATH += common

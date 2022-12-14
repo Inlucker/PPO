@@ -7,13 +7,18 @@ CONFIG -= app_bundle
 TEMPLATE = app
 
 SOURCES +=  tst_usersrepositorytest.cpp \
-    ../common/DataBaseBuilder.cpp
+    ../common/CanvasBLBuilder.cpp \
+    ../common/CanvasMother.cpp \
+    ../common/DataBaseBuilder.cpp \
+    ../common/HeightsMapBuilder.cpp
 
 HEADERS += ../common/DataBaseBuilder.h\
+    ../common/CanvasBLBuilder.h \
+    ../common/CanvasMother.h \
+    ../common/HeightsMapBuilder.h \
     ../common/common.h
 
 INCLUDEPATH += $$PWD/../common
-DEPENDPATH += $$PWD/../common
 
 #libpq
 win32:CONFIG(release, debug|release): LIBS += -L'C:/Program Files/PostgreSQL/14/lib/' -llibpq
