@@ -74,17 +74,17 @@ bool CanvasBL::operator !=(CanvasBL &an_c) const
     return !(*this == an_c);
 }
 
-int CanvasBL::getId()
+int CanvasBL::getId() const
 {
     return id;
 }
 
-int CanvasBL::getUserId()
+int CanvasBL::getUserId() const
 {
     return user_id;
 }
 
-string CanvasBL::getName()
+string CanvasBL::getName() const
 {
     return name;
 }
@@ -99,14 +99,14 @@ HeightsMapPoints &CanvasBL::getHeightsMapPoints()
     return heights_map_points;
 }
 
-void CanvasBL::getColor(int &r, int &g, int &b) noexcept
+void CanvasBL::getColor(int &r, int &g, int &b) const noexcept
 {
     r = red;
     g = green;
     b = blue;
 }
 
-void CanvasBL::getColor(string &c) noexcept
+void CanvasBL::getColor(string &c) const noexcept
 {
     c = to_string(red) + " " + to_string(green) + " " + to_string(blue);
 }

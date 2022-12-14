@@ -19,13 +19,13 @@ public:
     bool operator ==(CanvasBL& an_c) const;
     bool operator !=(CanvasBL& an_c) const;
 
-    int getId();
-    int getUserId();
-    string getName();
+    int getId() const;
+    int getUserId() const;
+    string getName() const;
     HeightsMap& getHeightsMap();
     HeightsMapPoints& getHeightsMapPoints();
-    void getColor(int& r, int& g, int& b) noexcept;
-    void getColor(string& c) noexcept;
+    void getColor(int& r, int& g, int& b) const noexcept;
+    void getColor(string& c) const noexcept;
 private:
     string strFromFile(string file_name);
 

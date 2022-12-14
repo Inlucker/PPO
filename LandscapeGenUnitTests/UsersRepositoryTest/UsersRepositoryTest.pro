@@ -6,7 +6,13 @@ CONFIG -= app_bundle
 
 TEMPLATE = app
 
-SOURCES +=  tst_usersrepositorytest.cpp
+SOURCES +=  tst_usersrepositorytest.cpp \
+    ../common/DataBaseBuilder.cpp
+
+HEADERS += ../common/DataBaseBuilder.h\
+    ../common/common.h
+
+INCLUDEPATH += $$PWD/../common
 
 #libpq
 win32:CONFIG(release, debug|release): LIBS += -L'C:/Program Files/PostgreSQL/14/lib/' -llibpq

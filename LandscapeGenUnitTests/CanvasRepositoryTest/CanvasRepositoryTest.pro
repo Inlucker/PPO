@@ -5,7 +5,13 @@ CONFIG += qt warn_on depend_includepath testcase
 
 TEMPLATE = app
 
-SOURCES +=  tst_canvasrepositorytest.cpp
+SOURCES +=  tst_canvasrepositorytest.cpp \
+    ../common/DataBaseBuilder.cpp
+
+HEADERS += ../common/DataBaseBuilder.h\
+    ../common/common.h
+
+INCLUDEPATH += $$PWD/../common
 
 #libpq
 win32:CONFIG(release, debug|release): LIBS += -L'C:/Program Files/PostgreSQL/14/lib/' -llibpq

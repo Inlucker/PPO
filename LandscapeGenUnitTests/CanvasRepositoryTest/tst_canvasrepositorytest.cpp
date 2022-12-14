@@ -6,6 +6,7 @@
 
 #include "Settings.h"
 #include "Repositorys/CanvasRepository.h"
+#include "common.h"
 
 class CanvasRepositoryTest : public QObject
 {
@@ -42,7 +43,6 @@ CanvasRepositoryTest::CanvasRepositoryTest()
     Settings::setDefaults(cfgDefaults.readAll());
 
     m_schema = Settings::get(Settings::Schema, Settings::DataBase).toString().toStdString();
-    db = make_unique<QSqlDatabase>(QSqlDatabase::addDatabase("QPSQL"));
 
     QString m_dbhost = Settings::get(Settings::DBHost, Settings::DataBase).toString();
     int m_dbport = Settings::get(Settings::DBPort, Settings::DataBase).toInt();
@@ -50,13 +50,7 @@ CanvasRepositoryTest::CanvasRepositoryTest()
     QString m_dbuser = Settings::get(Settings::DBUser, Settings::DataBase).toString();
     QString m_dbpass = Settings::get(Settings::DBPass, Settings::DataBase).toString();
 
-    /*qDebug() << Settings::get(Settings::DBHost, Settings::DataBase).toString();
-    qDebug() << Settings::get(Settings::DBPort, Settings::DataBase).toInt();
-    qDebug() << Settings::get(Settings::DBName, Settings::DataBase).toString();
-    qDebug() << Settings::get(Settings::DBUser, Settings::DataBase).toString();
-    qDebug() << Settings::get(Settings::DBPass, Settings::DataBase).toString();
-    qDebug() << Settings::get(Settings::Schema, Settings::DataBase).toString();*/
-
+    /*db = make_unique<QSqlDatabase>(QSqlDatabase::addDatabase("QPSQL"));
     db->setHostName(m_dbhost);
     db->setPort(m_dbport);
     db->setDatabaseName(m_dbname);
@@ -65,7 +59,9 @@ CanvasRepositoryTest::CanvasRepositoryTest()
 
     if (!db->open())
         qDebug() << db->lastError().text();
-        //QFAIL(db->lastError().text().toStdString().c_str());
+        //QFAIL(db->lastError().text().toStdString().c_str());*/
+
+    db = DataBaseBuilder::createPostgresDataBase(m_dbhost, m_dbport, m_dbname, m_dbuser, m_dbpass, m_schema);
 
     sut = CanvasRepository();
 }
@@ -76,105 +72,41 @@ CanvasRepositoryTest::~CanvasRepositoryTest()
 
 void CanvasRepositoryTest::initTestCase()
 {
-    /*QFile cfgDefaults(FILENAME);
-    cfgDefaults.open(QIODevice::ReadOnly);
-    Settings::setDefaults(cfgDefaults.readAll());
-
-    m_schema = Settings::get(Settings::Schema, Settings::DataBase).toString().toStdString();
-    db = make_unique<QSqlDatabase>(QSqlDatabase::addDatabase("QPSQL"));
-
-    QString m_dbhost = Settings::get(Settings::DBHost, Settings::DataBase).toString();
-    int m_dbport = Settings::get(Settings::DBPort, Settings::DataBase).toInt();
-    QString m_dbname = Settings::get(Settings::DBName, Settings::DataBase).toString();
-    QString m_dbuser = Settings::get(Settings::DBUser, Settings::DataBase).toString();
-    QString m_dbpass = Settings::get(Settings::DBPass, Settings::DataBase).toString();
-
-
-    db->setHostName(m_dbhost);
-    db->setPort(m_dbport);
-    db->setDatabaseName(m_dbname);
-    db->setUserName(m_dbuser);
-    db->setPassword(m_dbpass);
-
-    if (!db->open())
-        QFAIL("Disconnected!");
-
-    sut = CanvasRepository();*/
-
-    string query = "create schema "+ m_schema + ";";
+    if (DataBaseBuilder::createSchema() != OK)
+        QFAIL(DataBaseBuilder::lastError().c_str());
+    /*string query = "create schema "+ m_schema + ";";
     QSqlQuery q;
     if (!q.exec(QString::fromStdString(query)))
-        QFAIL(q.lastError().text().toStdString().c_str());
+        QFAIL(q.lastError().text().toStdString().c_str());*/
 }
 
 void CanvasRepositoryTest::init()
 {
-    string query = "create table if not exists "+ m_schema + ".Canvas\
-            (\
-                id serial primary key,\
-                user_id int,\
-                name text,\
-                HeightsMap text,\
-                TriPolArray text,\
-                Color text\
-            );";
+    if (DataBaseBuilder::createCanvasTable(m_schema) != OK)
+        QFAIL(DataBaseBuilder::lastError().c_str());
 
-    QSqlQuery q;
-    if (!q.exec(QString::fromStdString(query)))
-        QFAIL(q.lastError().text().toStdString().c_str());
-
-    int size = 33;
+    if (DataBaseBuilder::fillCanvasTable(2) != OK)
+        QFAIL(DataBaseBuilder::lastError().c_str());
+    /*int size = 33;
     HeightsMap hm = HeightsMap(size);
     hm.diamondSquare();
     CanvasBL canvas = CanvasBL(1, 1, "CanvasName1", hm, *hm.createPoints(), 20, 150, 20);
-    string u_id = std::to_string(canvas.getUserId());
-    string name = canvas.getName();
-    string tmp;
-    canvas.getHeightsMap().toStr(tmp);
-    string hm_str = tmp;
-    canvas.getHeightsMapPoints().toStr(tmp);
-    string hmp = tmp;
-    int r, g, b;
-    canvas.getColor(r, g, b);
-    string c = to_string(r) + " " + to_string(g) + " " + to_string(b);
 
-    query = "insert into " + m_schema + ".Canvas(user_id, name, HeightsMap, TriPolArray, Color) values(";
-    query += u_id + ", '";
-    query += name + "', '";
-    query += hm_str + "', '";
-    query += hmp + "', '";
-    query += c + "');";
-
-    if (!q.exec(QString::fromStdString(query)))
-        QFAIL(q.lastError().text().toStdString().c_str());
-
+    DataBaseBuilder::insertCanvasTable(canvas, m_schema);
 
     hm.diamondSquare();
     canvas = CanvasBL(1, 1, "CanvasName2", hm, *hm.createPoints(), 10, 140, 10);
-    u_id = std::to_string(canvas.getUserId());
-    name = canvas.getName();
-    canvas.getHeightsMap().toStr(tmp);
-    hm_str = tmp;
-    canvas.getHeightsMapPoints().toStr(tmp);
-    hmp = tmp;
-    canvas.getColor(r, g, b);
-    c = to_string(r) + " " + to_string(g) + " " + to_string(b);
-
-    query = "insert into " + m_schema + ".Canvas(user_id, name, HeightsMap, TriPolArray, Color) values(";
-    query += u_id + ", '";
-    query += name + "', '";
-    query += hm_str + "', '";
-    query += hmp + "', '";
-    query += c + "');";
-
-    if (!q.exec(QString::fromStdString(query)))
-        QFAIL(q.lastError().text().toStdString().c_str());
+    DataBaseBuilder::insertCanvasTable(canvas, m_schema);*/
 }
 
 void CanvasRepositoryTest::getCanvasByIdTest()
 {
     //ARRANGE
-    string query = "SELECT * FROM " + m_schema + ".Canvas;";
+    shared_ptr<CanvasBL> canvas_exp;
+    if (DataBaseBuilder::getCanvas(canvas_exp, 1) != OK || !canvas_exp)
+        QFAIL(DataBaseBuilder::lastError().c_str());
+    int canvas_id = canvas_exp->getId();
+    /*string query = "SELECT * FROM " + m_schema + ".Canvas;";
     QSqlQuery q;
     if (!q.exec(QString::fromStdString(query)))
         QFAIL(q.lastError().text().toStdString().c_str());
@@ -190,13 +122,13 @@ void CanvasRepositoryTest::getCanvasByIdTest()
         string c = q.value(5).toString().toStdString();
 
         same_canvas = make_shared<CanvasBL>(last_canvas_id, u_id, name, hm, tpa, c);
-    }
+    }*/
     shared_ptr<CanvasBL> canvas;
 
     //ACT
     try
     {
-        canvas = sut.getCanvas(last_canvas_id);
+        canvas = sut.getCanvas(canvas_id);
     }
     //ASSERT
     catch (BaseError &er)
@@ -210,13 +142,17 @@ void CanvasRepositoryTest::getCanvasByIdTest()
         return;
     }
 
-    QVERIFY2(*canvas == *same_canvas, "getCanvasByIdTest error");
+    QVERIFY2(*canvas == *canvas_exp, "getCanvasByIdTest error");
 }
 
 void CanvasRepositoryTest::getCanvasByNameTest()
 {
     //ARRANGE
-    string query = "SELECT * FROM " + m_schema + ".Canvas;";
+    shared_ptr<CanvasBL> canvas_exp;
+    if (DataBaseBuilder::getCanvas(canvas_exp, 1) != OK || !canvas_exp)
+        QFAIL(DataBaseBuilder::lastError().c_str());
+    string canvas_name = canvas_exp->getName();
+    /*string query = "SELECT * FROM " + m_schema + ".Canvas;";
     QSqlQuery q;
     if (!q.exec(QString::fromStdString(query)))
         QFAIL(q.lastError().text().toStdString().c_str());
@@ -232,13 +168,13 @@ void CanvasRepositoryTest::getCanvasByNameTest()
         string c = q.value(5).toString().toStdString();
 
         same_canvas = make_shared<CanvasBL>(id, u_id, last_canvas_name, hm, tpa, c);
-    }
+    }*/
     shared_ptr<CanvasBL> canvas;
 
     //ACT
     try
     {
-        canvas = sut.getCanvas(last_canvas_name);
+        canvas = sut.getCanvas(canvas_name);
     }
     //ASSERT
     catch (BaseError &er)
@@ -252,15 +188,14 @@ void CanvasRepositoryTest::getCanvasByNameTest()
         return;
     }
 
-    QVERIFY2(*canvas == *same_canvas, "getCanvasByNameTest error");
+    QVERIFY2(*canvas == *canvas_exp, "getCanvasByNameTest error");
 }
 
 void CanvasRepositoryTest::getCanvasesByUidTest()
 {
-
     //ARRANGE
     int u_id = 1;
-    string query = "SELECT id, name FROM " + m_schema + ".Canvas where user_id = " + std::to_string(u_id) + ";";
+    /*string query = "SELECT id, name FROM " + m_schema + ".Canvas where user_id = " + std::to_string(u_id) + ";";
     QSqlQuery q;
     if (!q.exec(QString::fromStdString(query)))
         QFAIL(q.lastError().text().toStdString().c_str());
@@ -271,7 +206,13 @@ void CanvasRepositoryTest::getCanvasesByUidTest()
         string name = q.value(1).toString().toStdString();
 
         same_canvases.push_back(make_pair(id, name));
-    }
+    }*/
+    vector<CanvasBL> canvases_vec;
+    if (DataBaseBuilder::getCanvasesByUid(canvases_vec, u_id) != OK)
+        QFAIL(DataBaseBuilder::lastError().c_str());
+    vector<pair<int, string> > canvases_exp;
+    for (const CanvasBL& c : canvases_vec)
+        canvases_exp.push_back(make_pair(c.getId(), c.getName()));
     vector<pair<int, string> > canvases;
 
     //ACT
@@ -291,12 +232,12 @@ void CanvasRepositoryTest::getCanvasesByUidTest()
         return;
     }
 
-    for (int i = 0; i < same_canvases.size(); i++)
+    for (int i = 0; i < canvases_exp.size(); i++)
     {
         QString msg = QString("i = %1 canvases.id = %2; canvases.name = %3; same_canvases.id = %4; same_canvases.name = %5;").
                 arg(QString::number(i),QString::number(canvases[i].first), QString::fromStdString(canvases[i].second),
-                    QString::number(same_canvases[i].first), QString::fromStdString(same_canvases[i].second));
-        QVERIFY2(canvases[i] == same_canvases[i], msg.toStdString().c_str());
+                    QString::number(canvases_exp[i].first), QString::fromStdString(canvases_exp[i].second));
+        QVERIFY2(canvases[i] == canvases_exp[i], msg.toStdString().c_str());
     }
 }
 
@@ -327,7 +268,10 @@ void CanvasRepositoryTest::addCanvasTest()
         return;
     }
 
-    string query = "SELECT * FROM " + m_schema + ".Canvas where id=" + to_string(id) + ";";
+    shared_ptr<CanvasBL> canvas_exp;
+    if (DataBaseBuilder::getCanvas(canvas_exp, id) != OK || !canvas_exp)
+        QFAIL(DataBaseBuilder::lastError().c_str());
+    /*string query = "SELECT * FROM " + m_schema + ".Canvas where id=" + to_string(id) + ";";
     QSqlQuery q;
     if (!q.exec(QString::fromStdString(query)))
         QFAIL(q.lastError().text().toStdString().c_str());
@@ -341,19 +285,20 @@ void CanvasRepositoryTest::addCanvasTest()
         string c = q.value(5).toString().toStdString();
 
         same_canvas = make_shared<CanvasBL>(id, u_id, name, hm, tpa, c);
-    }
+    }*/
 
-    QVERIFY2(canvas == *same_canvas, "addCanvasTest error");
+    QVERIFY2(canvas == *canvas_exp, "addCanvasTest error");
 }
 
 void CanvasRepositoryTest::deleteCanvasTest()
 {
     //ARRANGE в init()
+    int id = 1;
 
     //ACT
     try
     {
-        sut.deleteCanvas(1);
+        sut.deleteCanvas(id);
     }
     //ASSERT
     catch (DeleteCanvasError &er)
@@ -367,27 +312,34 @@ void CanvasRepositoryTest::deleteCanvasTest()
         return;
     }
 
-    string query = "SELECT * FROM " + m_schema + ".Canvas where id=" + to_string(1) + ";";
+    shared_ptr<CanvasBL> canvas_exp;
+    Status status = DataBaseBuilder::getCanvas(canvas_exp, id);
+    if (status == EXEC_ERROR)
+        QFAIL(DataBaseBuilder::lastError().c_str());
+    if (status != EMPTY_RES)
+        QFAIL("Canvas is not deleted");
+    /*string query = "SELECT * FROM " + m_schema + ".Canvas where id=" + to_string(id) + ";";
     QSqlQuery q;
     if (!q.exec(QString::fromStdString(query)))
         QFAIL(q.lastError().text().toStdString().c_str());
     if (q.next())
-        QFAIL("Canvas is not deleted");
+        QFAIL("Canvas is not deleted");*/
 }
 
 void CanvasRepositoryTest::updateCanvasTest()
 {
     //ARRANGE
+    int id = 1;
     int size = 33;
     HeightsMap hm = HeightsMap(size);
     hm.diamondSquare();
     CanvasBL canvas = CanvasBL(1, 1, "CanvasName", hm, *hm.createPoints(), 20, 150, 20);
-    shared_ptr<CanvasBL> same_canvas;
+    shared_ptr<CanvasBL> canvas_exp;
 
     //ACT
     try
     {
-        sut.updateCanvas(canvas, 1);
+        sut.updateCanvas(canvas, id);
     }
     //ASSERT
     catch (BaseError &er)
@@ -401,7 +353,9 @@ void CanvasRepositoryTest::updateCanvasTest()
         return;
     }
 
-    string query = "SELECT * FROM " + m_schema + ".Canvas where id=" + to_string(1) + ";";
+    if (DataBaseBuilder::getCanvas(canvas_exp, id) != OK || !canvas_exp)
+        QFAIL(DataBaseBuilder::lastError().c_str());
+    /*string query = "SELECT * FROM " + m_schema + ".Canvas where id=" + to_string(1) + ";";
     QSqlQuery q;
     if (!q.exec(QString::fromStdString(query)))
         QFAIL(q.lastError().text().toStdString().c_str());
@@ -415,13 +369,13 @@ void CanvasRepositoryTest::updateCanvasTest()
         string c = q.value(5).toString().toStdString();
 
         same_canvas = make_shared<CanvasBL>(id, u_id, name, hm, tpa, c);
-    }
+    }*/
 
-    QVERIFY2(canvas.getHeightsMap() == same_canvas->getHeightsMap(), "HeightsMap difference");
-    QVERIFY2(canvas.getHeightsMapPoints() == same_canvas->getHeightsMapPoints(), "TriPolMas difference");
+    QVERIFY2(canvas.getHeightsMap() == canvas_exp->getHeightsMap(), "HeightsMap difference");
+    QVERIFY2(canvas.getHeightsMapPoints() == canvas_exp->getHeightsMapPoints(), "TriPolMas difference");
     int r1, g1, b1, r2, g2, b2;
     canvas.getColor(r1, g1, b1);
-    same_canvas->getColor(r2, g2, b2);
+    canvas_exp->getColor(r2, g2, b2);
     QVERIFY2(r1 == r2, "red difference");
     QVERIFY2(g1 == g2, "green difference");
     QVERIFY2(b1 == b2, "blue difference");
@@ -429,18 +383,22 @@ void CanvasRepositoryTest::updateCanvasTest()
 
 void CanvasRepositoryTest::cleanup()
 {
-    string query = "drop table " + m_schema + ".Canvas cascade;";
+    if (DataBaseBuilder::dropCanvasTable() != OK)
+        QFAIL(DataBaseBuilder::lastError().c_str());
+    /*string query = "drop table " + m_schema + ".Canvas cascade;";
     QSqlQuery q;
     if (!q.exec(QString::fromStdString(query)))
-        QFAIL(q.lastError().text().toStdString().c_str());
+        QFAIL(q.lastError().text().toStdString().c_str());*/
 }
 
 void CanvasRepositoryTest::cleanupTestCase()
 {
-    string query = "drop schema " + m_schema + " cascade;";
+    if (DataBaseBuilder::dropSchemaCascade() != OK)
+        QFAIL(DataBaseBuilder::lastError().c_str());
+    /*string query = "drop schema " + m_schema + " cascade;";
     QSqlQuery q;
     if (!q.exec(QString::fromStdString(query)))
-        QFAIL(q.lastError().text().toStdString().c_str());
+        QFAIL(q.lastError().text().toStdString().c_str());*/
 }
 
 QTEST_GUILESS_MAIN(CanvasRepositoryTest)

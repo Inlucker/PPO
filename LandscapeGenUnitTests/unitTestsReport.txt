@@ -7,7 +7,7 @@ PASS   : BaseControllerTest::loginTest()
 PASS   : BaseControllerTest::logoutTest()
 PASS   : BaseControllerTest::getUserTest()
 PASS   : BaseControllerTest::cleanupTestCase()
-Totals: 7 passed, 0 failed, 0 skipped, 0 blacklisted, 3ms
+Totals: 7 passed, 0 failed, 0 skipped, 0 blacklisted, 1ms
 ********* Finished testing of BaseControllerTest *********
  
 ********* Start testing of CanvasRepositoryTest *********
@@ -20,7 +20,7 @@ PASS   : CanvasRepositoryTest::addCanvasTest()
 PASS   : CanvasRepositoryTest::deleteCanvasTest()
 PASS   : CanvasRepositoryTest::updateCanvasTest()
 PASS   : CanvasRepositoryTest::cleanupTestCase()
-Totals: 8 passed, 0 failed, 0 skipped, 0 blacklisted, 523ms
+Totals: 8 passed, 0 failed, 0 skipped, 0 blacklisted, 587ms
 ********* Finished testing of CanvasRepositoryTest *********
  
 ********* Start testing of ModeratorCanvasesControllerTest *********
@@ -44,7 +44,7 @@ PASS   : ModeratorCanvasesControllerTest::getMultTest()
 PASS   : ModeratorCanvasesControllerTest::getImgWidthTest()
 PASS   : ModeratorCanvasesControllerTest::getImgHeightTest()
 PASS   : ModeratorCanvasesControllerTest::cleanupTestCase()
-Totals: 19 passed, 0 failed, 0 skipped, 0 blacklisted, 2854ms
+Totals: 19 passed, 0 failed, 0 skipped, 0 blacklisted, 2772ms
 ********* Finished testing of ModeratorCanvasesControllerTest *********
  
 ********* Start testing of ParamsRepositoryTest *********
@@ -55,7 +55,7 @@ PASS   : ParamsRepositoryTest::addParamsTest()
 PASS   : ParamsRepositoryTest::deleteParamsTest()
 PASS   : ParamsRepositoryTest::updateParamsTest()
 PASS   : ParamsRepositoryTest::cleanupTestCase()
-Totals: 6 passed, 0 failed, 0 skipped, 0 blacklisted, 154ms
+Totals: 6 passed, 0 failed, 0 skipped, 0 blacklisted, 224ms
 ********* Finished testing of ParamsRepositoryTest *********
  
 ********* Start testing of UserControllerTest *********
@@ -88,7 +88,7 @@ PASS   : UserControllerTest::getMultTest()
 PASS   : UserControllerTest::getImgWidthTest()
 PASS   : UserControllerTest::getImgHeightTest()
 PASS   : UserControllerTest::cleanupTestCase()
-Totals: 28 passed, 0 failed, 0 skipped, 0 blacklisted, 3523ms
+Totals: 28 passed, 0 failed, 0 skipped, 0 blacklisted, 3430ms
 ********* Finished testing of UserControllerTest *********
  
 ********* Start testing of UsersRepositoryTest *********
@@ -102,6 +102,6 @@ PASS   : UsersRepositoryTest::addUserTest()
 PASS   : UsersRepositoryTest::deleteUserTest()
 PASS   : UsersRepositoryTest::updateUserTest()
 PASS   : UsersRepositoryTest::cleanupTestCase()
-Totals: 9 passed, 0 failed, 0 skipped, 0 blacklisted, 262ms
+Totals: 9 passed, 0 failed, 0 skipped, 0 blacklisted, 266ms
 ********* Finished testing of UsersRepositoryTest *********
  
