@@ -6,9 +6,15 @@ CONFIG += qt warn_on depend_includepath testcase
 TEMPLATE = app
 
 SOURCES +=  tst_canvasrepositorytest.cpp \
-    ../common/DataBaseBuilder.cpp
+    ../common/CanvasBLBuilder.cpp \
+    ../common/CanvasMother.cpp \
+    ../common/DataBaseBuilder.cpp \
+    ../common/HeightsMapBuilder.cpp
 
-HEADERS += ../common/DataBaseBuilder.h\
+HEADERS += ../common/DataBaseBuilder.h \
+    ../common/CanvasBLBuilder.h \
+    ../common/CanvasMother.h \
+    ../common/HeightsMapBuilder.h \
     ../common/common.h
 
 INCLUDEPATH += $$PWD/../common

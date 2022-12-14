@@ -1,3 +1,3 @@
 1) CanvasUserControllerTest (Done)
-2) Data Builder и Fabric(Object Mother)
+2) Data Builder и Fabric(Object Mother) (Done)
 3) Запуск через консоль (Done)

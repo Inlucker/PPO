@@ -2,7 +2,7 @@
 2) В классическом (без mock \ stub) так и в "Лондонском" варианте (Done)
 3) Должны быть представлены варианты использования mock \ stub (Done)
 4) Arrange-Act-Assert (Teardown-методы, Test fixture и хэлперы??? (Done)
-5) Паттерны Data Builder и Fabric(Object Mother)
+5) Паттерны Data Builder и Fabric(Object Mother) (Done)
 6) - (Done)
 7) запуск тестов из командной строки на основании локальной копии репозитория (Done)
 8) автоматически сгенерированный отчет allure? (Done)
