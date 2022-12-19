@@ -21,9 +21,10 @@
       "commandName": "Project",
       "launchBrowser": true,
       "launchUrl": "api/v1",
-      "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
-      },
+        "environmentVariables": {
+            "ASPNETCORE_ENVIRONMENT": "Development",
+            "PATH": "$(PostgresqlRoot)\\lib\\;$(PostgresqlRoot)\\bin;%PATH%"
+        },
       "nativeDebugging": true,
       "applicationUrl": "https://localhost:5001;"
     }

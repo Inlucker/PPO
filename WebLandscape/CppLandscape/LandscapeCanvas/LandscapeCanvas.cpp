@@ -5,8 +5,6 @@ LandscapeCanvas::LandscapeCanvas()
     img_width = 960; //1280; //720;
     img_height = 540; //720; //405;
 
-    //painter = make_unique<QPainter>(this);
-
     resetHeightsMap();
 
     range = 24.75;
@@ -26,8 +24,6 @@ LandscapeCanvas::LandscapeCanvas(HeightsMap &hm)
     img_width = 960; //1280; //720;
     img_height = 540; //720; //405;
 
-    //painter = make_unique<QPainter>(this);
-
     resetHeightsMap(hm);
 
     range = 24.75;
@@ -46,8 +42,6 @@ LandscapeCanvas::LandscapeCanvas(HeightsMap &hm, HeightsMapPoints &hmp, int r, i
 {
     img_width = 960; //1280; //720;
     img_height = 540; //720; //405;
-
-    //painter = make_unique<QPainter>(this);
 
     resetHeightsMap();
 

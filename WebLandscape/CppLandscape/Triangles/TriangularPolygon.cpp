@@ -13,9 +13,6 @@ TriangularPolygon::TriangularPolygon(shared_ptr<Point> new_p1, shared_ptr<Point>
     calcNormals();
     calcSurface();
     calcIntensity();
-    //calcColor();
-    //color = Qt::gray;
-    //color = QColor(rand()%128+64, rand()%128+64, rand()%128+64);
 }
 
 /*TriangularPolygon::TriangularPolygon::TriangularPolygon(shared_ptr<Point> new_p1, shared_ptr<Point> new_p2, shared_ptr<Point> new_p3, color_t c) : p1(new_p1), p2(new_p2), p3(new_p3), color(c)
@@ -212,18 +209,6 @@ void TriangularPolygon::calcSurface()
     C = x1 *(y2 - y3) + x2 *(y3 - y1) + x3 *(y1 - y2);
     D = -(x1 * (y2 * z3 - y3 * z2) + x2 * (y3 * z1 - y1 * z3) + x3 * (y1 * z2 - y2 * z1));
 }
-
-/*void TriangularPolygon::calcColor()
-{
-    color = QColor(20, 150, 20);//Qt::darkGreen;//Qt::green;//QColor(200, 200, 200);
-    if (A != 0 || B != 0 || C != 0)
-    {
-        double cosinus = fabs(B/sqrt(A*A+B*B+C*C)); //Right?
-
-        //color.setHsvF(color.hsvHueF(), color.hsvSaturationF(), 0.15+float(cosinus*0.75));
-        color = QColor(color.red()*cosinus, color.green()*cosinus, color.blue()*cosinus);
-    }
-}*/
 
 void TriangularPolygon::calcIntensity()
 {

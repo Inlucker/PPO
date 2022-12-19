@@ -4,7 +4,6 @@
 #include "../HeightsMap/Point.h"
 #include "../Vector/Vector.hpp"
 
-#include <QColor>
 #include <fstream>
 #include "../MyColor/MyColor.h"
 

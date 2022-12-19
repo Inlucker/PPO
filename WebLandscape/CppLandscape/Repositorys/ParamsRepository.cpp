@@ -218,7 +218,8 @@ void ParamsRepository::connect()
 
     if (PQstatus( m_connection.get() ) != CONNECTION_OK && PQsetnonblocking(m_connection.get(), 1) != 0 )
     {
-       time_t t_time = time(NULL);
-       throw ConnectionError("m_connection", __FILE__, __LINE__, ctime(&t_time));
+        string error_msg = PQerrorMessage(m_connection.get());
+        time_t t_time = time(NULL);
+        throw ConnectionError(error_msg, __FILE__, __LINE__, ctime(&t_time));
     }
 }

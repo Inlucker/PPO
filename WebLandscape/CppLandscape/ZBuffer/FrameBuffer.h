@@ -3,7 +3,6 @@
 
 #include "../Matrix/BaseMtrx.hpp"
 
-#include <QColor>
 #include "../MyColor/MyColor.h"
 
 typedef MyColor color_t;
