@@ -1,0 +1,86 @@
+.overlay {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  left: 0;
+  top: 0;
+  background: rgba(51,51,51,0.7);
+  z-index: 10;    
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.base_window {
+  background-color: #5C5C5C;
+  display: flex;
+  flex-direction: column;
+  
+  border-color: #414141;
+border-style:solid;
+  border-width: 1px;
+  margin: 0px;
+  padding: 0px;
+}
+
+input {
+  height:50px;
+  width:200px;
+  background-color: white;
+  border-color: #414141;
+border-style:solid;
+  border-width: 1px;
+
+  font-size:14px;
+font-family:"Segoe UI";
+  
+  margin: 5px;
+  padding: 0px;
+}
+
+#element_right{
+  padding: 5px;
+}
+
+button {
+  height:51px;
+  width:201px;
+  background-color: #4C4C4C;
+  border-color: #414141;
+border-style:solid;
+  border-width: 1px;
+  color: white;
+  align-self: center;
+
+  font-size:14px;
+font-family:"Segoe UI";
+
+  margin: 5px;
+  padding: 0px;
+}
+
+button:hover {
+  background: #53657A;
+}
+
+button:active {
+  background: #7D98B7;
+}
+
+
+select {
+  height:51px;
+  width:201px;
+  background-color: #4C4C4C;
+  border-color: #414141;
+border-style:solid;
+  border-width: 1px;
+  color: white;
+  align-self: center;
+
+  font-size:14px;
+font-family:"Segoe UI";
+
+  margin: 5px;
+  padding: 0px;
+}

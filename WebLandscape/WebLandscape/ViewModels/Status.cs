@@ -7,16 +7,16 @@ namespace WebLandscape.ViewModels
 {
   public class Status
   {
-    public Status(int c, string d, string m, int s)
+    public Status(int c, string m, string d, int s)
     {
       code = c;
-      description = d;
-      message = m;
+            message = m;
+            description = d;
       status = s;
     }
     public int code { get; set; }
-    public string description { get; set; }
     public string message { get; set; }
+    public string description { get; set; }
     public int status { get; set; }
   }
 }
