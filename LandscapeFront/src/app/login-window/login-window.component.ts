@@ -1,7 +1,18 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+
+import { lastValueFrom } from 'rxjs';
 import { UserService, Status } from '../user.service';
 
+class LoginForm
+{
+  constructor(l: string, p: string) {
+    this.login = l;
+    this.password = p;
+   }
+  login: string = '';
+  password: string = '';
+}
 
 @Component({
   selector: 'app-login-window',
@@ -20,10 +31,13 @@ export class LoginWindowComponent implements OnInit {
     ) { }
 
     ngOnInit(): void {}
-    
-  onLogin() {
-    this.user_service.login(this.login, this.password).subscribe(res => this.status = res)
-    if (this.status.description == 'canvas_user')
-      this.router.navigate(['/CanvasUserWindow']);
+
+    onLogin() {
+    let lf: LoginForm = new LoginForm(this.login, this.password);
+    let p = lastValueFrom(this.user_service.login(this.login, this.password))
+    .then(res => {
+      this.status = res;
+      if (this.status.description == 'canvas_user')
+      this.router.navigate(['/CanvasUserWindow']);});
   }
 }
