@@ -1,48 +1,62 @@
 
 <div class='overlay'>
   <div class='CanvasUserWindow'>
-    <div class='VerticalLayout'>
-      <canvas></canvas>
-      <app-transforms></app-transforms>
+    <div class="VerticalLayout">
+      <app-canvas></app-canvas>
+      <app-transforms style="display: inline-block; align-self: center;"></app-transforms>
     </div>
-    <div class='VerticalLayout'>
-      <select [(ngModel)]="resolution">
-        <option>1280x720</option>
-        <option>1120x630</option>
-        <option>960x540</option>
-        <option>800x450</option>
-        <option>720x405</option>
-        <option>640x360</option>
-        <option>480x270</option>
-        <option>320x180</option>
-        <option>160x90</option>
-      </select>
+    <div>
+      <app-group-box [name]="'Resolution:'">
+        <select [(ngModel)]="resolution">
+          <option>1280x720</option>
+          <option>1120x630</option>
+          <option>960x540</option>
+          <option>800x450</option>
+          <option>720x405</option>
+          <option>640x360</option>
+          <option>480x270</option>
+          <option>320x180</option>
+          <option>160x90</option>
+        </select>
+      </app-group-box>
       <!--<select [(ngModel)]="draw_type">
         <option>Каркасный</option>
         <option>Треугольный</option>
         <option>ZBuffer</option>
       </select>-->
-      <div class="HorizontalLayout">
-        <label>Mult: </label>
-        <input class="spinBox" type="number" min="0" max="10" step="1" value="1">
+      <app-group-box [name]="'Draw Parametres:'">
+        <div class="HorizontalLayout">
+        <label style="line-height: 30px;">Mult: </label>
+        <input  class="spinBox" type="number" min="0" max="10" step="1" value="1">
       </div>
-      <div class="HorizontalLayout">
-        <label>Size:  </label>
-        <input class="spinBox" type="number" min="1" max="65" step="1" value="1">
-      </div>
-      <div class="HorizontalLayout">
-        <label>Size: </label>
-        <input style="height:25px;width:64px" type="number">
-      </div>
-      <div class="HorizontalLayout">
-        <div class="VerticalLayout">
-          <label>Range: </label>
-          <input style="height:25px;width:64px" type="number">
+      </app-group-box>
+      <app-group-box [name]="'GenLandscape Parameters:'">
+        <app-group-box [name]="'Size:'" [styles]="{'display': 'inline-block'}">
+          <input class="spinBox" type="number" min="1" max="65" step="1" value="1">
+        </app-group-box>
+        <div class="HorizontalLayout">
+          <app-group-box [name]="'Range:'">
+            <input class="spinBox" style="height:20px;width:59px" type="number" min="1.0" max="65" step="1" value="1">
+          </app-group-box>
+          <div style="display: flex; align-items: center;">
+            <input style="height:15px;width:15px;" type="checkBox">
+            <label style="line-height:15px;">Smoothing</label>
+          </div>
         </div>
-        <input style="height:15px;width:15px" type="checkBox">
-      </div>
+        <app-group-box [name]="'Color:'" [styles]="{'display': 'inline-block'}">
+          <div style="display:flex; flex-direction: row;">
+            <div class="ColorBox"></div>
+            <button style="height:31px; width:71px">Choose</button>
+          </div>
+        </app-group-box>
+        <div style="display: flex; flex-direction: column; align-items: center; gap: 10px; margin-top: 10px;">
+          <button>GenerateNewLandscape</button>
+          <button>Clean</button>
+        </div>
+      </app-group-box>
     </div>
     <div class='VerticalLayout'>
+      <app-list></app-list>
       <input [(ngModel)]="canvas_name">
       <button>Send Canvas to DB</button>
       <button>Load Canvas</button>

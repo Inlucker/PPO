@@ -9,14 +9,18 @@ import { LoginWindowComponent } from './login-window/login-window.component';
 import { CanvasUserWindowComponent } from './canvas-user-window/canvas-user-window.component';
 import { CanvasComponent } from './canvas/canvas.component';
 import { TransformsComponent } from './transforms/transforms.component';
+import { GroupBoxComponent } from './group-box/group-box.component';
+import { ListComponent } from './list/list.component';
 
 @NgModule({
-  declarations: [		
+  declarations: [			
     AppComponent,
     LoginWindowComponent,
     CanvasUserWindowComponent,
       CanvasComponent,
-      TransformsComponent
+      TransformsComponent,
+      GroupBoxComponent,
+      ListComponent
    ],
   imports: [
     BrowserModule,

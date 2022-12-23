@@ -31,7 +31,7 @@ export class LoginWindowComponent implements OnInit {
                     else if ((this.user.role == 'moderator'))
                       this.router.navigate(['/ModeratorWindow']);
                   })
-                  .catch(e => console.error(e.message))
+                  .catch(e => window.alert(e.message))
   }
 
   onRegister()
@@ -44,6 +44,6 @@ export class LoginWindowComponent implements OnInit {
                     else if ((this.user.role == 'moderator'))
                       this.router.navigate(['/ModeratorWindow']);
                   })
-                  .catch(e => console.error(e.message))
+                  .catch(e => window.alert(e.message) /*console.error(e.message)*/)
   }
 }

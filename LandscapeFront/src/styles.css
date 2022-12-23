@@ -34,14 +34,6 @@
     gap: 10px;
 }
 
-canvas {
-    background-color: white;
-    /*height: 561px;
-    width: 981px;*/
-    height: auto;
-    width: auto;
-}
-
 input {
     height:45px;
     width:195px;
@@ -94,9 +86,9 @@ select {
 
 label{
     color: white;
-
     font-size:14px;
 	font-family:"Segoe UI";
+    /*text-align: center;*/
 }
 
 .spinBox{

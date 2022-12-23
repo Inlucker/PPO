@@ -1,0 +1,19 @@
+.groupBox{
+    display: grid;
+    border-color: #414141;
+    border-style: solid;
+    border-width: 1px;
+    padding: 0 10px 10px 10px;
+}
+.groupContentPlace{
+    display: grid;
+    border-width: 0px;
+    text-align: left center;
+    padding: 0;
+}
+.groupBoxName{
+    color: #ffffff;
+    text-align: left center;
+    line-height: 30px;
+    /*text-align: center;*/
+}

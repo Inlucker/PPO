@@ -5,8 +5,18 @@
     
     border-color: #414141;
 	border-style:solid;
-    border-width: 1px;
+    border-width: 2px;
     margin: 0px;
     padding: 10px;
     gap: 10px;
+}
+
+.ColorBox
+{
+    background-color: green;
+    width: 31px;
+    height: 31px;
+    border-width: 0px;
+    margin: 0px;
+    padding: 0px;
 }

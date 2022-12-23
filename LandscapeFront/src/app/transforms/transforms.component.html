@@ -1,22 +1,38 @@
-<div class='HorizontalLayout'>
-  <div class='VerticalLayout'>
-  <input class='trans_inp' [(ngModel)]="moveX">
-  <input class='trans_inp' [(ngModel)]="moveY">
-  <input class='trans_inp' [(ngModel)]="moveZ">
+
+<app-group-box [name]="'Transformation'" [nameAlign]="'center'">
+
+  <div class='HorizontalLayout'>
+    <app-group-box [name]="'Move'">
+      <div class='HorizontalLayout'>
+        <div class='VerticalLayout'>
+        <input class='trans_inp' [(ngModel)]="moveX">
+        <input class='trans_inp' [(ngModel)]="moveY">
+        <input class='trans_inp' [(ngModel)]="moveZ">
+        </div>
+        <button class='trans_btn'>Move</button>
+      </div>
+    </app-group-box>
+      
+    <app-group-box [name]="'Scale'">
+      <div class='HorizontalLayout'>
+        <div class='VerticalLayout'>
+          <input class='trans_inp' [(ngModel)]="scaleX">
+          <input class='trans_inp' [(ngModel)]="scaleY">
+          <input class='trans_inp' [(ngModel)]="scaleZ">
+          </div>
+        <button class='trans_btn'>Scale</button>
+      </div>
+    </app-group-box>
+      
+    <app-group-box [name]="'Rotate'">
+      <div class='HorizontalLayout'>
+        <div class='VerticalLayout'>
+          <input class='trans_inp' [(ngModel)]="rotateX">
+          <input class='trans_inp' [(ngModel)]="rotateY">
+          <input class='trans_inp' [(ngModel)]="rotateZ">
+          </div>
+        <button class='trans_btn'>Rotate</button>
+      </div>
+    </app-group-box>
   </div>
-  <button class='trans_btn'>Move</button>
-  
-  <div class='VerticalLayout'>
-    <input class='trans_inp' [(ngModel)]="scaleX">
-    <input class='trans_inp' [(ngModel)]="scaleY">
-    <input class='trans_inp' [(ngModel)]="scaleZ">
-    </div>
-  <button class='trans_btn'>Scale</button>
-  
-  <div class='VerticalLayout'>
-    <input class='trans_inp' [(ngModel)]="rotateX">
-    <input class='trans_inp' [(ngModel)]="rotateY">
-    <input class='trans_inp' [(ngModel)]="rotateZ">
-    </div>
-  <button class='trans_btn'>Rotate</button>
-</div>
+</app-group-box>
