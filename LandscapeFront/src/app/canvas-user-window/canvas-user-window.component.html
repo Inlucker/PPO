@@ -1,6 +1,6 @@
 
 <div class='overlay'>
-  <div class='CanvasUserWindow'>
+  <div class='Window' style="flex-direction: row">
     <div class="VerticalLayout">
       <app-canvas></app-canvas>
       <app-transforms style="display: inline-block; align-self: center;"></app-transforms>
@@ -32,7 +32,7 @@
       </app-group-box>
       <app-group-box [name]="'GenLandscape Parameters:'">
         <app-group-box [name]="'Size:'" [styles]="{'display': 'inline-block'}">
-          <input class="spinBox" type="number" min="1" max="65" step="1" value="1">
+          <input class="spinBox" style="width:80px" type="number" min="1" max="65" step="1" value="1">
         </app-group-box>
         <div class="HorizontalLayout">
           <app-group-box [name]="'Range:'">
@@ -51,7 +51,7 @@
         </app-group-box>
         <div style="display: flex; flex-direction: column; align-items: center; gap: 10px; margin-top: 10px;">
           <button>GenerateNewLandscape</button>
-          <button>Clean</button>
+          <button>Clean Canvas</button>
         </div>
       </app-group-box>
     </div>

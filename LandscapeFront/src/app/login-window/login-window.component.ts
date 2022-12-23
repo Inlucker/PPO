@@ -20,7 +20,7 @@ export class LoginWindowComponent implements OnInit {
     private router: Router
     ) { }
 
-    ngOnInit(): void {}
+    ngOnInit() { }
 
     onLogin() {
     lastValueFrom(this.user_service.login(this.login, this.password))

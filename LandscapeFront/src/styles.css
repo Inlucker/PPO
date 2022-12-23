@@ -12,6 +12,19 @@
     align-items: center;
 }
 
+.Window {
+    background-color: #5C5C5C;
+    display: flex;
+    flex-direction: column;
+    
+    border-color: #414141;
+	border-style:solid;
+    border-width: 2px;
+    margin: 0px;
+    padding: 10px;
+    gap: 10px;
+}
+
 .VerticalLayout {
     background-color: #5C5C5C;
     display: flex;
