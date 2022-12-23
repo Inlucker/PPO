@@ -10,8 +10,3 @@
     padding: 10px;
     gap: 10px;
 }
-
-.VerticalLayout {
-    display: flex;
-    flex-direction: column;
-}
