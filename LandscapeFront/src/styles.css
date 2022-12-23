@@ -23,6 +23,25 @@
     gap: 10px;
 }
 
+.HorizontalLayout {
+    background-color: #5C5C5C;
+    display: flex;
+    flex-direction: row;
+    
+    border-width: 0px;
+    margin: 0px;
+    padding: 0px;
+    gap: 10px;
+}
+
+canvas {
+    background-color: white;
+    /*height: 561px;
+    width: 981px;*/
+    height: auto;
+    width: auto;
+}
+
 input {
     height:45px;
     width:195px;
@@ -71,4 +90,16 @@ select {
 
     font-size:14px;
 	font-family:"Segoe UI";
+}
+
+label{
+    color: white;
+
+    font-size:14px;
+	font-family:"Segoe UI";
+}
+
+.spinBox{
+    width: 60px;
+    height: 30px;
 }

@@ -10,6 +10,8 @@ import { UserService, User } from '../user.service';
 })
 export class CanvasUserWindowComponent implements OnInit {
   canvas_name: string = 'Canvas Name';
+  resolution: string = '960x540';
+  draw_type: string = 'ZBuffer';
 
   constructor(
     private user_service: UserService,

@@ -2,10 +2,45 @@
 <div class='overlay'>
   <div class='CanvasUserWindow'>
     <div class='VerticalLayout'>
-      <button>1</button>
+      <canvas></canvas>
+      <app-transforms></app-transforms>
     </div>
     <div class='VerticalLayout'>
-      <button>2</button>
+      <select [(ngModel)]="resolution">
+        <option>1280x720</option>
+        <option>1120x630</option>
+        <option>960x540</option>
+        <option>800x450</option>
+        <option>720x405</option>
+        <option>640x360</option>
+        <option>480x270</option>
+        <option>320x180</option>
+        <option>160x90</option>
+      </select>
+      <!--<select [(ngModel)]="draw_type">
+        <option>Каркасный</option>
+        <option>Треугольный</option>
+        <option>ZBuffer</option>
+      </select>-->
+      <div class="HorizontalLayout">
+        <label>Mult: </label>
+        <input class="spinBox" type="number" min="0" max="10" step="1" value="1">
+      </div>
+      <div class="HorizontalLayout">
+        <label>Size:  </label>
+        <input class="spinBox" type="number" min="1" max="65" step="1" value="1">
+      </div>
+      <div class="HorizontalLayout">
+        <label>Size: </label>
+        <input style="height:25px;width:64px" type="number">
+      </div>
+      <div class="HorizontalLayout">
+        <div class="VerticalLayout">
+          <label>Range: </label>
+          <input style="height:25px;width:64px" type="number">
+        </div>
+        <input style="height:15px;width:15px" type="checkBox">
+      </div>
     </div>
     <div class='VerticalLayout'>
       <input [(ngModel)]="canvas_name">
