@@ -4,56 +4,58 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 
-class Request{
+/*class Request{
   login: string = '';
   password: string = '';
-}
+}*/
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
-  request: Request = new Request;
+  //request: Request = new Request;
+  options = { withCredentials: true };
 
   constructor(private http: HttpClient) { }
 
+  getFreeUsers(): Observable<string[]> {
+    return this.http.get<string[]>(this.freeUsersUrl, this.options);
+  }
+
+  getUsers(): Observable<string[]> {
+    return this.http.get<string[]>(this.usersUrl, this.options);
+  }
+
   login(login: string, password: string): Observable<User> {
-    /*const httpPostOptions =
-    {   
-        headers:
-            new HttpHeaders (
-            {   
-                "Content-Type": "application/x-www-form-urlencoded"
-            }),
-        withCredentials: true,
-    };
-    return this.http.post<User>(this.loginUrl, "data="+ JSON.stringify({login, password}), httpPostOptions);*/
-    return this.http.post<User>(this.loginUrl, {login, password});
-    /*this.request.login = login;
-    this.request.password = password;
-    let jsonRequest = JSON.stringify(this.request)
-    return this.http.post<User>(this.loginUrl,
-                                "data="+ jsonRequest,
-                                { withCredentials: true,
-                                  headers: new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded'})
-                                })*/
+    return this.http.post<User>(this.loginUrl, {login, password}, this.options);
   }
 
   register(login: string, password: string, role: string): Observable<User> {
-    return this.http.post<User>(this.registerUrl, {withCredentials: true, login, password, role});
+    return this.http.post<User>(this.registerUrl, {login, password, role}, this.options);
   }
 
   logout(): Observable<null> {
-    return this.http.post<null>(this.logoutUrl, {});
+    return this.http.post<null>(this.logoutUrl, {}, this.options);
+  }
+
+  add(user_name: string) {
+    return this.http.patch(this.addUrl, {user_name}, this.options);
+  }
+
+  remove(user_name: string) {
+    return this.http.patch(this.addUrl, {user_name}, this.options);
   }
 
   delete(): Observable<null> {
-    return this.http.delete<null>(this.deleteUrl);
+    return this.http.delete<null>(this.deleteUrl, this.options);
   }
-
+  private freeUsersUrl = environment.baseApiUrl + '/users/free';
+  private usersUrl = environment.baseApiUrl + '/users';
   private loginUrl = environment.baseApiUrl + '/login';
-  private logoutUrl = environment.baseApiUrl + '/logout';
   private registerUrl = environment.baseApiUrl + '/register';
+  private logoutUrl = environment.baseApiUrl + '/logout';
+  private addUrl = environment.baseApiUrl + '/users/moderator/add';
+  private removeUrl = environment.baseApiUrl + '/users/moderator/remove';
   private deleteUrl = environment.baseApiUrl + '/me';
 }
 

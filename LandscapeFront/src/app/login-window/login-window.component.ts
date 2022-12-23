@@ -10,7 +10,7 @@ import { UserService, User } from '../user.service';
   styleUrls: ['./login-window.component.css']
 })
 export class LoginWindowComponent implements OnInit {
-  login = 'user1';
+  login;
   password = '123';
   user: User = new User;
   role: string = 'canvas_user';
@@ -18,16 +18,29 @@ export class LoginWindowComponent implements OnInit {
   constructor(
     private user_service: UserService,
     private router: Router
-    ) { }
+    ) {
+      if (localStorage.getItem('login') != null)
+        this.login = localStorage.getItem('login')!
+      else
+        this.login = 'user1'
+      if (localStorage.getItem('password') != null)
+        this.password = localStorage.getItem('password')!
+      else
+        this.password = '123'
+     }
 
-    ngOnInit() { }
+  ngOnInit() { }
 
-    onLogin() {
+  onLogin() {
     lastValueFrom(this.user_service.login(this.login, this.password))
                   .then(res => {
                     this.user = res;
                     if (this.user.role == 'canvas_user')
                       this.router.navigate(['/CanvasUserWindow']);
+                      /*{
+                        window.alert("asdHERE")
+                        this.user_service.logout().subscribe();
+                      }*/
                     else if ((this.user.role == 'moderator'))
                       this.router.navigate(['/ModeratorWindow']);
                   })
@@ -45,5 +58,12 @@ export class LoginWindowComponent implements OnInit {
                       this.router.navigate(['/ModeratorWindow']);
                   })
                   .catch(e => window.alert(e.message) /*console.error(e.message)*/)
+  }
+
+  updateLogin() {
+    localStorage.setItem('login', this.login);
+  }
+  updatePassword() {
+    localStorage.setItem('password', this.password);
   }
 }

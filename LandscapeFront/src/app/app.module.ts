@@ -1,3 +1,4 @@
+import { UserService } from './user.service';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
@@ -32,7 +33,7 @@ import { ModeratorCanvasWindowComponent } from './moderator-canvas-window/modera
     AppRoutingModule,
     HttpClientModule,
   ],
-  providers: [],
+  providers: [UserService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

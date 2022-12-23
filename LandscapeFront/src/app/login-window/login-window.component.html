@@ -1,7 +1,7 @@
 <div class='overlay'>
   <div class='Window'>
-    <input [(ngModel)]="login"/>
-    <input [(ngModel)]="password"/>
+    <input [(ngModel)]="login" (change)="updateLogin()"/>
+    <input [(ngModel)]="password" (change)="updatePassword()"/>
     <button (click)="onLogin()">Login</button>
     <button (click)="onRegister()">Register</button>
     <select [(ngModel)]="role">
