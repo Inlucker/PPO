@@ -2,17 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { lastValueFrom } from 'rxjs';
-import { UserService, Status } from '../user.service';
-
-class LoginForm
-{
-  constructor(l: string, p: string) {
-    this.login = l;
-    this.password = p;
-   }
-  login: string = '';
-  password: string = '';
-}
+import { UserService, User } from '../user.service';
 
 @Component({
   selector: 'app-login-window',
@@ -22,7 +12,7 @@ class LoginForm
 export class LoginWindowComponent implements OnInit {
   login = 'user1';
   password = '123';
-  status: Status = new Status;
+  user: User = new User;
   role: string = 'canvas_user';
 
   constructor(
@@ -33,11 +23,27 @@ export class LoginWindowComponent implements OnInit {
     ngOnInit(): void {}
 
     onLogin() {
-    let lf: LoginForm = new LoginForm(this.login, this.password);
-    let p = lastValueFrom(this.user_service.login(this.login, this.password))
-    .then(res => {
-      this.status = res;
-      if (this.status.description == 'canvas_user')
-      this.router.navigate(['/CanvasUserWindow']);});
+    lastValueFrom(this.user_service.login(this.login, this.password))
+                  .then(res => {
+                    this.user = res;
+                    if (this.user.role == 'canvas_user')
+                      this.router.navigate(['/CanvasUserWindow']);
+                    else if ((this.user.role == 'moderator'))
+                      this.router.navigate(['/ModeratorWindow']);
+                  })
+                  .catch(e => console.error(e.message))
+  }
+
+  onRegister()
+  {
+    lastValueFrom(this.user_service.register(this.login, this.password, this.role))
+                  .then(res => {
+                    this.user = res;
+                    if (this.user.role == 'canvas_user')
+                      this.router.navigate(['/CanvasUserWindow']);
+                    else if ((this.user.role == 'moderator'))
+                      this.router.navigate(['/ModeratorWindow']);
+                  })
+                  .catch(e => console.error(e.message))
   }
 }

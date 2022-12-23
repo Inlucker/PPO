@@ -5,6 +5,7 @@ import { LoginWindowComponent } from './login-window/login-window.component';
 import { CanvasUserWindowComponent } from './canvas-user-window/canvas-user-window.component';
 
 const routes: Routes = [
+  {path: '', redirectTo: '/login', pathMatch: 'full'},
   { path: 'login', component: LoginWindowComponent },
   { path: 'CanvasUserWindow', component: CanvasUserWindowComponent }
   

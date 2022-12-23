@@ -1,0 +1,17 @@
+.CanvasUserWindow {
+    background-color: #5C5C5C;
+    display: flex;
+    flex-direction: row;
+    
+    border-color: #414141;
+	border-style:solid;
+    border-width: 1px;
+    margin: 0px;
+    padding: 10px;
+    gap: 10px;
+}
+
+.VerticalLayout {
+    display: flex;
+    flex-direction: column;
+}

@@ -59,8 +59,8 @@ namespace WebLandscape.Controllers
       {
         await Authenticate(user);
 
-        //return Ok(new String(user.Role));
-        return Ok(new Status(0, "Ok", user.Role, Ok().StatusCode));
+        return Ok(user);
+        //return Ok(new Status(0, "Ok", user.Role, Ok().StatusCode));
       }
       ModelState.AddModelError("", "Некорректные логин и(или) пароль");
       return BadRequest(new Status(1, "BadRequest", "You couldn't log in", BadRequest().StatusCode));
@@ -74,7 +74,8 @@ namespace WebLandscape.Controllers
       {
         await Authenticate(user);
 
-        return Ok(new Status(0, "Ok", "You registered", Ok().StatusCode));
+        return Ok(user);
+        //return Ok(new Status(0, "Ok", "You registered", Ok().StatusCode));
       }
       ModelState.AddModelError("", "Некорректные логин и(или) пароль");
       return BadRequest(new Status(2, "BadRequest", "You couldn't register", BadRequest().StatusCode));

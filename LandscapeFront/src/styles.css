@@ -12,9 +12,20 @@
     align-items: center;
 }
 
+.VerticalLayout {
+    background-color: #5C5C5C;
+    display: flex;
+    flex-direction: column;
+    
+    border-width: 0px;
+    margin: 0px;
+    padding: 0px;
+    gap: 10px;
+}
+
 input {
-    height:50px;
-    width:200px;
+    height:45px;
+    width:195px;
     background-color: white;
     border-color: #414141;
 	border-style:solid;
@@ -23,7 +34,7 @@ input {
     font-size:14px;
 	font-family:"Segoe UI";
     
-    padding: 0px;
+    padding: 2px;
 }
 
 button {
@@ -48,7 +59,6 @@ button:active {
     background: #7D98B7;
 }
   
-
 select {
     height:51px;
     width:201px;

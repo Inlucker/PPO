@@ -1,67 +1,20 @@
 
 <div class='overlay'>
-  <div style="top:0px;left:0px;position:absolute;height:787px;width:1443px;">
-  <input onclick="on_gen_btn_clicked()" value="GenerateNewLandscape" style="top:220px;left:10px;position:absolute;height:51px;width:181px;" name="gen_btn" id="gen_btn" type="button"/>
-  <input onclick="on_size_down_btn_clicked()" value="▼" style="top:40px;left:50px;position:absolute;height:21px;width:41px;" name="size_down_btn" id="size_down_btn" type="button"/>
-  <input onclick="on_size_up_btn_clicked()" value="▲" style="top:20px;left:50px;position:absolute;height:21px;width:41px;" name="size_up_btn" id="size_up_btn" type="button"/>
-  <label style="top:20px;left:10px;position:absolute;height:41px;width:41px;">33</label>
-  <label style="top:20px;left:10px;position:absolute;height:31px;width:31px;"></label>
-  <input onclick="on_pushButton_clicked()" value="Choose" style="top:20px;left:40px;position:absolute;height:31px;width:71px;" name="pushButton" id="pushButton" type="button"/>
-  <span style="top:110px;left:100px;position:absolute;height:31px;width:91px;">
-    <input type="checkbox"/>Smothing</span>
-  <input onclick="on_clean_btn_clicked()" value="Clean" style="top:280px;left:10px;position:absolute;height:51px;width:181px;" name="clean_btn" id="clean_btn" type="button"/>
-  <select style="top:30px;left:10px;position:absolute;height:41px;width:181px;" form="MainWindow" name="draw_variant_comboBox" id="draw_variant_comboBox">
-    <option>Каркасный</option>
-    <option>Треугольный</option>
-    <option>ZBuffer ур. поверхности</option>
-    <option>ZBuffer интерполяция</option>
-    <option>ZBuffer с 8 потоками</option>
-  </select>
-  <label style="top:80px;left:10px;position:absolute;height:31px;width:51px;">Mult:</label>
-  <input value="10" style="top:30px;left:30px;position:absolute;height:31px;width:41px;" name="move_x" id="move_x" type="text"/>
-  <label style="top:27px;left:3px;position:absolute;height:31px;width:31px;">dX</label>
-  <input value="10" style="top:70px;left:30px;position:absolute;height:31px;width:41px;" name="move_y" id="move_y" type="text"/>
-  <label style="top:113px;left:3px;position:absolute;height:31px;width:31px;">dZ</label>
-  <input value="10" style="top:110px;left:30px;position:absolute;height:31px;width:41px;" name="move_z" id="move_z" type="text"/>
-  <label style="top:70px;left:3px;position:absolute;height:31px;width:31px;">dY</label>
-  <input onclick="on_move_btn_clicked()" value="Move" style="top:30px;left:80px;position:absolute;height:111px;width:61px;" name="move_btn" id="move_btn" type="button"/>
-  <input value="0.9" style="top:30px;left:30px;position:absolute;height:31px;width:41px;" name="scale_x" id="scale_x" type="text"/>
-  <label style="top:27px;left:3px;position:absolute;height:31px;width:31px;">kX</label>
-  <input value="1.1" style="top:70px;left:30px;position:absolute;height:31px;width:41px;" name="scale_y" id="scale_y" type="text"/>
-  <label style="top:113px;left:3px;position:absolute;height:31px;width:31px;">kZ</label>
-  <input value="1" style="top:110px;left:30px;position:absolute;height:31px;width:41px;" name="scale_z" id="scale_z" type="text"/>
-  <label style="top:70px;left:3px;position:absolute;height:31px;width:31px;">kY</label>
-  <input onclick="on_scale_btn_clicked()" value="Scale" style="top:30px;left:80px;position:absolute;height:111px;width:61px;" name="scale_btn" id="scale_btn" type="button"/>
-  <input value="0" style="top:30px;left:30px;position:absolute;height:31px;width:41px;" name="angle_x" id="angle_x" type="text"/>
-  <label style="top:27px;left:3px;position:absolute;height:31px;width:31px;">oX</label>
-  <input value="0" style="top:70px;left:30px;position:absolute;height:31px;width:41px;" name="angle_y" id="angle_y" type="text"/>
-  <label style="top:113px;left:3px;position:absolute;height:31px;width:31px;">oZ</label>
-  <input value="10" style="top:110px;left:30px;position:absolute;height:31px;width:41px;" name="angle_z" id="angle_z" type="text"/>
-  <label style="top:70px;left:3px;position:absolute;height:31px;width:31px;">oY</label>
-  <input onclick="on_rotate_btn_clicked()" value="Rotate" style="top:30px;left:80px;position:absolute;height:111px;width:61px;" name="rotate_btn" id="rotate_btn" type="button"/>
-  <select style="top:30px;left:10px;position:absolute;height:41px;width:181px;" form="MainWindow" name="resolution_comboBox" id="resolution_comboBox">
-    <option>1280x720</option>
-    <option>1120x630</option>
-    <option>960x540</option>
-    <option>800x450</option>
-    <option>720x405</option>
-    <option>640x360</option>
-    <option>480x270</option>
-    <option>320x180</option>
-    <option>160x90</option>
-  </select>
-  <input onclick="on_read_file_btn_clicked()" value="Read Landscape from file" style="top:590px;left:770px;position:absolute;height:51px;width:201px;" name="read_file_btn" id="read_file_btn" type="button"/>
-  <input value="test.txt" style="top:590px;left:550px;position:absolute;height:51px;width:201px;" name="file_name_lineEdit" id="file_name_lineEdit" type="text"/>
-  <input onclick="on_write_file_btn_clicked()" value="Write Landscape to file" style="top:650px;left:770px;position:absolute;height:51px;width:201px;" name="write_file_btn" id="write_file_btn" type="button"/>
-  <input value="out.txt" style="top:650px;left:550px;position:absolute;height:51px;width:201px;" name="file_name_lineEdit_2" id="file_name_lineEdit_2" type="text"/>
-  <input onclick="on_load_canvas_btn_clicked()" value="Load Canvas" style="top:410px;left:1230px;position:absolute;height:51px;width:201px;" name="load_canvas_btn" id="load_canvas_btn" type="button"/>
-  <input onclick="on_write_file_btn_2_clicked()" value="Send Canvas to DB" style="top:350px;left:1230px;position:absolute;height:51px;width:201px;" name="write_file_btn_2" id="write_file_btn_2" type="button"/>
-  <input onclick="on_delete_canvas_btn_clicked()" value="Delete Canvas" style="top:530px;left:1230px;position:absolute;height:51px;width:201px;" name="delete_canvas_btn" id="delete_canvas_btn" type="button"/>
-  <input onclick="on_update_canvas_btn_clicked()" value="Update Canvas" style="top:470px;left:1230px;position:absolute;height:51px;width:201px;" name="update_canvas_btn" id="update_canvas_btn" type="button"/>
-  <input onclick="on_write_file_btn_3_clicked()" value="OpenUnitTestsWindow" style="top:590px;left:1000px;position:absolute;height:51px;width:201px;" name="write_file_btn_3" id="write_file_btn_3" type="button"/>
-  <input onclick="on_exit_btn_clicked()" value="EXIT" style="top:590px;left:1230px;position:absolute;height:51px;width:201px;" name="exit_btn" id="exit_btn" type="button"/>
-  <input onclick="on_test_user_btn_clicked()" value="TEST USER" style="top:650px;left:1000px;position:absolute;height:51px;width:201px;" name="test_user_btn" id="test_user_btn" type="button"/>
-  <input onclick="on_delete_user_btn_clicked()" value="DELETE THIS USER" style="top:650px;left:1230px;position:absolute;height:51px;width:201px;" name="delete_user_btn" id="delete_user_btn" type="button"/>
-  <input value="" style="top:300px;left:1230px;position:absolute;height:41px;width:201px;" name="canvas_lineEdit" id="canvas_lineEdit" type="text"/>
+  <div class='CanvasUserWindow'>
+    <div class='VerticalLayout'>
+      <button>1</button>
+    </div>
+    <div class='VerticalLayout'>
+      <button>2</button>
+    </div>
+    <div class='VerticalLayout'>
+      <input [(ngModel)]="canvas_name">
+      <button>Send Canvas to DB</button>
+      <button>Load Canvas</button>
+      <button>Update Canvas</button>
+      <button>Delete Canvas</button>
+      <button (click)="onExit()">EXIT</button>
+      <button (click)="onDelete()">DELETE THIS USER</button>
+    </div>
   </div>
 </div>
