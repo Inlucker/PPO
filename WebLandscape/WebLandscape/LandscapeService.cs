@@ -46,6 +46,8 @@ namespace WebLandscape
     static extern int getUserModeratorId(IntPtr pUserBL);
     [DllImport(CppFunctionsDLL, CallingConvention = CallingConvention.Cdecl)]
     static extern void deleteUserBL(IntPtr pCanvasBL);
+    [DllImport(CppFunctionsDLL, CallingConvention = CallingConvention.Cdecl)]
+    static extern int getCanvasUserId(String name, ref int ret);
 
 
     //CanvasBl
@@ -602,6 +604,14 @@ namespace WebLandscape
         canvasUsers.Add(canvasUser);
       }
       return 0;
+    }
+
+    public static int GetCanvasUserId(string name, out int ret)
+    {
+      ret = -1;
+      int user_id = getCanvasUserId(name, ref ret);
+
+      return user_id;
     }
 
     //Params

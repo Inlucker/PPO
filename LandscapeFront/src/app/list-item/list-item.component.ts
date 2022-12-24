@@ -8,10 +8,17 @@ import { Input, Output, EventEmitter } from '@angular/core';
 })
 export class ListItemComponent {
   @Input() name: string='123';
+  @Input() id: number | undefined = undefined;
   @Input() isSelected: boolean = false;
-  @Output() select = new EventEmitter<string>();
+  @Output() select = new EventEmitter<listElem>();
 
-  public onClick(name: string): void {
-    this.select.emit(name);
+  public onClick(name: string, id: number | undefined): void {
+    let list_elem: listElem = {name: name, id: id};
+    this.select.emit(list_elem);
   }
+}
+
+export interface listElem {
+  name: string;
+  id: number | undefined;
 }

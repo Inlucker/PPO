@@ -1,4 +1,3 @@
-import { UserService } from './user.service';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
@@ -15,9 +14,12 @@ import { ListComponent } from './list/list.component';
 import { ModeratorWindowComponent } from './moderator-window/moderator-window.component';
 import { ModeratorCanvasWindowComponent } from './moderator-canvas-window/moderator-canvas-window.component';
 import { ListItemComponent } from './list-item/list-item.component';
+import { UserService } from './user.service';
+import { CanvasService } from './canvas.service';
+import { TestCanvasComponent } from './test-canvas/test-canvas.component';
 
 @NgModule({
-  declarations: [					
+  declarations: [						
     AppComponent,
     LoginWindowComponent,
     CanvasUserWindowComponent,
@@ -27,7 +29,8 @@ import { ListItemComponent } from './list-item/list-item.component';
     ListComponent,
     ModeratorWindowComponent,
     ModeratorCanvasWindowComponent,
-    ListItemComponent
+    ListItemComponent,
+      TestCanvasComponent
    ],
   imports: [
     BrowserModule,
@@ -35,7 +38,7 @@ import { ListItemComponent } from './list-item/list-item.component';
     AppRoutingModule,
     HttpClientModule,
   ],
-  providers: [UserService],
+  providers: [UserService, CanvasService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

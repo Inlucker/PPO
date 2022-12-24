@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
@@ -24,6 +24,10 @@ export class UserService {
 
   getUsers(): Observable<string[]> {
     return this.http.get<string[]>(this.usersUrl, this.options);
+  }
+
+  getCanvasUserId(name: string): Observable<number> {
+    return this.http.get<number>(this.usersUrl + "/id?user_name=" + name, this.options);
   }
 
   login(login: string, password: string): Observable<User> {

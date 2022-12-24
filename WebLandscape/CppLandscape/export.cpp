@@ -205,6 +205,32 @@ extern "C"
     delete pUserBL;
   }
 
+  int getCanvasUserId(char* name, int& ret_code)
+  {
+      try
+      {
+          string _name = "";
+          if (name != NULL)
+              _name = name;
+
+          shared_ptr<USER_REP> user_repository = make_shared<USER_REP>("moderator", "moderator");
+          shared_ptr<UserBL> user_bl = user_repository->getCanvasUser(_name);
+
+          ret_code = 0;
+          return user_bl->getId();
+      }
+      catch (BaseError& er)
+      {
+          ret_code = -1;
+          return 0; //Error
+      }
+      catch (...)
+      {
+          ret_code = -2;
+          return 0; //Unexpected Error
+      }
+  }
+
   void deleteChar(char* pChar)
   {
     delete[] pChar;

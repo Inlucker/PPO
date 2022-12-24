@@ -49,7 +49,7 @@ extern "C"
   EXPORT char* getUserRole(UserBL* pUserBL);
   EXPORT int getUserModeratorId(UserBL* pUserBL);
   EXPORT void deleteUserBL(UserBL* pUserBL);
-
+  EXPORT int getCanvasUserId(char* name, int& ret_code);
 
   //CanvasBL
   EXPORT CanvasBL* getCanvasBL(int id);

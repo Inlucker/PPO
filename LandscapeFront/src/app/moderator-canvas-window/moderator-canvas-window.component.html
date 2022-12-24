@@ -1,9 +1,10 @@
 <div class='overlay'>
   <div class='Window' style="flex-direction: row">
-    <app-canvas></app-canvas>
+    <app-canvas [_canvas]="this.cur_canvas"></app-canvas>
+    <!--<canvas #canvas width="600" height="300" style="background-color: white;"></canvas>-->
     <div class="VerticalLayout">
-      <app-list [height]="'381px'"></app-list>
-      <button>Load</button>
+      <app-list [height]="'381px'" [list]="canvases" (select)="onCanvasSelect($event)"></app-list>
+      <button (click)="onLoad()">Load</button>
       <button>Clean Canvas</button>
       <button (click)="onBack()">Back</button>
     </div>

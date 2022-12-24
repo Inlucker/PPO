@@ -24,13 +24,13 @@ namespace WebLandscape.Controllers
     public async Task<IActionResult> getFreeCanvasUsers()
     {
       ClaimsPrincipal currentUser = this.User;
-      if (null != currentUser)
+      /*if (null != currentUser)
       {
         foreach (Claim claim in currentUser.Claims)
         {
           Console.WriteLine("CLAIM TYPE: " + claim.Type + "; CLAIM VALUE: " + claim.Value + "</br>");
         }
-      }
+      }*/
 
       int ret = LandscapeService.GetFreeCanvasUsers(out List<String> canvasUsers);
       if (ret != 0)
@@ -49,6 +49,16 @@ namespace WebLandscape.Controllers
       if (ret != 0)
         return BadRequest(canvasUsers);
       return Ok(canvasUsers);
+    }
+
+    [Authorize]
+    [HttpGet("users/id")]
+    public async Task<IActionResult> getCanvasUserId(String user_name)
+    {
+      int user_id = LandscapeService.GetCanvasUserId(user_name, out int ret);
+      if (ret != 0)
+        return BadRequest(new Status(1, "BadRequest", "You couldn't get canvas_user id", BadRequest().StatusCode));
+      return Ok(user_id);
     }
 
     [HttpPost("login")]

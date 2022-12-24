@@ -1,3 +1,4 @@
+import { TestCanvasComponent } from './test-canvas/test-canvas.component';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
@@ -7,7 +8,8 @@ import { ModeratorWindowComponent } from './moderator-window/moderator-window.co
 import { ModeratorCanvasWindowComponent } from './moderator-canvas-window/moderator-canvas-window.component';
 
 const routes: Routes = [
-  {path: '', redirectTo: '/login', pathMatch: 'full'},
+  //{path: '', redirectTo: '/login', pathMatch: 'full'},
+  { path: '', component: TestCanvasComponent},
   { path: 'login', component: LoginWindowComponent },
   { path: 'CanvasUserWindow', component: CanvasUserWindowComponent },
   { path: 'ModeratorWindow', component: ModeratorWindowComponent },

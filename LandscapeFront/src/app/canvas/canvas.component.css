@@ -1,5 +1,7 @@
 canvas {
     background-color: white;
-    height: auto;
-    width: auto;
+    /*height: auto;
+    width: auto;*/
+    border-width: 1px;
+    border-color: black;
 }
