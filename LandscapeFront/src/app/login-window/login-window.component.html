@@ -4,7 +4,7 @@
     <input [(ngModel)]="password" (change)="updatePassword()"/>
     <button (click)="onLogin()">Login</button>
     <button (click)="onRegister()">Register</button>
-    <select [(ngModel)]="role">
+    <select [(ngModel)]="role" (change)="updateRole()">
       <option>canvas_user</option>
       <option>moderator</option>
     </select>

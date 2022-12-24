@@ -1,0 +1,15 @@
+.ListItem {
+    width: 100%;
+    height: 17px;
+    color: black;
+    display: flex;
+    user-select: none;
+}
+
+.ListItem:hover {
+    background-color: #BFD9FA;
+}
+
+.ListItem:active {
+    background-color: #7FB4F5;
+}

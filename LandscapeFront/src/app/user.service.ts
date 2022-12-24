@@ -39,11 +39,11 @@ export class UserService {
   }
 
   add(user_name: string) {
-    return this.http.patch(this.addUrl, {user_name}, this.options);
+    return this.http.patch(this.addUrl + "?user_name="+user_name, {}, this.options);
   }
 
   remove(user_name: string) {
-    return this.http.patch(this.addUrl, {user_name}, this.options);
+    return this.http.patch(this.removeUrl + "?user_name="+user_name, {}, this.options);
   }
 
   delete(): Observable<null> {

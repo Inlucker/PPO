@@ -3,14 +3,14 @@
     <div class="HorizontalLayout">
       <!--<app-list [height]="'381px'"></app-list>
       <app-list [height]="'381px'"></app-list>-->
-      <app-list [height]="'100%'"></app-list>
-      <app-list [height]="'100%'"></app-list>
+      <app-list [height]="'100%'" [list]="free_users" (select)="onFreeUserSelect($event)"></app-list>
+      <app-list [height]="'100%'" [list]="users" (select)="onUserSelect($event)"></app-list>
       <div class="VerticalLayout">
         <button (click)="onWatch()">Watch User Canvases</button>
-        <button>Add</button>
-        <button>Delete</button>
+        <button (click)="onAddUser()">Add</button>
+        <button (click)="onDeleteUser()">Delete</button>
         <button (click)="onExit()">EXIT</button>
-        <button (click)="onDelete()">DELETE THIS USER</button>
+        <button (click)="onDeleteSelf()">DELETE THIS USER</button>
       </div>
     </div>
   </div>

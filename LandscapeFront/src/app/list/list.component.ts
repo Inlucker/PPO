@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Input } from '@angular/core';
+import { Input, Output, EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'app-list',
@@ -9,4 +9,15 @@ import { Input } from '@angular/core';
 export class ListComponent {
   @Input() width: string = '201px';
   @Input() height: string = '281px';
+  @Input() list: string[] = [];
+  selectedId: number = -1;
+  @Output() select = new EventEmitter<string>();
+
+  onClick(id: number) {
+    this.selectedId = id;
+  }
+
+  onSelect(name: string) {
+    this.select.emit(name);
+  }
 }

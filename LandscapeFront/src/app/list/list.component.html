@@ -1,3 +1,7 @@
 <div class="List" [style.width]="this.width" [style.height]="this.height">
+    <div *ngFor="let elem of list; index as id">
+        <app-list-item *ngIf="id != this.selectedId" [name]="elem" (click)="onClick(id)" (select)="onSelect($event)"></app-list-item>
+        <app-list-item *ngIf="id == this.selectedId" [name]="elem" [isSelected]="true" (click)="onClick(id)" (select)="onSelect($event)"></app-list-item>
+    </div>
     <ng-content></ng-content>
 </div>

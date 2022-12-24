@@ -8,7 +8,15 @@ import { Router } from '@angular/router';
 })
 export class ModeratorCanvasWindowComponent implements OnInit {
 
-  constructor(private router: Router) { }
+  constructor(private router: Router) {
+    let r = localStorage.getItem('role');
+    if (r == 'canvas_user')
+      this.router.navigate(['/CanvasUserWindow']);
+    if (!r)
+      router.navigate(['/login'])
+
+    localStorage.setItem('moderator_endpoint', '/ModeratorCanvasWindow');
+  }
 
   ngOnInit() { }
 

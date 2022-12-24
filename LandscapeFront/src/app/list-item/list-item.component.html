@@ -1,0 +1,3 @@
+
+<label *ngIf="!isSelected" class="ListItem" (click)="onClick(this.name)">{{this.name}}</label>
+<label *ngIf="isSelected" class="ListItem" style="background-color: #7FB4F5" (click)="onClick(this.name)">{{this.name}}</label>

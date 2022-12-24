@@ -14,18 +14,20 @@ import { GroupBoxComponent } from './group-box/group-box.component';
 import { ListComponent } from './list/list.component';
 import { ModeratorWindowComponent } from './moderator-window/moderator-window.component';
 import { ModeratorCanvasWindowComponent } from './moderator-canvas-window/moderator-canvas-window.component';
+import { ListItemComponent } from './list-item/list-item.component';
 
 @NgModule({
   declarations: [					
     AppComponent,
     LoginWindowComponent,
     CanvasUserWindowComponent,
-      CanvasComponent,
-      TransformsComponent,
-      GroupBoxComponent,
-      ListComponent,
-      ModeratorWindowComponent,
-      ModeratorCanvasWindowComponent
+    CanvasComponent,
+    TransformsComponent,
+    GroupBoxComponent,
+    ListComponent,
+    ModeratorWindowComponent,
+    ModeratorCanvasWindowComponent,
+    ListItemComponent
    ],
   imports: [
     BrowserModule,

@@ -16,17 +16,30 @@ export class CanvasUserWindowComponent implements OnInit {
   constructor(
     private user_service: UserService,
     private router: Router
-    ) { }
+    ) {
+      let r = localStorage.getItem('role');
+      if (!r)
+        router.navigate(['/login'])
+      if (r == 'moderator') {
+        let url = localStorage.getItem('moderator_endpoint');
+        if (url)
+          this.router.navigate([url]);
+        else
+          this.router.navigate(['/ModeratorWindow']);
+      }
+    }
 
   ngOnInit(): void {}
 
   onExit() {
     this.user_service.logout().subscribe();
+    localStorage.removeItem('role');
     this.router.navigate(['/']);
   }
   
   onDelete() {
     this.user_service.delete().subscribe();
+    localStorage.removeItem('role');
     this.router.navigate(['/']);
   }
 }
