@@ -1,79 +1,83 @@
-
-<div class='overlay'>
-  <div class='Window' style="flex-direction: row">
-    <div class="VerticalLayout">
-      <app-canvas
-        [_canvas]="this.cur_canvas"
-        [moveEvents]="moveEvent.asObservable()"
-        [scaleEvents]="scaleEvent.asObservable()"
-        [rotateEvents]="rotateEvent.asObservable()">
-      </app-canvas>
-      <app-transforms
-        (move)="onMove($event)"
-        (scale)="onScale($event)"
-        (rotate)="onRotate($event)"
-        style="display: inline-block; align-self: center;">
-      </app-transforms>
-    </div>
-    <div>
-      <app-group-box [name]="'Resolution:'">
-        <select [(ngModel)]="resolution">
-          <option>1280x720</option>
-          <option>1120x630</option>
-          <option>960x540</option>
-          <option>800x450</option>
-          <option>720x405</option>
-          <option>640x360</option>
-          <option>480x270</option>
-          <option>320x180</option>
-          <option>160x90</option>
-        </select>
-      </app-group-box>
-      <!--<select [(ngModel)]="draw_type">
-        <option>Каркасный</option>
-        <option>Треугольный</option>
-        <option>ZBuffer</option>
-      </select>-->
-      <app-group-box [name]="'Draw Parametres:'">
-        <div class="HorizontalLayout">
-        <label style="line-height: 30px;">Mult: </label>
-        <input  class="spinBox" type="number" min="0" max="10" step="1" value="1">
-      </div>
-      </app-group-box>
-      <app-group-box [name]="'GenLandscape Parameters:'">
-        <app-group-box [name]="'Size:'" [styles]="{'display': 'inline-block'}">
-          <input class="spinBox" style="width:80px" type="number" min="1" max="65" step="1" value="1">
-        </app-group-box>
-        <div class="HorizontalLayout">
-          <app-group-box [name]="'Range:'">
-            <input class="spinBox" style="height:20px;width:59px" type="number" min="1.0" max="65" step="1" value="1">
+<html>
+  <head></head>
+  <body>
+    <div class='overlay'>
+      <div class='Window' style="flex-direction: row">
+        <div class="VerticalLayout">
+          <app-canvas
+            [redrawEvent]="redrawEvent.asObservable()"
+            [cleanEvents]="cleanEvent.asObservable()"
+            [resolution]="resolution"
+            [changeResolutionEvents]="changeResolutionEvent.asObservable()">
+          </app-canvas>
+          <app-transforms
+            (move)="onMove($event)"
+            (scale)="onScale($event)"
+            (rotate)="onRotate($event)"
+            style="display: inline-block; align-self: center;">
+          </app-transforms>
+        </div>
+        <div>
+          <app-group-box [name]="'Resolution:'">
+            <select [(ngModel)]="resolution_str" (change)="onChangeResolution()">
+              <option>1280x720</option>
+              <option>1120x630</option>
+              <option>960x540</option>
+              <option>800x450</option>
+              <option>720x405</option>
+              <option>640x360</option>
+              <option>480x270</option>
+              <option>320x180</option>
+              <option>160x90</option>
+            </select>
           </app-group-box>
-          <div style="display: flex; align-items: center;">
-            <input style="height:15px;width:15px;" type="checkBox">
-            <label style="line-height:15px;">Smoothing</label>
+          <!--<select [(ngModel)]="draw_type">
+            <option>Каркасный</option>
+            <option>Треугольный</option>
+            <option>ZBuffer</option>
+          </select>-->
+          <app-group-box [name]="'Draw Parametres:'">
+            <div class="HorizontalLayout">
+            <label style="line-height: 30px;">Mult: </label>
+            <input  class="spinBox" type="number" min="0" max="10" step="1" value="1">
           </div>
+          </app-group-box>
+          <app-group-box [name]="'GenLandscape Parameters:'">
+            <app-group-box [name]="'Size:'" [styles]="{'display': 'inline-block'}">
+              <input class="spinBox" style="width:80px" type="number" min="1" max="65" step="1" value="1">
+            </app-group-box>
+            <div class="HorizontalLayout">
+              <app-group-box [name]="'Range:'">
+                <input class="spinBox" style="height:20px;width:59px" type="number" min="1.0" max="65" step="1" value="1">
+              </app-group-box>
+              <div style="display: flex; align-items: center;">
+                <input style="height:15px;width:15px;" type="checkBox">
+                <label style="line-height:15px;">Smoothing</label>
+              </div>
+            </div>
+            <app-group-box [name]="'Color:'" [styles]="{'display': 'inline-block'}">
+              <div style="display:flex; flex-direction: row;">
+                <div class="ColorBox"></div>
+                <button style="height:31px; width:71px">Choose</button>
+              </div>
+            </app-group-box>
+            <div style="display: flex; flex-direction: column; align-items: center; gap: 10px; margin-top: 10px;">
+              <button (click)="onGenerate()">GenerateNewLandscape</button>
+              <button (click)="onClean()">Clean Canvas</button>
+            </div>
+          </app-group-box>
         </div>
-        <app-group-box [name]="'Color:'" [styles]="{'display': 'inline-block'}">
-          <div style="display:flex; flex-direction: row;">
-            <div class="ColorBox"></div>
-            <button style="height:31px; width:71px">Choose</button>
-          </div>
-        </app-group-box>
-        <div style="display: flex; flex-direction: column; align-items: center; gap: 10px; margin-top: 10px;">
-          <button>GenerateNewLandscape</button>
-          <button>Clean Canvas</button>
+        <div class='VerticalLayout'>
+          <app-list [list]="canvases" (select)="onCanvasSelect($event)"></app-list>
+          <input [(ngModel)]="canvas_name">
+          <button>Send Canvas to DB</button>
+          <button (click)="onLoad()">Load Canvas</button>
+          <button>Update Canvas</button>
+          <button>Delete Canvas</button>
+          <button (click)="onExit()">EXIT</button>
+          <button (click)="onDelete()">DELETE THIS USER</button>
         </div>
-      </app-group-box>
+      </div>
     </div>
-    <div class='VerticalLayout'>
-      <app-list [list]="canvases" (select)="onCanvasSelect($event)"></app-list>
-      <input [(ngModel)]="canvas_name">
-      <button>Send Canvas to DB</button>
-      <button (click)="onLoad()">Load Canvas</button>
-      <button>Update Canvas</button>
-      <button>Delete Canvas</button>
-      <button (click)="onExit()">EXIT</button>
-      <button (click)="onDelete()">DELETE THIS USER</button>
-    </div>
-  </div>
-</div>
+  </body>
+</html>

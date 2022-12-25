@@ -1,9 +1,10 @@
-import { NgFor } from '@angular/common';
+import { LandscapeService } from './../landscape.service';
+import Point from 'src/LandscapeClasses/point';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { firstValueFrom } from 'rxjs';
+import { Subject, firstValueFrom } from 'rxjs';
 
-import { CanvasService, Canvas } from './../canvas.service';
+import { CanvasService } from './../canvas.service';
 import { listElem } from './../list-item/list-item.component';
 
 @Component({
@@ -15,7 +16,9 @@ export class ModeratorCanvasWindowComponent implements OnInit {
   canvas_user_id: number | undefined = undefined;
   canvases: CanvasNameId[] = [];
   selected_canvas_id: number | undefined = undefined;
-  cur_canvas: Canvas | undefined;
+
+  redrawEvent: Subject<void> = new Subject<void>();
+  cleanEvent: Subject<void> = new Subject<void>();
 
   constructor(
     private router: Router,
@@ -34,10 +37,7 @@ export class ModeratorCanvasWindowComponent implements OnInit {
     
     if (this.canvas_user_id) {
       firstValueFrom(canvas_service.getCanvasesByUserId(this.canvas_user_id))
-        .then(res => {
-          this.canvases = res;
-          //this.canvases.forEach(val => {window.alert(val.name)})
-        })
+        .then(res => this.canvases = res)
     }
   }
 
@@ -51,13 +51,29 @@ export class ModeratorCanvasWindowComponent implements OnInit {
     if (this.selected_canvas_id) {
       firstValueFrom(this.canvas_service.getCanvas(this.selected_canvas_id))
         .then(res => {
-          this.cur_canvas = res;
-          //window.alert(res.name + res.heights_map);
+          LandscapeService.setCanvas(res)
+          this.redrawEvent.next();
         })
         .catch(e => window.alert(e.message))
     }
     else
       window.alert("Choose canvas first")
+  }
+
+  onMove(p: Point) {
+    LandscapeService.move(p);
+    this.redrawEvent.next();
+  }
+  onScale(p: Point) {
+    LandscapeService.scale(p);
+    this.redrawEvent.next();
+  }
+  onRotate(p: Point) {
+    LandscapeService.rotate(p);
+    this.redrawEvent.next();
+  }
+  onClean() {
+    this.cleanEvent.next();
   }
 
   onBack() {

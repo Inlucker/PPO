@@ -1,11 +1,22 @@
 <div class='overlay'>
   <div class='Window' style="flex-direction: row">
-    <app-canvas [_canvas]="this.cur_canvas"></app-canvas>
+    <div class="VerticalLayout">
+      <app-canvas
+      [redrawEvent]="redrawEvent.asObservable()"
+      [cleanEvents]="cleanEvent.asObservable()">
+      </app-canvas>
+      <app-transforms
+        (move)="onMove($event)"
+        (scale)="onScale($event)"
+        (rotate)="onRotate($event)"
+        style="display: inline-block; align-self: center;">
+      </app-transforms>
+    </div>
     <!--<canvas #canvas width="600" height="300" style="background-color: white;"></canvas>-->
     <div class="VerticalLayout">
       <app-list [height]="'381px'" [list]="canvases" (select)="onCanvasSelect($event)"></app-list>
       <button (click)="onLoad()">Load</button>
-      <button>Clean Canvas</button>
+      <button (click)="onClean()">Clean Canvas</button>
       <button (click)="onBack()">Back</button>
     </div>
   </div>

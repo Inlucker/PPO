@@ -1,3 +1,4 @@
+import { Resolution } from './../canvas/canvas.component';
 import Point from 'src/LandscapeClasses/point';
 import { listElem } from './../list-item/list-item.component';
 import { firstValueFrom, Subject } from 'rxjs';
@@ -5,6 +6,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { UserService } from '../user.service';
 import { CanvasService, Canvas } from './../canvas.service';
+import { LandscapeService } from '../landscape.service';
 
 @Component({
   selector: 'app-canvas-user-window',
@@ -13,16 +15,16 @@ import { CanvasService, Canvas } from './../canvas.service';
 })
 export class CanvasUserWindowComponent implements OnInit {
   canvas_name: string = 'Canvas Name';
-  resolution: string = '960x540';
+  resolution_str: string = '960x540';
+  resolution: Resolution = new Resolution(this.resolution_str);
   draw_type: string = 'ZBuffer';
   canvas_user_id: number | undefined = undefined; 
   canvases: CanvasNameId[] = [];  
-  selected_canvas_id: number | undefined = undefined; 
-  cur_canvas: Canvas | undefined;
+  selected_canvas_id: number | undefined = undefined;
 
-  moveEvent: Subject<Point> = new Subject<Point>();
-  scaleEvent: Subject<Point> = new Subject<Point>();
-  rotateEvent: Subject<Point> = new Subject<Point>();
+  redrawEvent: Subject<void> = new Subject<void>();
+  cleanEvent: Subject<void> = new Subject<void>();
+  changeResolutionEvent: Subject<Resolution> = new Subject<Resolution>();
     
   constructor(private user_service: UserService, private router: Router, private canvas_service: CanvasService)
   {
@@ -36,6 +38,8 @@ export class CanvasUserWindowComponent implements OnInit {
       else
         this.router.navigate(['/ModeratorWindow']);
     }
+
+    this.resolution = new Resolution(this.resolution_str);
     
     let cui: string | null = localStorage.getItem('cur_user_id')
     if (cui)
@@ -58,27 +62,43 @@ export class CanvasUserWindowComponent implements OnInit {
   onLoad() {
     if (this.selected_canvas_id) {
       firstValueFrom(this.canvas_service.getCanvas(this.selected_canvas_id))
-      .then(res => {
-        this.cur_canvas = res;
-      })
-      .catch(e => window.alert(e.message))
+        .then(res => {
+          LandscapeService.setCanvas(res)
+          this.redrawEvent.next();
+        })
+        .catch(e => window.alert(e.message))
     }
     else
       window.alert("Choose canvas first")
   }
+  
+  onGenerate() {
+    
+  }
 
   onMove(p: Point) {
-    this.moveEvent.next(p);
+    LandscapeService.move(p);
+    this.redrawEvent.next();
   }
   onScale(p: Point) {
-    this.scaleEvent.next(p);
+    LandscapeService.scale(p);
+    this.redrawEvent.next();
   }
   onRotate(p: Point) {
-    this.rotateEvent.next(p);
+    LandscapeService.rotate(p);
+    this.redrawEvent.next();
+  }
+  onClean() {
+    this.cleanEvent.next();
+  }
+  onChangeResolution() {
+    LandscapeService.updateResolution(new Resolution(this.resolution_str));
+    this.changeResolutionEvent.next(new Resolution(this.resolution_str));
   }
 
   onExit() {
     this.user_service.logout().subscribe();
+    LandscapeService.reset();
     localStorage.removeItem('role');
     localStorage.removeItem('cur_user_id');
     this.router.navigate(['/login']);
@@ -86,6 +106,7 @@ export class CanvasUserWindowComponent implements OnInit {
   
   onDelete() {
     this.user_service.delete().subscribe();
+    LandscapeService.reset();
     localStorage.removeItem('role');
     localStorage.removeItem('cur_user_id');
     this.router.navigate(['/login']);
