@@ -42,31 +42,35 @@ export class LoginWindowComponent implements OnInit {
   ngOnInit() { }
 
   onLogin() {
-    lastValueFrom(this.user_service.login(this.login, this.password))
-                  .then(user => {
-                    localStorage.setItem('role', user.role);
-                    if (user.role == 'canvas_user') {
-                      localStorage.setItem('cur_user_id', user.id.toString());
-                      LandscapeService.reset();
-                      this.router.navigate(['/CanvasUserWindow']);
-                    }
-                    else if ((user.role == 'moderator'))
-                      this.router.navigate(['/ModeratorWindow']);
-                  })
-                  .catch(e => window.alert(e.message))
+    if (!localStorage.getItem('loged'))
+      lastValueFrom(this.user_service.login(this.login, this.password))
+                    .then(user => {
+                      localStorage.setItem('role', user.role);
+                      localStorage.setItem('logged', '1');
+                      if (user.role == 'canvas_user') {
+                        localStorage.setItem('cur_user_id', user.id.toString());
+                        LandscapeService.reset();
+                        this.router.navigate(['/CanvasUserWindow']);
+                      }
+                      else if ((user.role == 'moderator'))
+                        this.router.navigate(['/ModeratorWindow']);
+                    })
+                    .catch(e => window.alert(e.message))
   }
 
   onRegister()
   {
-    lastValueFrom(this.user_service.register(this.login, this.password, this.role))
-                  .then(user => {
-                    localStorage.setItem('role', user.role);
-                    if (user.role == 'canvas_user')
-                      this.router.navigate(['/CanvasUserWindow']);
-                    else if ((user.role == 'moderator'))
-                      this.router.navigate(['/ModeratorWindow']);
-                  })
-                  .catch(e => window.alert(e.message) /*console.error(e.message)*/)
+    if (!localStorage.getItem('loged'))
+      lastValueFrom(this.user_service.register(this.login, this.password, this.role))
+                    .then(user => {
+                      localStorage.setItem('role', user.role);
+                      localStorage.setItem('logged', '1');
+                      if (user.role == 'canvas_user')
+                        this.router.navigate(['/CanvasUserWindow']);
+                      else if ((user.role == 'moderator'))
+                        this.router.navigate(['/ModeratorWindow']);
+                    })
+                    .catch(e => window.alert(e.message) /*console.error(e.message)*/)
   }
 
   updateLogin() {

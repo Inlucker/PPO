@@ -118,7 +118,8 @@ export class CanvasUserWindowComponent implements OnInit {
   }
 
   onExit() {
-    this.user_service.logout().subscribe();
+    firstValueFrom(this.user_service.logout())
+      .then(() => localStorage.removeItem('logged'));
     LandscapeService.reset();
     localStorage.removeItem('role');
     localStorage.removeItem('cur_user_id');
@@ -126,7 +127,8 @@ export class CanvasUserWindowComponent implements OnInit {
   }
   
   onDelete() {
-    this.user_service.delete().subscribe();
+    firstValueFrom(this.user_service.delete())
+      .then(() => localStorage.removeItem('logged'));
     LandscapeService.reset();
     localStorage.removeItem('role');
     localStorage.removeItem('cur_user_id');

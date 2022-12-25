@@ -59,14 +59,16 @@ export class ModeratorWindowComponent implements OnInit {
   }
 
   onExit() {
-    this.user_service.logout().subscribe();
+    firstValueFrom(this.user_service.logout())
+      .then(() => localStorage.removeItem('logged'));
     localStorage.removeItem('role');
     localStorage.removeItem('moderator_endpoint');
     this.router.navigate(['/login']);
   }
   
   onDeleteSelf() {
-    this.user_service.delete().subscribe();
+    firstValueFrom(this.user_service.delete())
+      .then(() => localStorage.removeItem('logged'));
     localStorage.removeItem('role');
     localStorage.removeItem('moderator_endpoint');
     this.router.navigate(['/login']);
