@@ -1,3 +1,4 @@
+import { ColorPickerModule } from 'ngx-color-picker';
 import { LandscapeService } from './landscape.service';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
@@ -30,14 +31,14 @@ import { TestCanvasComponent } from './test-canvas/test-canvas.component';
     ListComponent,
     ModeratorWindowComponent,
     ModeratorCanvasWindowComponent,
-    ListItemComponent,
-      TestCanvasComponent
+    ListItemComponent
    ],
   imports: [
     BrowserModule,
     FormsModule,
     AppRoutingModule,
     HttpClientModule,
+    ColorPickerModule
   ],
   providers: [UserService, CanvasService, LandscapeService],
   bootstrap: [AppComponent]

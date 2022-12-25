@@ -8,8 +8,8 @@ import { ModeratorWindowComponent } from './moderator-window/moderator-window.co
 import { ModeratorCanvasWindowComponent } from './moderator-canvas-window/moderator-canvas-window.component';
 
 const routes: Routes = [
-  //{path: '', redirectTo: '/login', pathMatch: 'full'},
-  { path: '', component: TestCanvasComponent},
+  {path: '', redirectTo: '/login', pathMatch: 'full'},
+  //{ path: '', component: TestCanvasComponent},
   { path: 'login', component: LoginWindowComponent },
   { path: 'CanvasUserWindow', component: CanvasUserWindowComponent },
   { path: 'ModeratorWindow', component: ModeratorWindowComponent },

@@ -1,3 +1,4 @@
+import { LandscapeService } from './../landscape.service';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
@@ -45,8 +46,9 @@ export class LoginWindowComponent implements OnInit {
                   .then(user => {
                     localStorage.setItem('role', user.role);
                     if (user.role == 'canvas_user') {
-                      this.router.navigate(['/CanvasUserWindow']);
                       localStorage.setItem('cur_user_id', user.id.toString());
+                      LandscapeService.reset();
+                      this.router.navigate(['/CanvasUserWindow']);
                     }
                     else if ((user.role == 'moderator'))
                       this.router.navigate(['/ModeratorWindow']);

@@ -1,3 +1,4 @@
+import { Params } from './../params.service';
 import { Resolution } from './../canvas/canvas.component';
 import Point from 'src/LandscapeClasses/point';
 import { listElem } from './../list-item/list-item.component';
@@ -7,6 +8,7 @@ import { Router } from '@angular/router';
 import { UserService } from '../user.service';
 import { CanvasService, Canvas } from './../canvas.service';
 import { LandscapeService } from '../landscape.service';
+import { ColorPickerModule } from 'ngx-color-picker';
 
 @Component({
   selector: 'app-canvas-user-window',
@@ -15,8 +17,9 @@ import { LandscapeService } from '../landscape.service';
 })
 export class CanvasUserWindowComponent implements OnInit {
   canvas_name: string = 'Canvas Name';
-  resolution_str: string = '960x540';
-  resolution: Resolution = new Resolution(this.resolution_str);
+  //resolution_str: string = '960x540';
+  //resolution: Resolution = new Resolution(this.resolution_str);
+  params: Params;
   draw_type: string = 'ZBuffer';
   canvas_user_id: number | undefined = undefined; 
   canvases: CanvasNameId[] = [];  
@@ -39,7 +42,8 @@ export class CanvasUserWindowComponent implements OnInit {
         this.router.navigate(['/ModeratorWindow']);
     }
 
-    this.resolution = new Resolution(this.resolution_str);
+    //this.resolution = new Resolution(this.resolution_str);
+    this.params = LandscapeService.params;
     
     let cui: string | null = localStorage.getItem('cur_user_id')
     if (cui)
@@ -92,8 +96,25 @@ export class CanvasUserWindowComponent implements OnInit {
     this.cleanEvent.next();
   }
   onChangeResolution() {
-    LandscapeService.updateResolution(new Resolution(this.resolution_str));
-    this.changeResolutionEvent.next(new Resolution(this.resolution_str));
+    this.params.updateResolutionByStr();
+    LandscapeService.updateResolution(new Resolution(this.params.resolution_str));
+    this.changeResolutionEvent.next(new Resolution(this.params.resolution_str));
+  }
+  onChangeMult() {
+    LandscapeService.updateMult(this.params.mult);
+  }
+  onChangeSize() {
+    LandscapeService.updateSize(this.params.size);
+  }
+  onChangeRange() {
+    LandscapeService.updateRange(this.params.range);
+  }
+  onChangeSmooth() {
+    this.params.smooth = !this.params.smooth;
+    LandscapeService.updateSmooth(this.params.smooth);
+  }
+  onChangeColor() {
+    LandscapeService.updateColor(this.params.color_hex);
   }
 
   onExit() {

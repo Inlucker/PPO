@@ -7,7 +7,7 @@
           <app-canvas
             [redrawEvent]="redrawEvent.asObservable()"
             [cleanEvents]="cleanEvent.asObservable()"
-            [resolution]="resolution"
+            [resolution]="params.resolution"
             [changeResolutionEvents]="changeResolutionEvent.asObservable()">
           </app-canvas>
           <app-transforms
@@ -19,7 +19,7 @@
         </div>
         <div>
           <app-group-box [name]="'Resolution:'">
-            <select [(ngModel)]="resolution_str" (change)="onChangeResolution()">
+            <select [(ngModel)]="params.resolution_str" (change)="onChangeResolution()">
               <option>1280x720</option>
               <option>1120x630</option>
               <option>960x540</option>
@@ -39,26 +39,28 @@
           <app-group-box [name]="'Draw Parametres:'">
             <div class="HorizontalLayout">
             <label style="line-height: 30px;">Mult: </label>
-            <input  class="spinBox" type="number" min="0" max="10" step="1" value="1">
+            <input  class="spinBox" type="number" min="1" max="10" step="1" [(ngModel)]="params.mult" (click)="onChangeMult()">
           </div>
           </app-group-box>
           <app-group-box [name]="'GenLandscape Parameters:'">
             <app-group-box [name]="'Size:'" [styles]="{'display': 'inline-block'}">
-              <input class="spinBox" style="width:80px" type="number" min="1" max="65" step="1" value="1">
+              <input class="spinBox" style="width:80px" type="number" min="1" max="1026" step="1" [(ngModel)]="params.size" (click)="onChangeSize()">
             </app-group-box>
             <div class="HorizontalLayout">
               <app-group-box [name]="'Range:'">
-                <input class="spinBox" style="height:20px;width:59px" type="number" min="1.0" max="65" step="1" value="1">
+                <input class="spinBox" style="height:20px;width:59px" type="number" min="1.0" max="2000" step="1" [(ngModel)]="params.range"  (click)="onChangeRange()">
               </app-group-box>
               <div style="display: flex; align-items: center;">
-                <input style="height:15px;width:15px;" type="checkBox">
+                <input *ngIf="params.smooth" style="height:15px;width:15px;" type="checkBox" checked (click)="onChangeSmooth()">
+                <input *ngIf="!params.smooth" style="height:15px;width:15px;" type="checkBox" (click)="onChangeSmooth()">
                 <label style="line-height:15px;">Smoothing</label>
               </div>
             </div>
             <app-group-box [name]="'Color:'" [styles]="{'display': 'inline-block'}">
               <div style="display:flex; flex-direction: row;">
-                <div class="ColorBox"></div>
-                <button style="height:31px; width:71px">Choose</button>
+                <input class="ColorBox" [style.background]="params.color_hex"/>
+                <!--<input type="color" class="ColorBox" [style.background-color]="params.color_style" [value]="" value="#000000"/>-->
+                <button style="height:31px; width:71px" [(colorPicker)]="params.color_hex" (colorPickerSelect)="onChangeColor()">Choose</button>
               </div>
             </app-group-box>
             <div style="display: flex; flex-direction: column; align-items: center; gap: 10px; margin-top: 10px;">
