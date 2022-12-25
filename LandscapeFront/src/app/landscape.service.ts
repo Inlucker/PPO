@@ -31,10 +31,10 @@ export class LandscapeService {
     this.hmp?.rotate(p);
     //this.tpa = this.hmp?.createTriPolArray(this.canvas?.red, this.canvas?.green, this.canvas?.blue)!;
   }
-  static updateResolution(resol: Resolution) {
-    this.params.width = resol.width;
-    this.params.height = resol.height;
-    this.params.updateResolution();
+  static updateResolution() {
+    //this.params.width = resol.width;
+    //this.params.height = resol.height;
+    //this.params.updateResolution();
 
     /*var can = document.getElementsByTagName('canvas')[0];
     can.width  = resol.width;
@@ -43,7 +43,7 @@ export class LandscapeService {
     if (this.hmp)
     {
       let c: Point = this.hmp.map_points_center;
-      this.hmp.move(new Point(-c.x + (resol.width / (2 * this.params.mult)), -c.y + (resol.height / (2 * this.params.mult)), -c.z));
+      this.hmp.move(new Point(-c.x + (this.params.width / (2 * this.params.mult)), -c.y + (this.params.height / (2 * this.params.mult)), -c.z));
     }
   }
   static updateMult(m: number) {

@@ -1,3 +1,4 @@
+import { ParamsService } from './../params.service';
 import { LandscapeService } from './../landscape.service';
 import Point from 'src/LandscapeClasses/point';
 import { Component, OnInit } from '@angular/core';
@@ -20,9 +21,14 @@ export class ModeratorCanvasWindowComponent implements OnInit {
   redrawEvent: Subject<void> = new Subject<void>();
   cleanEvent: Subject<void> = new Subject<void>();
 
+  private width = 960;
+  private height = 540;
+  private mult = 1;
+
   constructor(
     private router: Router,
-    private canvas_service: CanvasService
+    private canvas_service: CanvasService,
+    //private params_service: ParamsService
     ) {
     let r = localStorage.getItem('role');
     if (r == 'canvas_user')
@@ -39,6 +45,7 @@ export class ModeratorCanvasWindowComponent implements OnInit {
       firstValueFrom(canvas_service.getCanvasesByUserId(this.canvas_user_id))
         .then(res => this.canvases = res)
     }
+    //this.params_service.get(1).subscribe(res => window.alert(res.mult));
   }
 
   ngOnInit() { }
@@ -52,6 +59,20 @@ export class ModeratorCanvasWindowComponent implements OnInit {
       firstValueFrom(this.canvas_service.getCanvas(this.selected_canvas_id))
         .then(res => {
           LandscapeService.setCanvas(res)
+
+          if (LandscapeService.hmp)
+          {
+            let c: Point = LandscapeService.hmp.map_points_center;
+            LandscapeService.hmp.move(new Point(-c.x + (this.width / (2 * this.mult)), -c.y + (this.height / (2 * this.mult)), -c.z));
+
+            /*firstValueFrom(this.params_service.get(this.selected_canvas_id!))
+              .then(p => {
+                window.alert(p.mult);
+                LandscapeService.hmp!.scale(new Point(p.mult, p.mult, p.mult));
+              })
+              .catch(e => window.alert('Couldn\'t get params\n' + e.message))*/
+          }
+
           this.redrawEvent.next();
         })
         .catch(e => window.alert(e.message))

@@ -1,3 +1,4 @@
+import { ParamsService } from './params.service';
 import { ColorPickerModule } from 'ngx-color-picker';
 import { LandscapeService } from './landscape.service';
 import { NgModule } from '@angular/core';

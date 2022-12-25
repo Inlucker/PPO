@@ -76,7 +76,7 @@ extern "C"
   EXPORT CanvasBL* genCanvasBL(int size, double range, bool smooth, int& ret_code);
 
   //Landscape
-  EXPORT int sendLandscape(int user_id, char* name, char* heights_map, char* heights_map_points, int r, int g, int b);
+  EXPORT int sendLandscape(int user_id, char* name, char* heights_map, char* heights_map_points, int r, int g, int b, int& canvas_id);
   EXPORT int updateLandscape(int id, char* name, char* heights_map, char* heights_map_points, int r, int g, int b);
   EXPORT int deleteLandscape(int id);
 

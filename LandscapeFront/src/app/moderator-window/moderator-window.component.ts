@@ -1,3 +1,4 @@
+import { LandscapeService } from './../landscape.service';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { firstValueFrom } from 'rxjs';
@@ -18,19 +19,41 @@ export class ModeratorWindowComponent implements OnInit {
 
   constructor(
     private user_service: UserService,
-    private router: Router,
-    ) {
-      let r = localStorage.getItem('role');
-      if (r == 'canvas_user')
-        this.router.navigate(['/CanvasUserWindow']);
-      if (!r)
-        router.navigate(['/login'])
+    private router: Router)
+  {
+    let r = localStorage.getItem('role');
+    if (r == 'canvas_user')
+      this.router.navigate(['/CanvasUserWindow']);
+    if (!r)
+      router.navigate(['/login'])
 
-      localStorage.setItem('moderator_endpoint', '/ModeratorWindow');
-      localStorage.removeItem('canvas_user_id');
-        
-      user_service.getFreeUsers().subscribe(res => res.forEach(val => this.free_users.push({name: val})))
-      user_service.getUsers().subscribe(res => res.forEach(val => this.users.push({name: val})))
+    localStorage.setItem('moderator_endpoint', '/ModeratorWindow');
+    localStorage.removeItem('canvas_user_id');
+      
+    this.updateUsersLists();
+    //user_service.getFreeUsers().subscribe(res => res.forEach(val => this.free_users.push({name: val})))
+    //user_service.getUsers().subscribe(res => res.forEach(val => this.users.push({name: val})))
+  }
+
+  updateUsersLists()
+  {
+    this.free_users.splice(0);
+    firstValueFrom(this.user_service.getFreeUsers())
+      .then(res => res.forEach(val => this.free_users.push({ name: val })))
+      .catch(e =>
+      {
+        window.alert(e.message() + '\nRedirecting to /login');
+        this.routeToLogin();
+      });
+    
+    this.users.splice(0);
+    firstValueFrom(this.user_service.getUsers())
+      .then(res => res.forEach(val => this.users.push({ name: val })))
+      .catch(e =>
+      {
+        window.alert(e.message() + '\nRedirecting to /login');
+        this.routeToLogin();
+      });
   }
 
   onFreeUserSelect(list_elem: listElem) {
@@ -56,30 +79,11 @@ export class ModeratorWindowComponent implements OnInit {
       window.alert("Choose user first");
   }
 
-  onExit() {
-    firstValueFrom(this.user_service.logout())
-      .then(() => localStorage.removeItem('logged'));
-    localStorage.removeItem('role');
-    localStorage.removeItem('moderator_endpoint');
-    this.router.navigate(['/login']);
-  }
-  
-  onDeleteSelf() {
-    firstValueFrom(this.user_service.delete())
-      .then(() => localStorage.removeItem('logged'));
-    localStorage.removeItem('role');
-    localStorage.removeItem('moderator_endpoint');
-    this.router.navigate(['/login']);
-  }
-
   onAddUser() {
     if (this.selectedFreeUser)
       firstValueFrom(this.user_service.add(this.selectedFreeUser))
-      .then(res => {
-        this.user_service.getFreeUsers().subscribe(res => res.forEach(val => this.free_users.push({name: val})))
-        this.user_service.getUsers().subscribe(res => res.forEach(val => this.users.push({name: val})))
-      })
-      .catch(e => window.alert(e.message));
+        .then(() => this.updateUsersLists())
+        .catch(e => window.alert(e.message));
     else
       window.alert("Choose free user first");
   }
@@ -87,13 +91,30 @@ export class ModeratorWindowComponent implements OnInit {
   onDeleteUser() {
     if (this.selectedUser)
       firstValueFrom(this.user_service.remove(this.selectedUser))
-      .then(res => {
-        this.user_service.getFreeUsers().subscribe(res => res.forEach(val => this.free_users.push({name: val})))
-        this.user_service.getUsers().subscribe(res => res.forEach(val => this.users.push({name: val})))
-      })
+      .then(() => this.updateUsersLists())
       .catch(e => window.alert(e.message));
     else
       window.alert("Choose user first");
+  }
+  
+  onExit() {
+    firstValueFrom(this.user_service.logout())
+      .then(() => localStorage.removeItem('logged'));
+      this.routeToLogin();
+  }
+  
+  onDeleteSelf() {
+    firstValueFrom(this.user_service.delete())
+      .then(() => localStorage.removeItem('logged'));
+    this.routeToLogin();
+  }
+
+  private routeToLogin() {
+    localStorage.removeItem('logged')
+    localStorage.removeItem('role');
+    localStorage.removeItem('moderator_endpoint');
+    LandscapeService.reset();
+    this.router.navigate(['/login']);
   }
 }
 

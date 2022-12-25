@@ -1,3 +1,6 @@
+import { Observable } from 'rxjs';
+import { environment } from './../environments/environment';
+import { HttpClient } from '@angular/common/http';
 import { Resolution } from './canvas/canvas.component';
 import { Injectable } from '@angular/core';
 
@@ -5,8 +8,35 @@ import { Injectable } from '@angular/core';
   providedIn: 'root'
 })
 export class ParamsService {
+  options = { withCredentials: true };
+  paramsUrl: string = environment.baseApiUrl + '/params'
 
-  constructor() { }
+  constructor(private http: HttpClient) { }
+
+  get(canvas_id: number): Observable<GetParams> {
+    return this.http.get<GetParams>(this.paramsUrl + '/' + canvas_id, this.options);
+  }
+  
+  post(p: Params): Observable<void> {
+    return this.http.post<void>(this.paramsUrl, p, this.options);
+  }
+
+  put(p: Params): Observable<void> {
+    return this.http.put<void>(this.paramsUrl, p, this.options);
+  }
+}
+
+export interface GetParams {
+  canvas_id: number;
+  width: number;
+  height: number ;
+  range: number;
+  smooth: boolean;
+  mult: number;
+  red: number;
+  green: number;
+  blue: number;
+  size: number;
 }
 
 export class Params {
@@ -22,12 +52,6 @@ export class Params {
       this.smooth = (localStorage.getItem('smooth')!) == '1';
     if (localStorage.getItem('mult'))
       this.mult = +localStorage.getItem('mult')!;
-    /*if (localStorage.getItem('red'))
-      this.red = +localStorage.getItem('red')!;
-    if (localStorage.getItem('green'))
-      this.green = +localStorage.getItem('green')!;
-    if (localStorage.getItem('blue'))
-      this.blue = +localStorage.getItem('blue')!;*/
     if (localStorage.getItem('color_hex')) {
       var rgb = this.hexToRgb(localStorage.getItem('color_hex')!)
       if (rgb) {
@@ -40,7 +64,24 @@ export class Params {
       this.size = +localStorage.getItem('size')!;
     
     this.updateResolution();
-    this.updateColorStyle();
+    this.updateColorHex();
+  }
+
+  updateGetParams(gp: GetParams) {
+    this.width = gp.width;
+    this.height = gp.height;
+    this.updateResolution();
+    this.range = gp.range;
+    //localStorage.setItem('range', gp.range.toString());
+    this.smooth = gp.smooth;
+    this.mult = gp.mult;
+    localStorage.setItem('mult', gp.mult.toString());
+    this.red = gp.red;
+    this.green = gp.green;
+    this.blue = gp.blue;
+    this.updateColorHex();
+    this.size = gp.size;
+    //localStorage.setItem('size', gp.size.toString());
   }
 
   canvas_id: number = 0;
@@ -83,12 +124,8 @@ export class Params {
     }
   }
 
-  updateColorStyle() {
+  updateColorHex() {
     this.color_hex = this.rgbToHex(this.red, this.green, this.blue);
-    
-    /*localStorage.setItem('red', this.red.toString());
-    localStorage.setItem('green', this.green.toString());
-    localStorage.setItem('blue', this.blue.toString());*/
   }
 
   componentToHex(c: number) {

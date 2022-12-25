@@ -143,8 +143,9 @@ vector<pair<int, string> > CanvasRepository::getCanvasesByUid(int u_id)
     return vec;
 }
 
-void CanvasRepository::addCanvas(CanvasBL &canvas)
+int CanvasRepository::addCanvas(CanvasBL &canvas)
 {
+    int id = -1;
     connect();
     string u_id = std::to_string(canvas.getUserId());
     string name = canvas.getName();
@@ -163,13 +164,17 @@ void CanvasRepository::addCanvas(CanvasBL &canvas)
     query += name + "', '";
     query += hm + "', '";
     query += hmp + "', '";
-    query += c + "');";
+    query += c + "')";
+    query += "RETURNING id;";
     PQsendQuery(m_connection.get(), query.c_str());
 
     bool flag = false;
     string error_msg = "";
     while (auto res = PQgetResult( m_connection.get()))
     {
+        int rows_n = PQntuples(res);
+        if (PQresultStatus(res) == PGRES_TUPLES_OK && rows_n)
+            id = atoi(PQgetvalue(res, 0, 0));
         if (PQresultStatus(res) == PGRES_FATAL_ERROR)
         {
             error_msg += "\n";
@@ -183,6 +188,7 @@ void CanvasRepository::addCanvas(CanvasBL &canvas)
         time_t t_time = time(NULL);
         throw InsertCanvasError(error_msg, __FILE__, __LINE__, ctime(&t_time));
     }
+    return id;
 }
 
 void CanvasRepository::deleteCanvas(int id)

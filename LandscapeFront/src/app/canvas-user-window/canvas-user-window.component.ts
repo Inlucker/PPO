@@ -1,4 +1,4 @@
-import { Params } from './../params.service';
+import { Params, ParamsService } from './../params.service';
 import { Resolution } from './../canvas/canvas.component';
 import Point from 'src/LandscapeClasses/point';
 import { listElem } from './../list-item/list-item.component';
@@ -29,7 +29,8 @@ export class CanvasUserWindowComponent implements OnInit {
   cleanEvent: Subject<void> = new Subject<void>();
   changeResolutionEvent: Subject<Resolution> = new Subject<Resolution>();
     
-  constructor(private user_service: UserService, private router: Router, private canvas_service: CanvasService)
+  constructor(private user_service: UserService, private router: Router,
+    private canvas_service: CanvasService, private params_service: ParamsService)
   {
     let r = localStorage.getItem('role');
     if (!r)
@@ -45,22 +46,10 @@ export class CanvasUserWindowComponent implements OnInit {
     let cui: string | null = localStorage.getItem('cur_user_id')
     if (cui)
       this.canvas_user_id = +cui;
-  
-    /*if (this.canvas_user_id) {
-      firstValueFrom(canvas_service.getCanvasesByUserId(this.canvas_user_id))
-      .then(res => {
-        this.canvases = res;
-      })
-        .catch(e => {
-          window.alert(e.message() + '\nRedirecting to /login');
-          router.navigate(['/login'])
-      })
-    }*/
+    
     this.updateCanvasesList();
 
-    //this.resolution = new Resolution(this.resolution_str);
     this.params = LandscapeService.params;
-    //this.params.canvas_name = localStorage.getItem('canvas_name') ?? 'Canvas Name';
   }
 
   ngOnInit(): void { }
@@ -73,8 +62,12 @@ export class CanvasUserWindowComponent implements OnInit {
       })
         .catch(e => {
           window.alert(e.message() + '\nRedirecting to /login');
-          this.router.navigate(['/login'])
+          this.routeToLogin();
       })
+    }
+    else {
+      window.alert('Couldn\'t get canvas_user_id' + '\nRedirecting to /login');
+      this.routeToLogin();
     }
   }
 
@@ -87,8 +80,18 @@ export class CanvasUserWindowComponent implements OnInit {
     if (LandscapeService.canvas && LandscapeService.hmp)
     {
       LandscapeService.canvas.heights_map_points = LandscapeService.hmp.toStr();
+      //color
+      LandscapeService.canvas.red = this.params.red;
+      LandscapeService.canvas.green = this.params.green;
+      LandscapeService.canvas.blue = this.params.blue;
       firstValueFrom(this.canvas_service.postCanvas(LandscapeService.canvas))
-        .then(() => this.updateCanvasesList())
+        .then(canvas_id =>
+        {
+          this.updateCanvasesList();
+          this.params.canvas_id = canvas_id;
+          firstValueFrom(this.params_service.post(this.params))
+            .catch(e => window.alert('You couldn\'t create params\n' + e.message));
+        })
         .catch(e => window.alert(e.message))
     }
     else
@@ -98,9 +101,28 @@ export class CanvasUserWindowComponent implements OnInit {
   onLoad() {
     if (this.selected_canvas_id) {
       firstValueFrom(this.canvas_service.getCanvas(this.selected_canvas_id))
-        .then(res => {
-          LandscapeService.setCanvas(res)
-          this.redrawEvent.next();
+        .then(res =>
+        {
+          firstValueFrom(this.params_service.get(this.selected_canvas_id!))
+            .then(p =>
+            {
+              this.params.updateGetParams(p);
+              LandscapeService.setCanvas(res)
+
+              this.params.updateResolutionByStr();
+              LandscapeService.updateResolution();
+              this.changeResolutionEvent.next(new Resolution(this.params.resolution_str));
+            })
+            .catch(e =>
+            {
+              window.alert('couldn\'t load params\n' + e.message)
+              LandscapeService.setCanvas(res)
+
+              this.params.updateResolutionByStr();
+              LandscapeService.updateResolution();
+              this.changeResolutionEvent.next(new Resolution(this.params.resolution_str));
+              //this.redrawEvent.next();
+            })
         })
         .catch(e => window.alert(e.message))
     }
@@ -113,8 +135,17 @@ export class CanvasUserWindowComponent implements OnInit {
     if (LandscapeService.canvas && this.selected_canvas_id && LandscapeService.hmp) {
       LandscapeService.canvas.heights_map_points = LandscapeService.hmp.toStr();
       LandscapeService.canvas.id = this.selected_canvas_id;
+      LandscapeService.canvas.red = this.params.red;
+      LandscapeService.canvas.green = this.params.green;
+      LandscapeService.canvas.blue = this.params.blue;
+      this.params.canvas_id = this.selected_canvas_id;
       firstValueFrom(this.canvas_service.updateCanvas(LandscapeService.canvas))
-        .then(() => this.updateCanvasesList())
+        .then(() =>
+        {
+          this.updateCanvasesList();
+          firstValueFrom(this.params_service.put(this.params))
+            .catch(e => window.alert('You couldn\'t update params\n' + e.message));
+        })
         .catch(e => window.alert(e.message))
     }
     else
@@ -161,7 +192,7 @@ export class CanvasUserWindowComponent implements OnInit {
   }
   onChangeResolution() {
     this.params.updateResolutionByStr();
-    LandscapeService.updateResolution(new Resolution(this.params.resolution_str));
+    LandscapeService.updateResolution();
     this.changeResolutionEvent.next(new Resolution(this.params.resolution_str));
   }
   onChangeMult() {
@@ -198,15 +229,17 @@ export class CanvasUserWindowComponent implements OnInit {
   onExit() {
     firstValueFrom(this.user_service.logout())
       .then(() => localStorage.removeItem('logged'));
-    LandscapeService.reset();
-    localStorage.removeItem('role');
-    localStorage.removeItem('cur_user_id');
-    this.router.navigate(['/login']);
+    this.routeToLogin();
   }
   
   onDelete() {
     firstValueFrom(this.user_service.delete())
       .then(() => localStorage.removeItem('logged'));
+    this.routeToLogin();
+  }
+
+  private routeToLogin() {
+    localStorage.removeItem('logged')
     LandscapeService.reset();
     localStorage.removeItem('role');
     localStorage.removeItem('cur_user_id');

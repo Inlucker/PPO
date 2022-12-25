@@ -109,10 +109,11 @@ namespace WebLandscape.Controllers
       User user = getUser();
       if (!user.isOk())
         return BadRequest();
-      int ret = LandscapeService.SendLandscape(schema, user.Id);
+      int ret = LandscapeService.SendLandscape(schema, user.Id, out int canvas_id);
 
       if (ret == 0)
-        return Ok(new Status(0, "Ok", "You created Landscape in DataBase", Ok().StatusCode));
+        return Ok(canvas_id);
+        //return Ok(new Status(0, "Ok", "You created Landscape in DataBase", Ok().StatusCode));
       else
         return BadRequest(new Status(1, "BadRequest", "You couldn't created Landscape in DataBase", BadRequest().StatusCode));
     }

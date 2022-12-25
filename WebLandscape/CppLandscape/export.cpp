@@ -498,7 +498,7 @@ extern "C"
   }
 
   //Landscape
-  int sendLandscape(int user_id, char* name, char* heights_map, char* heights_map_points, int r, int g, int b)
+  int sendLandscape(int user_id, char* name, char* heights_map, char* heights_map_points, int r, int g, int b, int& canvas_id)
   {
     try
     {
@@ -516,7 +516,7 @@ extern "C"
       shared_ptr<UserBL> user_bl = user_repository->getUser(user_id);
       shared_ptr<CANVAS_REP> canvas_repository = make_shared<CANVAS_REP>(user_bl->getRole(), user_bl->getRole());
       CanvasBL canvasBL = CanvasBL(-1, user_id, _name, _heights_map, _heights_map_points, r, g, b);
-      canvas_repository->addCanvas(canvasBL);
+      canvas_id = canvas_repository->addCanvas(canvasBL);
       return 0;
     }
     catch (BaseError& er)

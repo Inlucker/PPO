@@ -93,7 +93,7 @@ namespace WebLandscape
 
     //Landscape
     [DllImport(CppFunctionsDLL, CallingConvention = CallingConvention.Cdecl)]
-    static extern int sendLandscape(int user_id, String name, String heights_map, String heights_map_points, int r, int g, int b);
+    static extern int sendLandscape(int user_id, String name, String heights_map, String heights_map_points, int r, int g, int b, ref int canvas_id);
     [DllImport(CppFunctionsDLL, CallingConvention = CallingConvention.Cdecl)]
     static extern int updateLandscape(int id, String name, String heights_map, String heights_map_points, int r, int g, int b);
     [DllImport(CppFunctionsDLL, CallingConvention = CallingConvention.Cdecl)]
@@ -420,10 +420,11 @@ namespace WebLandscape
       return lst;
     }
 
-    public static int SendLandscape(CreateLandscapeSchema schema, int user_id)
+    public static int SendLandscape(CreateLandscapeSchema schema, int user_id, out int canvas_id)
     {
       int res = 0;
-      res = sendLandscape(user_id, schema.name, schema.heights_map, schema.heights_map_points, schema.red, schema.green, schema.blue);
+      canvas_id = 0;
+      res = sendLandscape(user_id, schema.name, schema.heights_map, schema.heights_map_points, schema.red, schema.green, schema.blue, ref canvas_id);
 
       return res;
     }

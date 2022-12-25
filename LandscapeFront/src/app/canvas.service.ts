@@ -28,19 +28,19 @@ export class CanvasService {
   }
 
   delete(id: number) {
-    return this.http.delete<Canvas>(this.canvasUrl + '/' + id, this.options);
+    return this.http.delete<void>(this.canvasUrl + '/' + id, this.options);
   }
 
   getCanvasesByUserId(user_id: number): Observable<Canvas[]> {
     return this.http.get<Canvas[]>(this.canvasUrl + '?user_id=' + user_id, this.options);
   }
 
-  postCanvas(canvas: Canvas) {
-    return this.http.post<Canvas>(this.canvasUrl, canvas, this.options);
+  postCanvas(canvas: Canvas): Observable<number> {
+    return this.http.post<number>(this.canvasUrl, canvas, this.options);
   }
 
   updateCanvas(canvas: Canvas) {
-    return this.http.put<Canvas>(this.canvasUrl, canvas, this.options);
+    return this.http.put<void>(this.canvasUrl, canvas, this.options);
   }
 }
 
