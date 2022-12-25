@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import Point from 'src/LandscapeClasses/point';
 
 @Component({
   selector: 'app-transforms',
@@ -18,9 +19,23 @@ export class TransformsComponent implements OnInit {
   rotateY: number = 0;
   rotateZ: number = 10;
 
+  @Output() move = new EventEmitter<Point>();
+  @Output() scale = new EventEmitter<Point>();
+  @Output() rotate = new EventEmitter<Point>();
+
   constructor() { }
 
-  ngOnInit() {
+  ngOnInit() { }
+
+  onMove() {
+    this.move.emit(new Point(this.moveX, this.moveY, this.moveZ));
   }
 
+  onScale() {
+    this.scale.emit(new Point(this.scaleX, this.scaleY, this.scaleZ));
+  }
+
+  onRotate() {
+    this.rotate.emit(new Point(this.rotateX, this.rotateY, this.rotateZ));
+  }
 }

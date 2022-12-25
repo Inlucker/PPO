@@ -9,7 +9,7 @@
         <input class='trans_inp' [(ngModel)]="moveY">
         <input class='trans_inp' [(ngModel)]="moveZ">
         </div>
-        <button class='trans_btn'>Move</button>
+        <button class='trans_btn' (click)="onMove()">Move</button>
       </div>
     </app-group-box>
       
@@ -20,7 +20,7 @@
           <input class='trans_inp' [(ngModel)]="scaleY">
           <input class='trans_inp' [(ngModel)]="scaleZ">
           </div>
-        <button class='trans_btn'>Scale</button>
+        <button class='trans_btn' (click)="onScale()">Scale</button>
       </div>
     </app-group-box>
       
@@ -31,7 +31,7 @@
           <input class='trans_inp' [(ngModel)]="rotateY">
           <input class='trans_inp' [(ngModel)]="rotateZ">
           </div>
-        <button class='trans_btn'>Rotate</button>
+        <button class='trans_btn' (click)="onRotate()">Rotate</button>
       </div>
     </app-group-box>
   </div>

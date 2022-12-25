@@ -2,8 +2,18 @@
 <div class='overlay'>
   <div class='Window' style="flex-direction: row">
     <div class="VerticalLayout">
-      <app-canvas></app-canvas>
-      <app-transforms style="display: inline-block; align-self: center;"></app-transforms>
+      <app-canvas
+        [_canvas]="this.cur_canvas"
+        [moveEvents]="moveEvent.asObservable()"
+        [scaleEvents]="scaleEvent.asObservable()"
+        [rotateEvents]="rotateEvent.asObservable()">
+      </app-canvas>
+      <app-transforms
+        (move)="onMove($event)"
+        (scale)="onScale($event)"
+        (rotate)="onRotate($event)"
+        style="display: inline-block; align-self: center;">
+      </app-transforms>
     </div>
     <div>
       <app-group-box [name]="'Resolution:'">
@@ -56,10 +66,10 @@
       </app-group-box>
     </div>
     <div class='VerticalLayout'>
-      <app-list></app-list>
+      <app-list [list]="canvases" (select)="onCanvasSelect($event)"></app-list>
       <input [(ngModel)]="canvas_name">
       <button>Send Canvas to DB</button>
-      <button>Load Canvas</button>
+      <button (click)="onLoad()">Load Canvas</button>
       <button>Update Canvas</button>
       <button>Delete Canvas</button>
       <button (click)="onExit()">EXIT</button>

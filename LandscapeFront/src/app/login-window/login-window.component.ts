@@ -44,8 +44,10 @@ export class LoginWindowComponent implements OnInit {
     lastValueFrom(this.user_service.login(this.login, this.password))
                   .then(user => {
                     localStorage.setItem('role', user.role);
-                    if (user.role == 'canvas_user')
+                    if (user.role == 'canvas_user') {
                       this.router.navigate(['/CanvasUserWindow']);
+                      localStorage.setItem('cur_user_id', user.id.toString());
+                    }
                     else if ((user.role == 'moderator'))
                       this.router.navigate(['/ModeratorWindow']);
                   })
