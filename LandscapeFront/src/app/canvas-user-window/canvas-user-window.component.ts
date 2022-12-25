@@ -16,7 +16,7 @@ import { ColorPickerModule } from 'ngx-color-picker';
   styleUrls: ['./canvas-user-window.component.css']
 })
 export class CanvasUserWindowComponent implements OnInit {
-  canvas_name: string = 'Canvas Name';
+  //canvas_name: string; //= 'Canvas Name';
   //resolution_str: string = '960x540';
   //resolution: Resolution = new Resolution(this.resolution_str);
   params: Params;
@@ -41,26 +41,57 @@ export class CanvasUserWindowComponent implements OnInit {
       else
         this.router.navigate(['/ModeratorWindow']);
     }
-
-    //this.resolution = new Resolution(this.resolution_str);
-    this.params = LandscapeService.params;
     
     let cui: string | null = localStorage.getItem('cur_user_id')
     if (cui)
       this.canvas_user_id = +cui;
   
-    if (this.canvas_user_id) {
+    /*if (this.canvas_user_id) {
       firstValueFrom(canvas_service.getCanvasesByUserId(this.canvas_user_id))
       .then(res => {
         this.canvases = res;
       })
+        .catch(e => {
+          window.alert(e.message() + '\nRedirecting to /login');
+          router.navigate(['/login'])
+      })
+    }*/
+    this.updateCanvasesList();
+
+    //this.resolution = new Resolution(this.resolution_str);
+    this.params = LandscapeService.params;
+    //this.params.canvas_name = localStorage.getItem('canvas_name') ?? 'Canvas Name';
+  }
+
+  ngOnInit(): void { }
+  
+  private updateCanvasesList() {
+    if (this.canvas_user_id) {
+      firstValueFrom(this.canvas_service.getCanvasesByUserId(this.canvas_user_id))
+      .then(res => {
+        this.canvases = res;
+      })
+        .catch(e => {
+          window.alert(e.message() + '\nRedirecting to /login');
+          this.router.navigate(['/login'])
+      })
     }
   }
 
-  ngOnInit(): void {}
-
   onCanvasSelect(list_elem: listElem) {
     this.selected_canvas_id = list_elem.id;
+  }
+
+  onSend()
+  {
+    if (LandscapeService.canvas)
+    {
+      firstValueFrom(this.canvas_service.postCanvas(LandscapeService.canvas))
+        .then(() => this.updateCanvasesList())
+        .catch(e => window.alert(e.message))
+    }
+    else
+      window.alert('No canvas to send');
   }
 
   onLoad() {
@@ -75,9 +106,40 @@ export class CanvasUserWindowComponent implements OnInit {
     else
       window.alert("Choose canvas first")
   }
+
+  onUpdate()
+  {
+    if (LandscapeService.canvas && this.selected_canvas_id) {
+      LandscapeService.canvas.id = this.selected_canvas_id;
+      firstValueFrom(this.canvas_service.updateCanvas(LandscapeService.canvas))
+        .then(() => this.updateCanvasesList())
+        .catch(e => window.alert(e.message))
+    }
+    else
+      window.alert("Choose canvas first OR No canvas to send");
+  }
+
+  onDeleteCanvas() {
+    if (this.selected_canvas_id)
+    {
+      firstValueFrom(this.canvas_service.delete(this.selected_canvas_id))
+        .then(() => {
+          this.updateCanvasesList()
+          this.selected_canvas_id = undefined;
+        })
+        .catch(e => window.alert(e.message))
+    }
+    else
+      window.alert("Choose canvas first");
+  }
   
   onGenerate() {
-    
+    firstValueFrom(this.canvas_service.generate(this.params))
+      .then(c => {
+        LandscapeService.setGenCanvas(c);
+        this.redrawEvent.next();
+      })
+      .catch(e => window.alert(e.message));
   }
 
   onMove(p: Point) {
@@ -102,9 +164,19 @@ export class CanvasUserWindowComponent implements OnInit {
   }
   onChangeMult() {
     LandscapeService.updateMult(this.params.mult);
+    this.redrawEvent.next();
   }
   onChangeSize() {
-    LandscapeService.updateSize(this.params.size);
+    if (localStorage.getItem('size')) {
+      let old_s: number = +localStorage.getItem('size')!;
+      if (this.params.size > old_s)
+        this.params.size = (old_s - 1) * 2 + 1;
+      else if (this.params.size < old_s)
+        this.params.size = (old_s - 1) / 2 + 1;
+      
+      LandscapeService.updateSize(this.params.size);
+      this.params.range = (this.params.size - 1) * 3 / 4;
+    }
   }
   onChangeRange() {
     LandscapeService.updateRange(this.params.range);
@@ -115,6 +187,10 @@ export class CanvasUserWindowComponent implements OnInit {
   }
   onChangeColor() {
     LandscapeService.updateColor(this.params.color_hex);
+    this.redrawEvent.next();
+  }
+  onChangeCanvasName() {
+    LandscapeService.updateCanvasName(this.params.canvas_name);
   }
 
   onExit() {

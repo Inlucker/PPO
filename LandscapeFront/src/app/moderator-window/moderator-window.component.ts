@@ -3,7 +3,6 @@ import { Router } from '@angular/router';
 import { firstValueFrom } from 'rxjs';
 
 import { UserService, User } from '../user.service';
-import { CanvasService, Canvas } from '../canvas.service';
 import { listElem } from './../list-item/list-item.component';
 
 @Component({
@@ -19,7 +18,6 @@ export class ModeratorWindowComponent implements OnInit {
 
   constructor(
     private user_service: UserService,
-    private canvas_service: CanvasService,
     private router: Router,
     ) {
       let r = localStorage.getItem('role');

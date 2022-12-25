@@ -1,3 +1,4 @@
+import { Params } from './params.service';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
@@ -10,8 +11,17 @@ import { environment } from 'src/environments/environment';
 export class CanvasService {
   options = { withCredentials: true };
   canvasUrl: string = environment.baseApiUrl + '/landscapes'
+  genUrl: string = environment.baseApiUrl + '/generation'
   
   constructor(private http: HttpClient) { }
+
+  generate(p: Params): Observable<Canvas> {
+    return this.http.get<Canvas>(this.genUrl + '?size=' + p.size +
+      '&range=' + p.range +
+      '&smoothing=' + (p.smooth ? 'true' : 'false') +
+      '&name=' + p.canvas_name + '&red=' + p.red +
+      '&green=' + p.green + '&blue=' + p.blue, this.options);
+  }
 
   getCanvas(id: number): Observable<Canvas> {
     return this.http.get<Canvas>(this.canvasUrl + '/' + id, this.options);

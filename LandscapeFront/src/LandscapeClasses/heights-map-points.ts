@@ -131,6 +131,17 @@ export default class HeightsMapPoints {
     this.updateCenter();
   }
 
+  toStr(): string {
+    let res: string = '';
+    res += this.width.toString() + " ";
+    res += this.height.toString() + " ";
+    this.points.forEach(array => array.forEach(elem => {
+      let x: number = elem.x, y = elem.y, z = elem.z;
+      res += x.toString + " " + y.toString() + " " + z.toString(z) + " ";
+    }))
+    return res;
+  }
+
   getStr(): string {
     let res: string = '';
     this.points.forEach(arr => arr.forEach(val => res += val.getStr() + '\n'))

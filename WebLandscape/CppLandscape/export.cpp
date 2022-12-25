@@ -477,13 +477,13 @@ extern "C"
     }
   }
 
-  CanvasBL* genCanvasBL(int size, bool smooth, int& ret_code)
+  CanvasBL* genCanvasBL(int size, double range, bool smooth, int& ret_code)
   {
     ret_code = 0;
     try
     {
       HeightsMap hm = HeightsMap(size);
-      hm.diamondSquare(size, smooth);
+      hm.diamondSquare(range, smooth);
       shared_ptr<HeightsMapPoints> hmp_pointer = hm.createPoints();
       HeightsMapPoints& hmp = *(hmp_pointer.get());
       CanvasBL* canvasBL = new CanvasBL(-1, -1, "Name", hm, hmp, 20, 150, 20);

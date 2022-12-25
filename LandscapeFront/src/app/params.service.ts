@@ -11,6 +11,7 @@ export class ParamsService {
 
 export class Params {
   constructor() {
+      this.canvas_name = localStorage.getItem('canvas_name') ?? 'Canvas Name';
     if (localStorage.getItem('width'))
       this.width = +localStorage.getItem('width')!;
     if (localStorage.getItem('height'))
@@ -43,6 +44,7 @@ export class Params {
   }
 
   canvas_id: number = 0;
+  canvas_name: string = 'Canvas Name';
   width: number = 960;
   height: number = 540;
   range: number = 24.;
@@ -70,6 +72,15 @@ export class Params {
     this.resolution = new Resolution(this.resolution_str);
     this.width = this.resolution.width;
     this.height = this.resolution.height;
+  }
+
+  updateRGB(ch: string) {
+    var col = this.hexToRgb(ch);
+    if (col) {
+      this.red = col.r;
+      this.green = col.g;
+      this.blue = col.b;
+    }
   }
 
   updateColorStyle() {

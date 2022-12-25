@@ -88,7 +88,7 @@ namespace WebLandscape
     [DllImport(CppFunctionsDLL, CallingConvention = CallingConvention.Cdecl)]
     static extern IntPtr genHeightsMap(int size, bool smooth);
     [DllImport(CppFunctionsDLL, CallingConvention = CallingConvention.Cdecl)]
-    static extern IntPtr genCanvasBL(int size, bool smooth, ref int returnCode); //returns canvasBL pointer
+    static extern IntPtr genCanvasBL(int size, double range, bool smooth, ref int returnCode); //returns canvasBL pointer
 
 
     //Landscape
@@ -138,13 +138,13 @@ namespace WebLandscape
 
       return heightsMap;
     }
-    public static Landscape GenLandscape(int size, bool smoothing, String name, int? red, int? green, int? blue)
+    public static Landscape GenLandscape(int size, double range, bool smoothing, String name, int? red, int? green, int? blue)
     {
       Landscape canvasBL = new Landscape();
 
       //create canvasBL
       int ret = -1;
-      IntPtr pCanvasBl = genCanvasBL(size, smoothing, ref ret);
+      IntPtr pCanvasBl = genCanvasBL(size, range, smoothing, ref ret);
       if (ret != 0)
         return null;
 

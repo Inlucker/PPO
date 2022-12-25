@@ -50,6 +50,7 @@ export class CanvasComponent implements OnInit {
     c.height = this.resol.height;
     /*c.style.width  = this.width;
     c.style.height = this.height;*/
+    this.animate();
   }
 
   ngOnDestroy() {
@@ -89,6 +90,10 @@ export class CanvasComponent implements OnInit {
   }
 
   animate() {
+    let mult: number = LandscapeService.params.mult;
+    var c = document.getElementsByTagName('canvas')[0];
+    c.width = this.resol.width / mult;
+    c.height = this.resol.height / mult;
     if (this.ctx) {
       this.clearCanvas();
 

@@ -39,16 +39,16 @@
           <app-group-box [name]="'Draw Parametres:'">
             <div class="HorizontalLayout">
             <label style="line-height: 30px;">Mult: </label>
-            <input  class="spinBox" type="number" min="1" max="10" step="1" [(ngModel)]="params.mult" (click)="onChangeMult()">
+            <input  class="spinBox" type="number" min="1" max="32" step="1" [(ngModel)]="params.mult" (click)="onChangeMult()">
           </div>
           </app-group-box>
           <app-group-box [name]="'GenLandscape Parameters:'">
             <app-group-box [name]="'Size:'" [styles]="{'display': 'inline-block'}">
-              <input class="spinBox" style="width:80px" type="number" min="1" max="1026" step="1" [(ngModel)]="params.size" (click)="onChangeSize()">
+              <input class="spinBox" style="width:80px" type="number" min="1" max="1025" step="1" [(ngModel)]="params.size" (click)="onChangeSize()">
             </app-group-box>
             <div class="HorizontalLayout">
               <app-group-box [name]="'Range:'">
-                <input class="spinBox" style="height:20px;width:59px" type="number" min="1.0" max="2000" step="1" [(ngModel)]="params.range"  (click)="onChangeRange()">
+                <input class="spinBox" style="height:20px;width:59px" type="number" min="1.0" max="1024" step="1" [(ngModel)]="params.range"  (click)="onChangeRange()">
               </app-group-box>
               <div style="display: flex; align-items: center;">
                 <input *ngIf="params.smooth" style="height:15px;width:15px;" type="checkBox" checked (click)="onChangeSmooth()">
@@ -71,11 +71,11 @@
         </div>
         <div class='VerticalLayout'>
           <app-list [list]="canvases" (select)="onCanvasSelect($event)"></app-list>
-          <input [(ngModel)]="canvas_name">
-          <button>Send Canvas to DB</button>
+          <input [(ngModel)]="params.canvas_name" (change)="onChangeCanvasName()">
+          <button (click)="onSend()">Send Canvas to DB</button>
           <button (click)="onLoad()">Load Canvas</button>
-          <button>Update Canvas</button>
-          <button>Delete Canvas</button>
+          <button (click)="onUpdate()">Update Canvas</button>
+          <button (click)="onDeleteCanvas()">Delete Canvas</button>
           <button (click)="onExit()">EXIT</button>
           <button (click)="onDelete()">DELETE THIS USER</button>
         </div>
