@@ -137,7 +137,7 @@ export default class HeightsMapPoints {
     res += this.height.toString() + " ";
     this.points.forEach(array => array.forEach(elem => {
       let x: number = elem.x, y = elem.y, z = elem.z;
-      res += x.toString + " " + y.toString() + " " + z.toString(z) + " ";
+      res += x.toString() + " " + y.toString() + " " + z.toString() + " ";
     }))
     return res;
   }

@@ -84,8 +84,9 @@ export class CanvasUserWindowComponent implements OnInit {
 
   onSend()
   {
-    if (LandscapeService.canvas)
+    if (LandscapeService.canvas && LandscapeService.hmp)
     {
+      LandscapeService.canvas.heights_map_points = LandscapeService.hmp.toStr();
       firstValueFrom(this.canvas_service.postCanvas(LandscapeService.canvas))
         .then(() => this.updateCanvasesList())
         .catch(e => window.alert(e.message))
@@ -109,7 +110,8 @@ export class CanvasUserWindowComponent implements OnInit {
 
   onUpdate()
   {
-    if (LandscapeService.canvas && this.selected_canvas_id) {
+    if (LandscapeService.canvas && this.selected_canvas_id && LandscapeService.hmp) {
+      LandscapeService.canvas.heights_map_points = LandscapeService.hmp.toStr();
       LandscapeService.canvas.id = this.selected_canvas_id;
       firstValueFrom(this.canvas_service.updateCanvas(LandscapeService.canvas))
         .then(() => this.updateCanvasesList())
