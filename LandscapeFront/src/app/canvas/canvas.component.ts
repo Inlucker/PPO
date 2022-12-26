@@ -179,8 +179,30 @@ export class CanvasComponent implements OnInit {
                 this.plot(i, j, color_rgb_style);
               }
             }
+            //Fill spaces
+            /*else {
+              let inten = elem.intensity;
+              let color_rgb_style = Params.rgbToStyle(r * inten, g * inten, b * inten);
+              this.plot(i, j, color_rgb_style);
+            }*/
           }
         }
+        //Fill spaces
+        /*for (let i = Math.round(Math.max(elem.min_x!, 0.)); i < Math.round(Math.min(elem.max_x!, height)); i++) {
+          for (let j = Math.round(Math.max(elem.min_y!, 0.)); j < Math.round(Math.min(elem.max_y!, width)); j++) {
+            if (this.ctx)
+            {
+              let p = this.ctx.getImageData(i, j, 1, 1).data;
+              if (p[0] == 0 && p[1] == 0 && p[2] == 0)
+              {
+                let inten = elem.intensity;
+                let color_rgb_style = Params.rgbToStyle(r * inten, g * inten, b * inten);
+                this.plot(i, j, color_rgb_style);
+              }
+              //console.log(this.ctx.getImageData(i, j, 1, 1).data);  
+            }
+          }
+        }*/
         /*for (let i: Int = Math.round(Math.max(elem.min_x!, 0.)) as Int; i < (Math.round(Math.min(elem.max_x!, height)) as Int); i++) {
           for (let j: Int = Math.round(Math.max(elem.min_y!, 0.)) as Int; j < (Math.round(Math.min(elem.max_y!, width)) as Int); j++) {
             if (elem.isInTriangle(i, j)) {

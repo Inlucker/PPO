@@ -30,10 +30,16 @@ export default class TriangularPolygon {
   
   isInTriangle(x: number, y: number) {
   //x1*x2+y1*y2
-  if ((x - this.p1.x)*this.norm_vec1.at(0) + (y - this.p1.y)*this.norm_vec1.at(1) < 0 ||
-      (x - this.p2.x)*this.norm_vec2.at(0) + (y - this.p2.y)*this.norm_vec2.at(1) < 0 ||
-      (x - this.p3.x)*this.norm_vec3.at(0) + (y - this.p3.y)*this.norm_vec3.at(1) < 0)
+    let eps = -1.2;
+  if ((x - this.p1.x)*this.norm_vec1.at(0) + (y - this.p1.y)*this.norm_vec1.at(1) < eps ||
+      (x - this.p2.x)*this.norm_vec2.at(0) + (y - this.p2.y)*this.norm_vec2.at(1) < eps ||
+      (x - this.p3.x) * this.norm_vec3.at(0) + (y - this.p3.y) * this.norm_vec3.at(1) < eps)
+  {
+    /*console.log((x - this.p1.x) * this.norm_vec1.at(0) + (y - this.p1.y) * this.norm_vec1.at(1),
+      (x - this.p2.x) * this.norm_vec2.at(0) + (y - this.p2.y) * this.norm_vec2.at(1),
+      (x - this.p3.x) * this.norm_vec3.at(0) + (y - this.p3.y) * this.norm_vec3.at(1));*/
     return false;
+  }
   else
     return true;
   }

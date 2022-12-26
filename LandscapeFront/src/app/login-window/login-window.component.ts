@@ -60,13 +60,17 @@ export class LoginWindowComponent implements OnInit {
 
   onRegister()
   {
-    if (!localStorage.getItem('loged'))
+    if (!localStorage.getItem('logged'))
       lastValueFrom(this.user_service.register(this.login, this.password, this.role))
                     .then(user => {
                       localStorage.setItem('role', user.role);
                       localStorage.setItem('logged', '1');
                       if (user.role == 'canvas_user')
+                      {
+                        localStorage.setItem('cur_user_id', user.id.toString());
+                        LandscapeService.reset();
                         this.router.navigate(['/CanvasUserWindow']);
+                      }
                       else if ((user.role == 'moderator'))
                         this.router.navigate(['/ModeratorWindow']);
                     })
