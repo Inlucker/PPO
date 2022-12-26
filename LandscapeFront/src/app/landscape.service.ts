@@ -98,9 +98,9 @@ export class LandscapeService {
   static setCanvas(canvas: Canvas) {
     this.canvas = canvas;
     this.hmp = new HeightsMapPoints(canvas.heights_map_points);
-    this.saveLandscape();
-    LandscapeService.saveColor();
+    this.saveLandscape()
     this.tpa = this.hmp.createTriPolArray(canvas.red, canvas.green, canvas.blue);
+    LandscapeService.saveColor();
   }
 
   static setGenCanvas(c: Canvas) {
