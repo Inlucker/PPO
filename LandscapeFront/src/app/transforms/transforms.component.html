@@ -2,37 +2,34 @@
 <app-group-box [name]="'Transformation'" [nameAlign]="'center'">
 
   <div class='HorizontalLayout'>
-    <app-group-box [name]="'Move'">
-      <div class='HorizontalLayout'>
-        <div class='VerticalLayout'>
-        <input class='trans_inp' [(ngModel)]="moveX">
-        <input class='trans_inp' [(ngModel)]="moveY">
-        <input class='trans_inp' [(ngModel)]="moveZ">
-        </div>
-        <button class='trans_btn' (click)="onMove()">Move</button>
-      </div>
+    <app-group-box [name]="'Movement'" [styles]="'gap: 10px; align-items: center;'">
+      <label style="grid-column: 1; grid-row: 1">dX</label>
+      <label style="grid-column: 1; grid-row: 2">dY</label>
+      <label style="grid-column: 1; grid-row: 3">dZ</label>
+      <input class='trans_inp' style="grid-column: 2; grid-row: 1" [(ngModel)]="moveX">
+      <input class='trans_inp' style="grid-column: 2; grid-row: 2" [(ngModel)]="moveY">
+      <input class='trans_inp' style="grid-column: 2; grid-row: 3" [(ngModel)]="moveZ">
+      <button class='trans_btn'  style="grid-column: 3; grid-row: 1/4" (click)="onMove()">Move</button>
     </app-group-box>
       
-    <app-group-box [name]="'Scale'">
-      <div class='HorizontalLayout'>
-        <div class='VerticalLayout'>
-          <input class='trans_inp' [(ngModel)]="scaleX">
-          <input class='trans_inp' [(ngModel)]="scaleY">
-          <input class='trans_inp' [(ngModel)]="scaleZ">
-          </div>
-        <button class='trans_btn' (click)="onScale()">Scale</button>
-      </div>
+    <app-group-box [name]="'Scaling'" [styles]="'gap: 10px; align-items: center;'">
+      <label style="grid-column: 1; grid-row: 1">kX</label>
+      <label style="grid-column: 1; grid-row: 2">kY</label>
+      <label style="grid-column: 1; grid-row: 3">kZ</label>
+      <input class='trans_inp' style="grid-column: 2; grid-row: 1" [(ngModel)]="scaleX">
+      <input class='trans_inp' style="grid-column: 2; grid-row: 2" [(ngModel)]="scaleY">
+      <input class='trans_inp' style="grid-column: 2; grid-row: 3" [(ngModel)]="scaleZ">
+      <button class='trans_btn'  style="grid-column: 3; grid-row: 1/4" (click)="onScale()">Scale</button>
     </app-group-box>
       
-    <app-group-box [name]="'Rotate'">
-      <div class='HorizontalLayout'>
-        <div class='VerticalLayout'>
-          <input class='trans_inp' [(ngModel)]="rotateX">
-          <input class='trans_inp' [(ngModel)]="rotateY">
-          <input class='trans_inp' [(ngModel)]="rotateZ">
-          </div>
-        <button class='trans_btn' (click)="onRotate()">Rotate</button>
-      </div>
+    <app-group-box [name]="'Rotation'" [styles]="'gap: 10px; align-items: center;'">
+      <label style="grid-column: 1; grid-row: 1">oX</label>
+      <label style="grid-column: 1; grid-row: 2">oY</label>
+      <label style="grid-column: 1; grid-row: 3">oZ</label>
+      <input class='trans_inp' style="grid-column: 2; grid-row: 1" [(ngModel)]="rotateX">
+      <input class='trans_inp' style="grid-column: 2; grid-row: 2" [(ngModel)]="rotateY">
+      <input class='trans_inp' style="grid-column: 2; grid-row: 3" [(ngModel)]="rotateZ">
+      <button class='trans_btn'  style="grid-column: 3; grid-row: 1/4" (click)="onRotate()">Rotate</button>
     </app-group-box>
   </div>
 </app-group-box>

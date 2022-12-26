@@ -32,16 +32,17 @@
               <option>{{params.resolution_str}}</option>
             </select>
           </app-group-box>
-          <!--<select [(ngModel)]="draw_type">
-            <option>Каркасный</option>
-            <option>Треугольный</option>
-            <option>ZBuffer</option>
-          </select>-->
           <app-group-box [name]="'Draw Parametres:'">
-            <div class="HorizontalLayout">
-            <label style="line-height: 30px;">Mult: </label>
-            <input  class="spinBox" type="number" min="1" max="32" step="1" [(ngModel)]="params.mult" (click)="onChangeMult()">
-          </div>
+            <div class="VerticalLayout">
+              <select [(ngModel)]="draw_type" (change)="onChangeDrawType()">
+                <option>Треугольный</option>
+                <option>ZBuffer</option>
+              </select>
+              <div class="HorizontalLayout">
+                <label style="line-height: 30px;">Mult: </label>
+                <input  class="spinBox" type="number" min="1" max="32" step="1" [(ngModel)]="params.mult" (click)="onChangeMult()">
+              </div>
+            </div>
           </app-group-box>
           <app-group-box [name]="'GenLandscape Parameters:'">
             <app-group-box [name]="'Size:'" [styles]="{'display': 'inline-block'}">

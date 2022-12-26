@@ -41,14 +41,33 @@ export class ModeratorCanvasWindowComponent implements OnInit {
     if (cui)
       this.canvas_user_id = +cui;
     
-    if (this.canvas_user_id) {
+    /*if (this.canvas_user_id) {
       firstValueFrom(canvas_service.getCanvasesByUserId(this.canvas_user_id))
         .then(res => this.canvases = res)
-    }
+    }*/
+    this.updateCanvasesList();
     //this.params_service.get(1).subscribe(res => window.alert(res.mult));
   }
 
   ngOnInit() { }
+
+  
+  private updateCanvasesList() {
+    if (this.canvas_user_id) {
+      firstValueFrom(this.canvas_service.getCanvasesByUserId(this.canvas_user_id))
+      .then(res => {
+        this.canvases = res;
+      })
+        .catch(() => {
+          window.alert('Couldn\'t get Canvases' + '\nRedirecting to /login');
+          this.routeToLogin();
+      })
+    }
+    else {
+      window.alert('Couldn\'t get canvas_user_id' + '\nRedirecting to /login');
+      this.routeToLogin();
+    }
+  }
 
   onCanvasSelect(list_elem: listElem) {
     this.selected_canvas_id = list_elem.id;
@@ -100,6 +119,15 @@ export class ModeratorCanvasWindowComponent implements OnInit {
   onBack() {
     localStorage.removeItem('canvas_user_id');
     this.router.navigate(['/ModeratorWindow']);
+  }
+
+  private routeToLogin() {
+    localStorage.removeItem('canvas_user_id');
+    localStorage.removeItem('logged')
+    localStorage.removeItem('role');
+    localStorage.removeItem('moderator_endpoint');
+    LandscapeService.reset();
+    this.router.navigate(['/login']);
   }
 }
 

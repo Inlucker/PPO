@@ -20,7 +20,7 @@ export class CanvasUserWindowComponent implements OnInit {
   //resolution_str: string = '960x540';
   //resolution: Resolution = new Resolution(this.resolution_str);
   params: Params;
-  draw_type: string = 'ZBuffer';
+  draw_type: string;
   canvas_user_id: number | undefined = undefined; 
   canvases: CanvasNameId[] = [];  
   selected_canvas_id: number | undefined = undefined;
@@ -50,6 +50,7 @@ export class CanvasUserWindowComponent implements OnInit {
     this.updateCanvasesList();
 
     this.params = LandscapeService.params;
+    this.draw_type = localStorage.getItem('draw_type') ?? 'Треугольный'
   }
 
   ngOnInit(): void { }
@@ -60,8 +61,8 @@ export class CanvasUserWindowComponent implements OnInit {
       .then(res => {
         this.canvases = res;
       })
-        .catch(e => {
-          window.alert(e.message() + '\nRedirecting to /login');
+        .catch(() => {
+          window.alert('Couldn\'t get Canvases' + '\nRedirecting to /login');
           this.routeToLogin();
       })
     }
@@ -194,6 +195,10 @@ export class CanvasUserWindowComponent implements OnInit {
     this.params.updateResolutionByStr();
     LandscapeService.updateResolution();
     this.changeResolutionEvent.next(new Resolution(this.params.resolution_str));
+  }
+  onChangeDrawType() {
+    localStorage.setItem('draw_type', this.draw_type);
+    this.redrawEvent.next();
   }
   onChangeMult() {
     LandscapeService.updateMult(this.params.mult);

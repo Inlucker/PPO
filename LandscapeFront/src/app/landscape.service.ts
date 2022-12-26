@@ -77,7 +77,7 @@ export class LandscapeService {
   }
   static updateColor(ch: string) {
     this.params.updateRGB(ch);
-    var col = this.params.hexToRgb(ch);
+    var col = Params.hexToRgb(ch);
     if (col)
       this.tpa.setColor(col);
     localStorage.setItem('color_hex', ch);
@@ -123,6 +123,7 @@ export class LandscapeService {
     localStorage.setItem('green', '150');
     localStorage.setItem('blue', '20');*/
     localStorage.setItem('size', '33');
+    localStorage.setItem('draw_type', 'Треугольный');
     this.canvas = undefined;
     this.hmp = undefined;
     this.tpa = new TriPolArray();

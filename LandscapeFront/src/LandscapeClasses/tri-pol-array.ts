@@ -17,6 +17,10 @@ export default class TriPolArray {
     this.blue = new_b ?? 0;
   }
 
+  update() {
+    this.data.forEach(el => el.udpate());
+  }
+
   setColor(c: Color) {
     if (c) {
       this.red = c.r;

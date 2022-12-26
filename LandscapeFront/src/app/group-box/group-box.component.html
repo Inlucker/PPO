@@ -1,6 +1,6 @@
-<div class="groupBox" [ngStyle]="styles">
+<div class="groupBox">
     <label [textContent]="this.name" class="groupBoxName" [style.text-align]="this.nameAlign"></label>
-    <div class="groupContentPlace">
+    <div class="groupContentPlace" [style]="styles">
         <ng-content></ng-content>
     </div>
 </div>

@@ -53,7 +53,7 @@ export class Params {
     if (localStorage.getItem('mult'))
       this.mult = +localStorage.getItem('mult')!;
     if (localStorage.getItem('color_hex')) {
-      var rgb = this.hexToRgb(localStorage.getItem('color_hex')!)
+      var rgb = Params.hexToRgb(localStorage.getItem('color_hex')!)
       if (rgb) {
         this.red = rgb.r;
         this.green = rgb.g;
@@ -98,7 +98,7 @@ export class Params {
 
   resolution: Resolution = { width: this.width, height: this.height };
   resolution_str: string = this.width + 'x' + this.height;
-  color_hex: string = this.rgbToHex(this.red, this.green, this.blue); 
+  color_hex: string = Params.rgbToHex(this.red, this.green, this.blue); 
   //color_style: string = 'rgb(' + this.red + ',' + this.green + ',' + this.blue + ')';
 
   updateResolution() {
@@ -116,7 +116,7 @@ export class Params {
   }
 
   updateRGB(ch: string) {
-    var col = this.hexToRgb(ch);
+    var col = Params.hexToRgb(ch);
     if (col) {
       this.red = col.r;
       this.green = col.g;
@@ -125,19 +125,23 @@ export class Params {
   }
 
   updateColorHex() {
-    this.color_hex = this.rgbToHex(this.red, this.green, this.blue);
+    this.color_hex = Params.rgbToHex(this.red, this.green, this.blue);
   }
 
-  componentToHex(c: number) {
+  static rgbToStyle(r: number, g: number, b: number): string {
+    return 'rgb(' + Math.round(r) + ',' + Math.round(g) + ',' + Math.round(b) + ')';
+  }
+
+  static componentToHex(c: number) {
     var hex = c.toString(16);
     return hex.length == 1 ? "0" + hex : hex;
   }
   
-  rgbToHex(r: number, g: number, b: number) {
+  static rgbToHex(r: number, g: number, b: number) {
     return "#" + this.componentToHex(r) + this.componentToHex(g) + this.componentToHex(b);
   }
 
-  hexToRgb(hex: string) {
+  static hexToRgb(hex: string) {
     var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
     return result ? {
       r: parseInt(result[1], 16),
