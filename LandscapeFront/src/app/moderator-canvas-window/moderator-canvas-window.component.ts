@@ -41,12 +41,8 @@ export class ModeratorCanvasWindowComponent implements OnInit {
     if (cui)
       this.canvas_user_id = +cui;
     
-    /*if (this.canvas_user_id) {
-      firstValueFrom(canvas_service.getCanvasesByUserId(this.canvas_user_id))
-        .then(res => this.canvases = res)
-    }*/
     this.updateCanvasesList();
-    //this.params_service.get(1).subscribe(res => window.alert(res.mult));
+    LandscapeService.onConstruct();
   }
 
   ngOnInit() { }
@@ -83,6 +79,8 @@ export class ModeratorCanvasWindowComponent implements OnInit {
           {
             let c: Point = LandscapeService.hmp.map_points_center;
             LandscapeService.hmp.move(new Point(-c.x + (this.width / (2 * this.mult)), -c.y + (this.height / (2 * this.mult)), -c.z));
+
+            LandscapeService.saveLandscape();
 
             /*firstValueFrom(this.params_service.get(this.selected_canvas_id!))
               .then(p => {

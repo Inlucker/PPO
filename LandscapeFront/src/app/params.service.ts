@@ -104,9 +104,6 @@ export class Params {
   updateResolution() {
     this.resolution = { width: this.width, height: this.height };
     this.resolution_str = this.width + 'x' + this.height;
-    
-    localStorage.setItem('width', this.width.toString());
-    localStorage.setItem('height', this.height.toString());
   }
   
   updateResolutionByStr() {

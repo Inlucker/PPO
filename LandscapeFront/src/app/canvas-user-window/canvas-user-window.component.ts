@@ -49,6 +49,7 @@ export class CanvasUserWindowComponent implements OnInit {
     
     this.updateCanvasesList();
 
+    LandscapeService.onConstruct();
     this.params = LandscapeService.params;
     this.draw_type = localStorage.getItem('draw_type') ?? 'Треугольный'
   }
@@ -214,6 +215,7 @@ export class CanvasUserWindowComponent implements OnInit {
       
       LandscapeService.updateSize(this.params.size);
       this.params.range = (this.params.size - 1) * 3 / 4;
+      LandscapeService.updateRange(this.params.range);
     }
   }
   onChangeRange() {

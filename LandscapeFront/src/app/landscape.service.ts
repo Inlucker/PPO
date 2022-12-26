@@ -18,33 +18,36 @@ export class LandscapeService {
 
   constructor() { }
 
+  static saveLandscape() {
+    if (this.hmp) {
+      localStorage.setItem("heights_map_points", this.hmp.toStr())
+      let color_hex = Params.rgbToHex(this.tpa.red, this.tpa.green, this.tpa.blue)
+      localStorage.setItem('color_hex', color_hex);
+      //this.updateColor(color_hex);
+    }
+  }
 
   static move(p: Point) {
     this.hmp?.move(p);
-    //this.tpa = this.hmp?.createTriPolArray(this.canvas?.red, this.canvas?.green, this.canvas?.blue)!;
+    this.saveLandscape()
   }
   static scale(p: Point) {
     this.hmp?.scale(p);
-    //this.tpa = this.hmp?.createTriPolArray(this.canvas?.red, this.canvas?.green, this.canvas?.blue)!;
+    this.saveLandscape()
   }
   static rotate(p: Point) {
     this.hmp?.rotate(p);
-    //this.tpa = this.hmp?.createTriPolArray(this.canvas?.red, this.canvas?.green, this.canvas?.blue)!;
+    this.saveLandscape()
   }
   static updateResolution() {
-    //this.params.width = resol.width;
-    //this.params.height = resol.height;
-    //this.params.updateResolution();
-
-    /*var can = document.getElementsByTagName('canvas')[0];
-    can.width  = resol.width;
-    can.height = resol.height;*/
-
     if (this.hmp)
     {
       let c: Point = this.hmp.map_points_center;
       this.hmp.move(new Point(-c.x + (this.params.width / (2 * this.params.mult)), -c.y + (this.params.height / (2 * this.params.mult)), -c.z));
     }
+    
+    localStorage.setItem('width', this.params.width.toString());
+    localStorage.setItem('height', this.params.height.toString());
   }
   static updateMult(m: number) {
     let old_m: number | undefined;
@@ -56,20 +59,18 @@ export class LandscapeService {
       let mk: number = (old_m) / m;
       this.hmp.scale(new Point(mk, mk, mk));
     }
+    this.saveLandscape()
 
     this.params.mult = m;
     localStorage.setItem('mult', m.toString());
   }
   static updateRange(r: number) {
-    //this.params.range = r;
     localStorage.setItem('range', r.toString());
   }
   static updateSize(s: number) {
-    //this.params.size = s;
     localStorage.setItem('size', s.toString());
   }
   static updateSmooth(s: boolean) {
-    //this.params.smooth = s;
     if (s)
       localStorage.setItem('smooth', '1');
     else
@@ -92,6 +93,7 @@ export class LandscapeService {
   static setCanvas(canvas: Canvas) {
     this.canvas = canvas;
     this.hmp = new HeightsMapPoints(canvas.heights_map_points);
+    this.saveLandscape()
     this.tpa = this.hmp.createTriPolArray(canvas.red, canvas.green, canvas.blue);
   }
 
@@ -107,6 +109,7 @@ export class LandscapeService {
     let center: Point = this.hmp.map_points_center;
     this.hmp.move(new Point(-center.x + (this.params.width / (2 * this.params.mult)), -center.y + (this.params.height / (2 * this.params.mult)), -center.z))
     this.hmp.rotate(new Point(0, 0, 180));
+    this.saveLandscape()
 
     this.tpa = this.hmp.createTriPolArray(c.red, c.green, c.blue);
   }
@@ -125,8 +128,18 @@ export class LandscapeService {
     localStorage.setItem('size', '33');
     localStorage.setItem('draw_type', 'Треугольный');
     this.canvas = undefined;
+    localStorage.removeItem('heights_map_points');
     this.hmp = undefined;
     this.tpa = new TriPolArray();
     this.params = new Params();
+  }
+
+  static onConstruct() {
+    let hmp_str = localStorage.getItem('heights_map_points');
+    if (hmp_str) {
+      this.params = new Params();
+      this.hmp = new HeightsMapPoints(hmp_str);
+      this.tpa = this.hmp.createTriPolArray(this.params.red, this.params.green, this.params.blue);
+    }
   }
 }
