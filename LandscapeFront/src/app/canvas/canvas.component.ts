@@ -130,19 +130,22 @@ export class CanvasComponent implements OnInit {
   }
 
   onMouseMove(event: any) {
-    let dx = this.prev_x - event.clientX;
-    let dy = this.prev_y - event.clientY;
+    let dx = event.clientX - this.prev_x;
+    let dy = event.clientY - this.prev_y;
     this.prev_x = event.clientX;
     this.prev_y = event.clientY;
 
-    if (this.lkm_pressed)
+    if (this.lkm_pressed) {
       LandscapeService.rotate(new Point(dy, dx))
-    if (this.pkm_pressed)
-      LandscapeService.move(new Point(-dx, -dy))
+      this.animate();
+    }
+    if (this.pkm_pressed) {
+      LandscapeService.move(new Point(dx, dy))
+      this.animate();
+    }
+
     /*if (this.kol_pressed)
       LandscapeService.scale(new Point(dx, dx, dx))*/
-    
-    this.animate();
   }
 
   animate() {
