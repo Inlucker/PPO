@@ -21,9 +21,13 @@ export class LandscapeService {
   static saveLandscape() {
     if (this.hmp) {
       localStorage.setItem("heights_map_points", this.hmp.toStr())
+    }
+  }
+
+  static saveColor() {
+    if (this.tpa) {
       let color_hex = Params.rgbToHex(this.tpa.red, this.tpa.green, this.tpa.blue)
       localStorage.setItem('color_hex', color_hex);
-      //this.updateColor(color_hex);
     }
   }
 
@@ -45,6 +49,7 @@ export class LandscapeService {
       let c: Point = this.hmp.map_points_center;
       this.hmp.move(new Point(-c.x + (this.params.width / (2 * this.params.mult)), -c.y + (this.params.height / (2 * this.params.mult)), -c.z));
     }
+    LandscapeService.saveLandscape();
     
     localStorage.setItem('width', this.params.width.toString());
     localStorage.setItem('height', this.params.height.toString());
@@ -93,7 +98,8 @@ export class LandscapeService {
   static setCanvas(canvas: Canvas) {
     this.canvas = canvas;
     this.hmp = new HeightsMapPoints(canvas.heights_map_points);
-    this.saveLandscape()
+    this.saveLandscape();
+    LandscapeService.saveColor();
     this.tpa = this.hmp.createTriPolArray(canvas.red, canvas.green, canvas.blue);
   }
 
