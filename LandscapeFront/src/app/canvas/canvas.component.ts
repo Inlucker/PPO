@@ -43,7 +43,6 @@ export class CanvasComponent implements OnInit {
 
   private lkm_pressed: boolean = false;
   private pkm_pressed: boolean = false;
-  private kol_pressed: boolean = false;
   private prev_x: number = -1;
   private prev_y: number = -1;
 
@@ -97,14 +96,11 @@ export class CanvasComponent implements OnInit {
   }
   
   onMouseDown(event: any) {
-    //console.log(event, event.which);
+    console.log(event, event.which);
     switch (event.which)
     {
       case 1:
         this.lkm_pressed = true;
-        break;
-      case 2:
-        this.kol_pressed = true;
         break;
       case 3:
         this.pkm_pressed = true;
@@ -120,9 +116,6 @@ export class CanvasComponent implements OnInit {
       case 1:
         this.lkm_pressed = false;
         break;
-      case 2:
-        this.kol_pressed = false;
-        break;
       case 3:
         this.pkm_pressed = false;
         break;
@@ -130,8 +123,9 @@ export class CanvasComponent implements OnInit {
   }
 
   onMouseMove(event: any) {
-    let dx = event.clientX - this.prev_x;
-    let dy = event.clientY - this.prev_y;
+    let speed = 1.3;
+    let dx = (event.clientX - this.prev_x) / speed;
+    let dy = (event.clientY - this.prev_y) / speed;
     this.prev_x = event.clientX;
     this.prev_y = event.clientY;
 
@@ -143,9 +137,16 @@ export class CanvasComponent implements OnInit {
       LandscapeService.move(new Point(dx, dy))
       this.animate();
     }
+  }
 
-    /*if (this.kol_pressed)
-      LandscapeService.scale(new Point(dx, dx, dx))*/
+  onMouseWheel(event: any) {
+    //console.log(event, event.which);
+    let speed = 10;
+    let tmp = event.wheelDelta / 120;
+    let ky = 1 - tmp / speed;
+    console.log(ky);
+    LandscapeService.scale(new Point(ky, ky, ky))
+    this.animate();
   }
 
   animate() {
