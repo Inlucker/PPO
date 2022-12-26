@@ -2,13 +2,16 @@ canvas {
     background-color: white;
     border-width: 1px;
     border-color: #414141;
-    align-self: center;
+    align-self: safe center;
 }
 
 .Prokrutka {
     border: 1px solid #414141; /* размер и цвет границы блока */
-    overflow: auto;
     display: flex;
-    justify-content: center;
-    align-items: center;
+    /*justify-content: center; /*left right*/
+    /*align-items: center; /*top bottom*/
+    justify-content: safe center;
+    align-items: safe center;
+    margin: auto;
+    overflow: auto;
 }
