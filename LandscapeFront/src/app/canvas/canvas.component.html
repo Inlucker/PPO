@@ -1,5 +1,6 @@
 <div class="Prokrutka" [style.width]="this.width" [style.height]="this.height">
-    <canvas #canvas [style.width]="this.res_width_str" [style.height]="this.res_height_str"></canvas>
+    <canvas #canvas [style.width]="this.res_width_str" [style.height]="this.res_height_str"
+    (mousedown)="onMouseDown($event)" (mouseup)="onMouseUp($event)" (mousemove)="onMouseMove($event)"></canvas>
     <!--<button (click)="animate()">Play</button>
     <button (click)="clearCanvas()">Clear</button>-->
 </div>

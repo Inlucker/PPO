@@ -8,6 +8,7 @@ import { Input } from '@angular/core';
 //export type Int = number & { __int__: void };
 
 import TriPolArray from 'src/LandscapeClasses/tri-pol-array';
+import Point from 'src/LandscapeClasses/point';
 
 @Component({
   selector: 'app-canvas',
@@ -39,6 +40,12 @@ export class CanvasComponent implements OnInit {
   @Input() redrawEvent: Observable<void> = new Observable<void>();
   @Input() cleanEvents: Observable<void> = new Observable<void>();
   @Input() changeResolutionEvents: Observable<Resolution> = new Observable<Resolution>();
+
+  private lkm_pressed: boolean = false;
+  private pkm_pressed: boolean = false;
+  private kol_pressed: boolean = false;
+  private prev_x: number = -1;
+  private prev_y: number = -1;
 
   constructor() { }
 
@@ -88,9 +95,54 @@ export class CanvasComponent implements OnInit {
       this.ctx.stroke();
     }
   }
+  
+  onMouseDown(event: any) {
+    //console.log(event, event.which);
+    switch (event.which)
+    {
+      case 1:
+        this.lkm_pressed = true;
+        break;
+      case 2:
+        this.kol_pressed = true;
+        break;
+      case 3:
+        this.pkm_pressed = true;
+        break;
+    }
+    this.prev_x = event.clientX;
+    this.prev_y = event.clientY;
+  }
 
-  drawTriPolArray(tpa: TriPolArray) {
+  onMouseUp(event: any) {
+    switch (event.which)
+    {
+      case 1:
+        this.lkm_pressed = false;
+        break;
+      case 2:
+        this.kol_pressed = false;
+        break;
+      case 3:
+        this.pkm_pressed = false;
+        break;
+    }
+  }
 
+  onMouseMove(event: any) {
+    let dx = this.prev_x - event.clientX;
+    let dy = this.prev_y - event.clientY;
+    this.prev_x = event.clientX;
+    this.prev_y = event.clientY;
+
+    if (this.lkm_pressed)
+      LandscapeService.rotate(new Point(dy, dx))
+    if (this.pkm_pressed)
+      LandscapeService.move(new Point(-dx, -dy))
+    /*if (this.kol_pressed)
+      LandscapeService.scale(new Point(dx, dx, dx))*/
+    
+    this.animate();
   }
 
   animate() {
