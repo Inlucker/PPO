@@ -30,26 +30,26 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
@@ -100,14 +100,14 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>.;C:\Qt\5.15.1\msvc2019_64\include\;C:\Qt\5.15.1\msvc2019_64\include\QtCore;C:\Qt\5.15.1\msvc2019_64\include\QtGui;C:\Qt\5.15.1\msvc2019_64\include\QtWidgets;C:\Qt\5.15.1\msvc2019_64\include\QtWinExtras;C:\Qt\5.15.1\msvc2019_64\include\QtXml;C:\Qt\5.15.1\msvc2019_64\include\QtANGLE;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.;E:\Qt\5.15.18\msvc2019\include\;E:\Qt\5.15.18\msvc2019\include\QtCore;E:\Qt\5.15.18\msvc2019\include\QtGui;E:\Qt\5.15.18\msvc2019\include\QtWidgets;E:\Qt\5.15.18\msvc2019\include\QtWinExtras;E:\Qt\5.15.18\msvc2019\include\QtXml;E:\Qt\5.15.18\msvc2019\include\QtANGLE;C:\Program Files\PostgreSQL\17\include</AdditionalIncludeDirectories>
       <AdditionalOptions>/D "_CRT_SECURE_NO_WARNINGS" %(AdditionalOptions)</AdditionalOptions>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(PostgresqlRoot)\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(PostgresqlRoot)\lib;C:\Program Files\PostgreSQL\17\lib</AdditionalLibraryDirectories>
       <AdditionalDependencies>Qt5Core.lib;Qt5Cored.lib;Qt5Gui.lib;Qt5Guid.lib;Qt5Widgets.lib;Qt5Xml.lib;Qt5WinExtras.lib;libpq.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
@@ -134,14 +134,14 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>.;C:\Qt\5.15.1\msvc2019_64\include\;C:\Qt\5.15.1\msvc2019_64\include\QtCore;C:\Qt\5.15.1\msvc2019_64\include\QtGui;C:\Qt\5.15.1\msvc2019_64\include\QtWidgets;C:\Qt\5.15.1\msvc2019_64\include\QtWinExtras;C:\Qt\5.15.1\msvc2019_64\include\QtXml;C:\Qt\5.15.1\msvc2019_64\include\QtANGLE;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.;E:\Qt\5.15.18\msvc2019\include\;E:\Qt\5.15.18\msvc2019\include\QtCore;E:\Qt\5.15.18\msvc2019\include\QtGui;E:\Qt\5.15.18\msvc2019\include\QtWidgets;E:\Qt\5.15.18\msvc2019\include\QtWinExtras;E:\Qt\5.15.18\msvc2019\include\QtXml;E:\Qt\5.15.18\msvc2019\include\QtANGLE;C:\Program Files\PostgreSQL\17\include</AdditionalIncludeDirectories>
       <AdditionalOptions>/D "_CRT_SECURE_NO_WARNINGS" %(AdditionalOptions)</AdditionalOptions>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(PostgresqlRoot)\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(PostgresqlRoot)\lib;C:\Program Files\PostgreSQL\17\lib</AdditionalLibraryDirectories>
       <AdditionalDependencies>libpq.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AssemblyDebug>true</AssemblyDebug>
     </Link>
@@ -155,7 +155,7 @@
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
-      <AdditionalIncludeDirectories>.;C:\Qt\5.15.1\msvc2019_64\include\;C:\Qt\5.15.1\msvc2019_64\include\QtCore;C:\Qt\5.15.1\msvc2019_64\include\QtGui;C:\Qt\5.15.1\msvc2019_64\include\QtWidgets;C:\Qt\5.15.1\msvc2019_64\include\QtWinExtras;C:\Qt\5.15.1\msvc2019_64\include\QtXml;C:\Qt\5.15.1\msvc2019_64\include\QtANGLE;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.;E:\Qt\5.15.18\msvc2019\include\;E:\Qt\5.15.18\msvc2019\include\QtCore;E:\Qt\5.15.18\msvc2019\include\QtGui;E:\Qt\5.15.18\msvc2019\include\QtWidgets;E:\Qt\5.15.18\msvc2019\include\QtWinExtras;E:\Qt\5.15.18\msvc2019\include\QtXml;E:\Qt\5.15.18\msvc2019\include\QtANGLE;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>

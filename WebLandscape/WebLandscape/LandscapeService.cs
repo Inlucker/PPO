@@ -12,7 +12,7 @@ namespace WebLandscape
 {
   public class LandscapeService
   {
-    public const string CppFunctionsDLL = @"..\x64\Debug\CppLandscape.dll";
+    public const string CppFunctionsDLL = @"..\..\..\..\x64\Debug\CppLandscape.dll";
 
     //Landscape funcs (tests)
     [DllImport(CppFunctionsDLL, CallingConvention = CallingConvention.Cdecl)]

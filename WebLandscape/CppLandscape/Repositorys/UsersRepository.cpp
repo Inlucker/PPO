@@ -334,7 +334,7 @@ void UsersRepository::connect()
     m_dbpass = Settings::get(Settings::DBPass, Settings::DataBase).toString().toStdString();
     m_schema = Settings::get(Settings::Schema, Settings::DataBase).toString().toStdString();*/
     /*m_dbhost = "localhost";
-    m_dbport = 5432;
+    m_dbport = 5433;
     m_dbname = "postgres";
     m_dbuser = "guest";
     m_dbpass = "guest";

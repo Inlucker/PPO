@@ -13,9 +13,9 @@ class UsersRepository : public IUsersRepository
 {
 public:
     //UsersRepository();
-    UsersRepository(string dbuser = "guest", string dbpass = "guest", string dbschema = "PPO", string dbhost = "localhost", int dbport = 5432, string dbname = "postgres");
+    UsersRepository(string dbuser = "guest", string dbpass = "guest", string dbschema = "PPO", string dbhost = "localhost", int dbport = 5433, string dbname = "postgres");
     virtual ~UsersRepository() = default;
-    void updateConfig(string dbuser = "guest", string dbpass = "guest", string dbschema = "PPO", string dbhost = "localhost", int dbport = 5432, string dbname = "postgres");
+    void updateConfig(string dbuser = "guest", string dbpass = "guest", string dbschema = "PPO", string dbhost = "localhost", int dbport = 5433, string dbname = "postgres");
 
     virtual shared_ptr<UserBL> getUser(string login, string password) override;
     shared_ptr<UserBL> getUser(int id);
